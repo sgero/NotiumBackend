@@ -1,21 +1,17 @@
 package com.example.notiumb.security.service;
 
-import com.example.safaeats.converter.UsuarioMapper;
-import com.example.safaeats.dto.LoginDTO;
-import com.example.safaeats.dto.UsuarioDTO;
-import com.example.safaeats.security.auth.AuthenticationResponseDTO;
-import com.example.safaeats.security.service.JwtService;
-import com.example.safaeats.service.UsuarioService;
+import com.example.notiumb.converter.IUserMapper;
+import com.example.notiumb.dto.LoginDTO;
+import com.example.notiumb.dto.UserDTO;
+import com.example.notiumb.security.auth.AuthenticationResponseDTO;
+import com.example.notiumb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,7 +21,7 @@ public class AuthenticationService {
 
     private final UserService userService;
 
-    private final UsuarioMapper usuarioMapper;
+    private final IUserMapper userMapper;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -34,10 +30,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public AuthenticationResponseDTO register(UsuarioDTO usuarioDTO){
-        usuarioDTO.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
-        UsuarioDTO dto = usuarioService.save(usuarioDTO);
-        String token = jwtService.generateToken(usuarioMapper.toEntity(dto));
+    public AuthenticationResponseDTO register(UserDTO userDTO){
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        UserDTO dto = userService.save(userDTO);
+        String token = jwtService.generateToken(userMapper.toEntity(dto));
         return AuthenticationResponseDTO
                 .builder()
                 .token(token)
@@ -45,7 +41,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponseDTO login(LoginDTO loginDTO){
-        UsuarioDTO user = usuarioService.getByUsername(loginDTO.getUsername());
+        UserDTO user = userService.getByUsername(loginDTO.getUsername());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsername(),
@@ -53,7 +49,7 @@ public class AuthenticationService {
                         List.of(new SimpleGrantedAuthority(user.getRol().name()))
                 )
         );
-        String token = jwtService.generateToken(usuarioMapper.toEntity(user));
+        String token = jwtService.generateToken(userMapper.toEntity(user));
         return  AuthenticationResponseDTO
                 .builder()
                 .token(token)
@@ -62,7 +58,7 @@ public class AuthenticationService {
     }
 
     public boolean verifyPassword(LoginDTO loginDTO){
-        return usuarioService.existByCredentials(loginDTO.getUsername(),loginDTO.getPassword());
+        return userService.existByCredentials(loginDTO.getUsername(),loginDTO.getPassword());
 
     }
 }

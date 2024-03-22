@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface IUserMapper {
 
-    static UserDTO toDTO(User entity) ;
+    UserDTO toDTO(User entity) ;
 
     User toEntity(UserDTO dto);
 
