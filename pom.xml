@@ -9,13 +9,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-        <!-- Agrega otros repositorios Maven aquí si es necesario -->
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>central</id>-->
+<!--            <url>https://repo.maven.apache.org/maven2</url>-->
+<!--        </repository>-->
+<!--        &lt;!&ndash; Agrega otros repositorios Maven aquí si es necesario &ndash;&gt;-->
+<!--    </repositories>-->
 
 
     <groupId>com.example</groupId>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.1.0-M2</version>
+            <version>6.0.0</version>
         </dependency>
 
         <dependency>

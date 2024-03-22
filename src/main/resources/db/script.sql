@@ -9,18 +9,18 @@ drop table if exists usuario;
 
 create table usuario
 (
-    id       serial primary key,
+    id       serial not null,
     username varchar(100) not null,
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      varchar(100) not null,
-    activo   boolean
-
+    activo   boolean,
+    primary key (id)
 );
 
 
 create table cliente (
-    id serial primary key,
+    id serial not null,
     nombre varchar(100) not null,
     direccion varchar(100) not null,
     telefono varchar(20) not null,
@@ -30,18 +30,31 @@ create table cliente (
     disponible boolean,
     imagen_marca varchar(1000) not null,
     activo boolean,
-    id_usuario serial references usuario(id)
-
+    id_usuario integer not null,
+    primary key (id),
+    constraint id_cliente_usuario_fk foreign key (id_usuario) references usuario(id)
 );
 
--- create table restaurante (
---     id serial primary key,
---     nombre varchar(100) not null,
---     cif varchar(9) not null,
---     direccion varchar(100) not null,
---     telefono varchar(20) not null,
---
--- );
+
+
+create table restaurante (
+    id serial not null,
+    nombre varchar(100) not null,
+    cif varchar(9) not null,
+    direccion varchar(200) not null,
+    telefono varchar(20) not null,
+    hora_apertura timestamp not null,
+    hora_cierre timestamp not null,
+    valoracion boolean,
+    disponible boolean,
+    imagen_marca varchar(1000) not null,
+    activo boolean,
+    primary key (id),
+    id_usuario integer not null,
+    constraint id_restaurante_usuario_fk foreign key (id_usuario) references usuario(id)
+);
+
+
 --
 -- create table ocio_nocturno (
 --     id serial primary key,
