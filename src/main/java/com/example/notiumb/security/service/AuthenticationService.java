@@ -25,7 +25,7 @@ public class AuthenticationService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JwtService jwtService;
+    private final JWTService jwtService;
 
     private final AuthenticationManager authenticationManager;
 
