@@ -25,14 +25,14 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return IUserRepository.findTopByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
+        return userRepository.findTopByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
     public UserDTO getByUsername(String username) throws UsernameNotFoundException {
-        User user = IUserRepository.findTopByUsername(username).orElse(null);
+        User user = userRepository.findTopByUsername(username).orElse(null);
 
         if (user!=null){
-            return IUserMapper.toDTO(user);
+            return iUserMapper.toDTO(user);
         }else{
             throw  new UsernameNotFoundException("Usuario no encontrado");
         }
@@ -40,11 +40,11 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDTO save(UserDTO userDTO){
-        return IUserMapper.toDTO(userRepository.save(iUserMapper.toEntity(userDTO)));
+        return iUserMapper.toDTO(userRepository.save(iUserMapper.toEntity(userDTO)));
     }
 
     public Boolean existByCredentials(String username, String password){
-        User user = IUserRepository.findTopByUsername(username).orElse(null);
+        User user = userRepository.findTopByUsername(username).orElse(null);
         return user != null  && passwordEncoder.matches(password,user.getPassword());
     }
 }
