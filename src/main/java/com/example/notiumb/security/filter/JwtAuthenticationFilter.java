@@ -2,7 +2,9 @@ package com.example.notiumb.security.filter;
 
 import com.example.notiumb.model.User;
 import com.example.notiumb.security.service.JWTService;
+import com.example.notiumb.security.service.JwtService;
 import com.example.notiumb.service.IUserService;
+import com.example.notiumb.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -53,13 +55,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Usuario usuario = usuarioService.loadUserByUsername(username);
+            User user = userService.loadUserByUsername(username);
 
-            if (jwtService.isTokenValid(jwt, usuario)) {
+            if (jwtService.isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        usuario.getUsername(),
-                        usuario.getPassword(),
-                        List.of(new SimpleGrantedAuthority(usuario.getRol().name())));
+                        user.getUsername(),
+                        user.getPassword(),
+                        List.of(new SimpleGrantedAuthority(user.getRol().name())));
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
