@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
-    static Optional<User> findTopByUsername(String username);
+    Optional<User> findTopByUsername(String username);
 
     Boolean existsByUsernameAndPassword(String username, String password);
 }
