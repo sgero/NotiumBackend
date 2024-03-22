@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll()
                         .anyRequest().hasRole(Rol.ADMIN.name())
                         .anyRequest().hasAnyAuthority(Rol.ADMIN.name())
-                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name(), Rol.OCIONOCTURNO.name(), Rol.CLIENTE.name())
+                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name(), Rol.OCIONOCTURNO.name(), Rol.CLIENTE.name(), Rol.RPP.name())
                         .anyRequest().permitAll()
                         .anyRequest().authenticated()
                 )
