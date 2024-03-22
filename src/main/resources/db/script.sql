@@ -55,18 +55,33 @@ create table restaurante (
 );
 
 
---
--- create table ocio_nocturno (
---     id serial primary key,
---     nombre varchar(100) not null,
---     email varchar(100) not null,
---     password varchar(100) not null
--- );
---
--- create table rpp (
---     id serial primary key,
---     nombre varchar(100) not null
--- );
---
---
+--Y el aforo???
+create table ocio_nocturno (
+    id serial not null,
+    nombre varchar(100) not null,
+    cif varchar(9) not null,
+    hora_apertura timestamp not null,
+    hora_cierre timestamp not null,
+    imagen_marca varchar(1000) not null,
+    activo boolean,
+    primary key (id),
+    id_usuario integer not null,
+    constraint id_ocio_nocturno_usuario_fk foreign key (id_usuario) references usuario(id)
+);
+
+create table rpp (
+    id serial not null,
+    nombre varchar(100) not null,
+    apellidos varchar(100) not null,
+    dni varchar(9) not null,
+    telefono varchar(20) not null,
+    fecha_nacimiento timestamp not null,
+    direccion varchar(150) not null,
+    activo boolean,
+    primary key (id),
+    id_usuario integer not null,
+    constraint id_rpp_usuario_fk foreign key (id_usuario) references usuario(id)
+);
+
+
 
