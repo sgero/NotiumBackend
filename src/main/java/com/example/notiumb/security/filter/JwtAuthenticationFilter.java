@@ -1,9 +1,7 @@
 package com.example.notiumb.security.filter;
 
 import com.example.notiumb.model.User;
-import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.security.service.JwtService;
-import com.example.notiumb.service.IUserService;
 import com.example.notiumb.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
