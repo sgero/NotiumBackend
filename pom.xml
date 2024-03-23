@@ -9,14 +9,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>central</id>-->
-<!--            <url>https://repo.maven.apache.org/maven2</url>-->
-<!--        </repository>-->
-<!--        &lt;!&ndash; Agrega otros repositorios Maven aquí si es necesario &ndash;&gt;-->
-<!--    </repositories>-->
-
 
     <groupId>com.example</groupId>
     <artifactId>NotiumB</artifactId>
