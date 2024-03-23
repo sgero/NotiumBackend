@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = "Gestión de Usuarios", description = "Operaciones relacionadas con la gestión de usuarios")
+@Api(tags = "Gestión de Usuarios")
 public class UserController {
 
     @ApiOperation("Obtener todos los usuarios")
