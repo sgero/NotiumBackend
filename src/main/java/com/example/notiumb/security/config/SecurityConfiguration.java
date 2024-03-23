@@ -57,12 +57,12 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.RPP.name())
                         .anyRequest().authenticated()
 
-                        .anyRequest().permitAll()
-                        .anyRequest().hasRole(Rol.ADMIN.name())
-                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name())
-                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name(), Rol.OCIONOCTURNO.name(), Rol.CLIENTE.name(), Rol.RPP.name())
-                        .anyRequest().permitAll()
-                        .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
+//                        .anyRequest().hasRole(Rol.ADMIN.name())
+//                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name())
+//                        .anyRequest().hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name(), Rol.OCIONOCTURNO.name(), Rol.CLIENTE.name(), Rol.RPP.name())
+//                        .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
 
 
                 )
