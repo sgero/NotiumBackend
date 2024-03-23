@@ -48,12 +48,23 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
+                        .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
+                        .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
+                        .requestMatchers(GET, "/cliente/**").hasAnyAuthority(Rol.ADMIN.name(),Rol.CLIENTE.name())
+                        .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.RPP.name())
+                        .anyRequest().authenticated()
+
                         .anyRequest().permitAll()
                         .anyRequest().hasRole(Rol.ADMIN.name())
                         .anyRequest().hasAnyAuthority(Rol.ADMIN.name())
                         .anyRequest().hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name(), Rol.OCIONOCTURNO.name(), Rol.CLIENTE.name(), Rol.RPP.name())
                         .anyRequest().permitAll()
                         .anyRequest().authenticated()
+
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
