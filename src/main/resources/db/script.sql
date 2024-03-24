@@ -14,7 +14,8 @@ create table usuario
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      varchar(100) not null,
-    activo   boolean,
+    activo   boolean default true,
+    verificado boolean default false,
     primary key (id)
 );
 
@@ -28,7 +29,8 @@ create table cliente
     telefono         varchar(20)  not null,
     fecha_nacimiento timestamp    not null,
     direccion        varchar(100) not null,
-    activo           boolean,
+    activo           boolean default true,
+    verificado      boolean default false,
     id_usuario       integer      not null,
     primary key (id),
     constraint id_cliente_usuario_fk foreign key (id_usuario) references usuario (id)
@@ -43,7 +45,8 @@ create table rpp
     telefono         varchar(20)  not null,
     fecha_nacimiento timestamp    not null,
     direccion        varchar(150) not null,
-    activo           boolean,
+    activo           boolean default true,
+    verificado      boolean default false,
     id_usuario       integer      not null,
     primary key (id),
     constraint id_rpp_usuario_fk foreign key (id_usuario) references usuario (id)
@@ -61,7 +64,8 @@ create table restaurante
     valoracion    boolean,
     disponible    boolean,
     imagen_marca  varchar(1000) not null,
-    activo        boolean,
+    activo        boolean default true,
+    verificado boolean default false,
     id_usuario    integer       not null,
     primary key (id),
     constraint id_restaurante_usuario_fk foreign key (id_usuario) references usuario (id)
@@ -81,13 +85,14 @@ create table ocio_nocturno
     valoracion    boolean,
     disponible    boolean,
     imagen_marca  varchar(1000) not null,
-    activo        boolean,
+    activo        boolean default true,
+    verificado boolean default false,
     id_usuario    integer       not null,
     primary key (id),
     constraint id_ocio_nocturno_usuario_fk foreign key (id_usuario) references usuario (id)
 );
 
 
-
+select * from usuario;
 
 
