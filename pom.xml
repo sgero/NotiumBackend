@@ -44,11 +44,14 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
+
+
+<!--        El swagger con springfox no funciona en springboot 3.x, hay que migrar a sprindoc-->
+<!--        <dependency>-->
+<!--            <groupId>io.springfox</groupId>-->
+<!--            <artifactId>springfox-boot-starter</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springdoc</groupId>

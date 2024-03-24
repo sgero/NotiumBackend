@@ -3,16 +3,16 @@ package com.example.notiumb.controller;
 import com.example.notiumb.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
+//import io.swagger.annotations.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = "Gestión de Usuarios")
+//@Api(tags = "Gestión de Usuarios")
 public class UserController {
 
-    @ApiOperation("Obtener todos los usuarios")
+//    @ApiOperation("Obtener todos los usuarios")
     @GetMapping("/users")
     public List<User> getUsers() {
         // implementación para obtener usuarios
@@ -20,7 +20,7 @@ public class UserController {
        return null;
     }
 
-    @ApiOperation("Crear un nuevo usuario")
+//    @ApiOperation("Crear un nuevo usuario")
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         // implementación para crear un usuario
