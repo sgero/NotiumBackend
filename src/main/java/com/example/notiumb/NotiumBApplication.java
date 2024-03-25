@@ -25,6 +25,9 @@ public class NotiumBApplication {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("API de Notium").description("API Notium: (Ocio Nocturno y Restaurantes)").version("1.0.0"));
+                .info(new Info()
+                        .title("API de Notium")
+                        .description("API Notium: (Ocio Nocturno y Restaurantes)")
+                        .version("1.0.0"));
     }
 }

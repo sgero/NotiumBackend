@@ -71,7 +71,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
                         .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .requestMatchers(GET, "/cliente/**").hasAnyAuthority(Rol.ADMIN.name(),Rol.CLIENTE.name())
-                        .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.RPP.name())
+                        .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RPP.name())
                         .anyRequest().authenticated()
 
 
