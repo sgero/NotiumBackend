@@ -64,6 +64,8 @@ public class SecurityConfiguration {
                 }))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/restaurantes/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
