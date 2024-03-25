@@ -13,7 +13,7 @@ create table usuario
     username varchar(100) not null,
     email    varchar(100) not null,
     password varchar(100) not null,
-    rol      varchar(100) not null,
+    rol      integer not null,
     activo   boolean default true,
     verificado boolean default false,
     primary key (id)

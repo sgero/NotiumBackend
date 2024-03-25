@@ -32,9 +32,12 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST_URL = {
+            "/doc/**",
+            "/doc/swagger-ui/index.html#",
             "/auth/**",
             "/api-docs",
             "/api-docs/**",
+            "/api/users/**",
             "/swagger-resources",
             "/swagger-resources/**",
             "/configuration/ui",
@@ -42,7 +45,13 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/webjars/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
     };
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -64,12 +73,15 @@ public class SecurityConfiguration {
                 }))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST_URL).permitAll()
+                        .requestMatchers("/v2/**", "/v3/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/doc/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
                         .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .requestMatchers(GET, "/cliente/**").hasAnyAuthority(Rol.ADMIN.name(),Rol.CLIENTE.name())
-                        .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.RPP.name())
+                        .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.RPP.name(),Rol.ADMIN.name())
                         .anyRequest().authenticated()
 
 
