@@ -4,12 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
-
-public class User {
+@Table(name="carta_ocio")
+public class CartaOcio {
 
     private Integer id;
 
+    private Boolean activo;
 
-
+    private Ocio ocio;
 }
