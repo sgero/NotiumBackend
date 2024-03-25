@@ -26,6 +26,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public List<UserDTO> listarUsers(){
+
+        return iUserMapper.toDTO(userRepository.findAll());
+
+    }
+
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findTopByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
