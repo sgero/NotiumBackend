@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-//@Api(tags = "Gestión de Usuarios")
+//@Api(tags = "Gestión de Usuarios") >>> Estas son anotaciones antiguas de springfox que no se usan con springdoc
 public class UserController {
 
     @Autowired
