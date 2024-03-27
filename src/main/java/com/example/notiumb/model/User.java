@@ -23,16 +23,16 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "rol")
+    @Column(name = "rol", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private Rol rol;
 
