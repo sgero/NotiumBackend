@@ -2,11 +2,13 @@ package com.example.notiumb.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="comentario")
+@Data
 public class Comentario {
 
     private Integer id;
@@ -19,7 +21,7 @@ public class Comentario {
 
     private Restaurante restaurante;
 
-    private Ocio ocio;
+    private OcioNocturno ocio;
 
     private Cliente cliente;
 }
