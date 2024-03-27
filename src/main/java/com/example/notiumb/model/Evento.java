@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "evento", schema = "notium", catalog = "postgres")
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"ocioNocturno", "ticketOcioSet"})
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +48,11 @@ public class Evento {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
+
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    private Set<TicketOcio> ticketOcioSet = new HashSet<>();
 
 }

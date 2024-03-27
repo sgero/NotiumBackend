@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario", schema = "notium", catalog = "postgres")
@@ -15,7 +17,7 @@ import java.util.Collection;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(exclude = {"activo"})
+@EqualsAndHashCode(exclude = {"ocioNocturnoSet", "restauranteSet", "cliente", "rpp"})
 public class User implements UserDetails {
 
     @Id
@@ -39,11 +41,11 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private OcioNocturno ocioNocturno;
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Set<OcioNocturno> ocioNocturnoSet = new HashSet<>();
 
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private Restaurante restaurante;
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Set<Restaurante> restauranteSet = new HashSet<>();
 
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Cliente cliente;

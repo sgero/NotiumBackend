@@ -1,3 +1,4 @@
+drop table if exists ticket_ocio;
 drop table if exists evento;
 drop table if exists ocio_nocturno;
 drop table if exists restaurante;
@@ -128,4 +129,11 @@ create table evento (
     constraint id_evento_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
-
+create table ticket_ocio (
+    id serial not null ,
+    codigo varchar(20) not null ,
+    id_evento integer not null ,
+    activo boolean default true not null ,
+    primary key (id),
+    constraint id_ticket_ocio_evento_fk foreign key (id_evento) references evento (id)
+);
