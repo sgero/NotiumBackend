@@ -23,5 +23,5 @@ public class Rpp {
 
     private Boolean activo;
 
-    private Usuario usuario;
+    private User user;
 }

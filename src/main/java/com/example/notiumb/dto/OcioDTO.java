@@ -1,7 +1,5 @@
 package com.example.notiumb.dto;
 
-import com.example.notiumb.model.Usuario;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 

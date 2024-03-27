@@ -21,5 +21,5 @@ public class CartaOcio {
     private Boolean activo = true;
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ocio", nullable = false)
-    private Ocio ocio;
+    private OcioNocturno ocioNocturno;
 }

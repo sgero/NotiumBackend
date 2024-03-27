@@ -33,7 +33,7 @@ public class Evento {
     private Integer aforo;
     @Column(name = "activo")
     private Boolean activo;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ocio", nullable = false)
-    private Ocio ocio;
+    private OcioNocturno ocioNocturno;
 }
