@@ -1,4 +1,4 @@
-package com.example.notiumb.enums;
+package com.example.notiumb.model.enums;
 
 public enum TipoPromocion {
 

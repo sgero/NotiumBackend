@@ -1,7 +1,7 @@
 package com.example.notiumb.model;
 
 
-import com.example.notiumb.enums.TipoPromocion;
+import com.example.notiumb.model.enums.TipoPromocion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
