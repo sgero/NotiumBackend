@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"ocioNocturno", "ticketOcioSet"})
+@EqualsAndHashCode(exclude = {"ocioNocturno"})
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,8 +51,5 @@ public class Evento {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
-
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
-    private Set<TicketOcio> ticketOcioSet = new HashSet<>();
 
 }

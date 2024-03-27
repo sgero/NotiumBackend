@@ -1,4 +1,5 @@
-drop table if exists ticket_ocio;
+drop table if exists entrada_ocio_cliente;
+drop table if exists entrada_ocio;
 drop table if exists evento;
 drop table if exists ocio_nocturno;
 drop table if exists restaurante;
@@ -129,11 +130,24 @@ create table evento (
     constraint id_evento_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
-create table ticket_ocio (
+create table entrada_ocio (
     id serial not null ,
-    codigo varchar(20) not null ,
+    precio float not null ,
+    total_entradas integer not null ,
+    activo boolean default  true not null ,
     id_evento integer not null ,
-    activo boolean default true not null ,
     primary key (id),
-    constraint id_ticket_ocio_evento_fk foreign key (id_evento) references evento (id)
+    constraint id_entrada_ocio_evento_fk foreign key (id_evento) references evento(id)
 );
+
+create table entrada_ocio_cliente(
+    id serial not null ,
+    codigo varchar (30) not null ,
+    fecha_compra timestamp(6) not null ,
+    id_cliente integer not null ,
+    id_entrada_ocio integer not null ,
+    primary key  (id),
+    constraint id_entrada_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
+    constraint id_entrada_ocio_cliente_entrada_ocio_fk foreign key (id_entrada_ocio) references entrada_ocio(id)
+);
+

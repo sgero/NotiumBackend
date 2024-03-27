@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "ocio_nocturno", schema = "notium", catalog = "postgres")
@@ -13,7 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "eventoSet", "direccion"})
+@EqualsAndHashCode(exclude = {"user", "direccion"})
 public class OcioNocturno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +39,6 @@ public class OcioNocturno {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
-
-    @OneToMany(mappedBy = "ocio_nocturno", fetch = FetchType.LAZY)
-    private Set<Evento> eventoSet = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_direccion", nullable = false)
