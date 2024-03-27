@@ -1,39 +1,52 @@
 package com.example.notiumb.model;
 
+import com.example.notiumb.model.enums.CodigoVestimentaOcio;
+import com.example.notiumb.model.enums.EdadMinimaOcio;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name="evento")
+@Table(name = "evento", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Evento {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
-    @Column(name = "nombre")
+
+    @Column(name = "nombre", nullable = false)
     private String nombre;
-    @Column(name = "tematica")
+
+    @Column(name = "descripcion", nullable = false)
+    private String descripcion;
+
+    @Column(name = "fecha", nullable = false)
+    private Timestamp fecha;
+
+    @Column(name = "tematica", nullable = false)
     private String tematica;
-    @Column(name = "codigo_vestimenta")
-    private String codigo_vestimenta;
-    @Column(name = "edad")
-    private Integer edad;
-    @Column(name = "fecha")
-    private LocalDateTime fecha;
-    @Column(name = "aforo")
+
+    @Column(name = "codigo_vestimenta", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private CodigoVestimentaOcio codigoVestimentaOcio;
+
+    @Column(name = "edad", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private EdadMinimaOcio edadMinimaOcio;
+
+    @Column(name = "aforo", nullable = false)
     private Integer aforo;
-    @Column(name = "activo")
-    private Boolean activo;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ocio", nullable = false)
+
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
+
 }
