@@ -1,7 +1,6 @@
 package com.example.notiumb.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -23,5 +22,7 @@ public class Cliente {
 
     private Boolean activo;
 
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 }

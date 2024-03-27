@@ -1,14 +1,24 @@
 package com.example.notiumb.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="rpp")
+@Table(name = "rpp", schema = "notium", catalog = "postgres")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Rpp {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     private String nombre;
@@ -17,11 +27,12 @@ public class Rpp {
 
     private String dni;
 
-    private LocalDateTime fecha_nacimiento;
-
-    private String direccion;
+    private Timestamp fecha_nacimiento;
 
     private Boolean activo;
 
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
+
 }

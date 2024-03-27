@@ -39,7 +39,17 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private OcioNocturno ocioNocturno;
 
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Restaurante restaurante;
+
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Cliente cliente;
+
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private Rpp rpp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
