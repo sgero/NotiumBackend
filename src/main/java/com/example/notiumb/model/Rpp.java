@@ -35,4 +35,8 @@ public class Rpp {
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "id_direccion", nullable = false)
+    private Direccion direccion;
+
 }

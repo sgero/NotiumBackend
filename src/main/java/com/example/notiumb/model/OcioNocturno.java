@@ -47,4 +47,8 @@ public class OcioNocturno {
     @OneToMany(mappedBy = "ocio_nocturno", fetch = FetchType.LAZY)
     private Set<Evento> eventoSet = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "id_direccion", nullable = false)
+    private Direccion direccion;
+
 }

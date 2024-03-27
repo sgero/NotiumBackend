@@ -25,4 +25,8 @@ public class Cliente {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "id_direccion", nullable = false)
+    private Direccion direccion;
 }
