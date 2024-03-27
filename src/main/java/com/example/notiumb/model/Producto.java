@@ -1,6 +1,6 @@
 package com.example.notiumb.model;
 
-import com.example.notiumb.enums.TipoProducto;
+import com.example.notiumb.enums.TipoCategoria;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -14,7 +14,7 @@ public class Producto {
 
     private Double precio;
 
-    private TipoProducto tipo_producto;
+    private TipoCategoria tipoCategoria;
 
     private Boolean activo;
 

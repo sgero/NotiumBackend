@@ -23,5 +23,5 @@ public class Cliente {
 
     private Boolean activo;
 
-    private User usuario;
+    private Usuario usuario;
 }
