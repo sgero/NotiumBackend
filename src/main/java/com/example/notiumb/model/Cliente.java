@@ -34,9 +34,6 @@ public class Cliente {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @Column(name = "verificado", nullable = false)
-    private Boolean verificado = false;
-
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;

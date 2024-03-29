@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 
 @Data
 @Builder
@@ -15,8 +15,8 @@ public class OcioNocturnoDTO {
     private String nombre;
     @NotBlank
     private String cif;
-    private Timestamp horaApertura;
-    private Timestamp horaCierre;
+    private Time horaApertura;
+    private Time horaCierre;
     @NotBlank
     private String imagenMarca;
     @Valid
