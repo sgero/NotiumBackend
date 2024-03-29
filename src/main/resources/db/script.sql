@@ -1,3 +1,17 @@
+drop table if exists promocion;
+drop table if exists producto_tipo_bebida;
+drop table if exists producto_tipo_plato;
+drop table if exists tipo_bebida;
+drop table if exists tipo_plato;
+drop table if exists mensaje;
+drop table if exists chat;
+drop table if exists comentario;
+drop table if exists producto;
+drop table if exists carta_ocio;
+drop table if exists carta_rest;
+drop table if exists reserva_restaurante;
+drop table if exists turno_restaurante;
+drop table if exists mesa_restaurante;
 drop table if exists entrada_ocio_cliente;
 drop table if exists entrada_ocio;
 drop table if exists evento;
@@ -150,3 +164,159 @@ create table entrada_ocio_cliente(
     constraint id_entrada_ocio_cliente_entrada_ocio_fk foreign key (id_entrada_ocio) references entrada_ocio(id)
 );
 
+
+create table mesa_restaurante (
+                        id serial not null ,
+                        num_plazas int not null ,
+                        reservada boolean default false not null ,
+                        activo boolean default true not null ,
+                        id_restaurante integer not null ,
+                        primary key (id),
+                        constraint id_mesa_restaurante_restaurante_fk foreign key (id_restaurante) references restaurante (id)
+);
+
+create table turno_restaurante (
+                                   id serial not null ,
+                                   hora_inicio time not null ,
+                                   hora_fin time not null ,
+                                   activo boolean default true not null ,
+                                   id_restaurante integer not null ,
+                                   primary key (id),
+                                   constraint id_turno_restaurante_restaurante_fk foreign key (id_restaurante) references restaurante (id)
+);
+
+create table reserva_restaurante (
+                                  id serial not null ,
+                                  codigo_reserva varchar(10) not null ,
+                                  activo boolean default true not null ,
+                                  id_turno_restaurante integer not null ,
+                                  id_cliente integer not null ,
+                                  id_restaurante integer not null ,
+                                  id_mesa_restaurante integer not null ,
+                                  primary key (id),
+                                  constraint id_turno_restaurante_reserva_restaurante_fk foreign key (id_turno_restaurante) references turno_restaurante (id),
+                                  constraint id_cliente_reserva_restaurante_fk foreign key (id_cliente) references cliente (id),
+                                  constraint id_restaurante_reserva_restaurante_fk foreign key (id_restaurante) references restaurante (id),
+                                  constraint id_mesa_restaurante_reserva_restaurante_fk foreign key (id_mesa_restaurante) references mesa_restaurante (id)
+
+);
+
+create table carta_rest (
+                                  id serial not null ,
+                                  activo boolean default true not null ,
+                                  id_restaurante integer not null ,
+                                  primary key (id),
+                                  constraint id_carta_rest_restaurante_fk foreign key (id_restaurante) references restaurante (id)
+);
+
+create table carta_ocio (
+                            id serial not null ,
+                            activo boolean default true not null ,
+                            id_ocio_nocturno integer not null ,
+                            primary key (id),
+                            constraint id_carta_ocio_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
+);
+
+
+
+create table producto (
+                            id serial not null ,
+                            nombre varchar(100) not null ,
+                            precio float not null ,
+                            tipo_categoria int not null,
+                            activo boolean default true not null ,
+                            id_carta_rest integer not null ,
+                            id_carta_ocio integer not null ,
+                            primary key (id),
+                            constraint id_producto_carta_restaurante_fk foreign key (id_carta_rest) references carta_rest (id),
+                            constraint id_ocomentario_ocio_nocturno_fk foreign key (id_carta_ocio) references carta_ocio (id)
+);
+
+
+
+create table comentario (
+                                   id serial not null ,
+                                   texto varchar(150) not null ,
+                                   fecha_comentario timestamp(6) not null ,
+                                   activo boolean default true not null ,
+                                   id_restaurante integer not null ,
+                                   id_ocio_nocturno integer not null ,
+                                   id_cliente integer not null ,
+                                   primary key (id),
+                                   constraint id_comentario_restaurante_fk foreign key (id_restaurante) references restaurante (id),
+                                   constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id),
+                                   constraint id_comentario_cliente_fk foreign key (id_cliente) references cliente (id)
+);
+
+
+create table chat (
+                            id serial not null ,
+                            activo boolean default true not null ,
+                            id_evento integer not null ,
+                            primary key (id),
+                            constraint id_chat_evento_fk foreign key (id_evento) references evento (id)
+
+);
+
+create table mensaje (
+                      id serial not null ,
+                      activo boolean default true not null ,
+                      texto varchar(150) not null ,
+                      hora_envio time not null ,
+                      id_cliente integer not null ,
+                      id_chat integer not null ,
+                      primary key (id),
+                      constraint id_mensaje_cliente_fk foreign key (id_cliente) references cliente (id),
+                      constraint id_mensaje_chat_fk foreign key (id_chat) references chat (id)
+
+);
+
+create table tipo_plato (
+                      id serial not null ,
+                      nombre varchar(100) not null,
+                      primary key (id)
+
+);
+
+
+create table tipo_bebida (
+                            id serial not null ,
+                            nombre varchar(100) not null,
+                            primary key (id)
+
+);
+
+create table producto_tipo_plato (
+                             id serial not null ,
+                             precio float not null,
+                             id_producto int not null,
+                             id_tipo_plato int not null,
+                             primary key (id),
+                             constraint id_producto_tipo_plato_producto_fk foreign key (id_producto) references producto (id),
+                             constraint id_producto_tipo_plato_tipo_plato_fk foreign key (id_tipo_plato) references tipo_plato (id)
+
+);
+
+create table producto_tipo_bebida (
+                                     id serial not null ,
+                                     precio float not null,
+                                     id_producto int not null,
+                                     id_tipo_bebida int not null,
+                                     primary key (id),
+                                     constraint id_producto_tipo_bebida_producto_fk foreign key (id_producto) references producto (id),
+                                     constraint id_producto_tipo_bebida_tipo_bebida_fk foreign key (id_tipo_bebida) references tipo_bebida (id)
+
+);
+
+create table promocion (
+                          id serial not null ,
+                          tipo int not null ,
+                          titulo varchar(50) not null ,
+                          foto varchar(10000) not null,
+                          activo boolean default true not null ,
+                          id_evento integer not null ,
+                          id_restaurante integer not null ,
+                          primary key (id),
+                          constraint id_promocion_evento_fk foreign key (id_evento) references evento (id),
+                          constraint id_promocion_restaurante_fk foreign key (id_restaurante) references restaurante (id)
+);
