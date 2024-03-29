@@ -15,10 +15,10 @@ public class OcioNocturnoDTO {
     private String nombre;
     @NotBlank
     private String cif;
-    private Timestamp hora_apertura;
-    private Timestamp hora_cierre;
+    private Timestamp horaApertura;
+    private Timestamp horaCierre;
     @NotBlank
-    private String imagen_marca;
+    private String imagenMarca;
     @Valid
     private UserDTO userDTO;
     @Valid

@@ -21,8 +21,8 @@ public class EventoDTO {
     private String tematica;
     @FutureOrPresent
     private Timestamp fecha;
-    private CodigoVestimentaOcio codigo_vestimenta;
-    private EdadMinimaOcio edad;
+    private CodigoVestimentaOcio codigoVestimentaOcio;
+    private EdadMinimaOcio edadMinimaOcio;
     @Positive
     private Integer aforo;
     @Valid

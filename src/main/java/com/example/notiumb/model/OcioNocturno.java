@@ -26,13 +26,13 @@ public class OcioNocturno {
     private String cif;
 
     @Column(name = "hora_apertura", nullable = false)
-    private Timestamp hora_apertura;
+    private Timestamp horaApertura;
 
     @Column(name = "hora_cierre", nullable = false)
-    private Timestamp hora_cierre;
+    private Timestamp horaCierre;
 
     @Column(name = "imagen_marca", nullable = false)
-    private String imagen_marca;
+    private String imagenMarca;
 
     @Column(name = "activo")
     private Boolean activo = true;
