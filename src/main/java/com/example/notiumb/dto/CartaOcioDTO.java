@@ -9,5 +9,5 @@ public class CartaOcioDTO {
 
     private Integer id;
     private Boolean activo;
-    private OcioDTO ocioDTO;
+    private OcioNocturnoDTO ocioNocturnoDTO;
 }

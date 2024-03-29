@@ -18,7 +18,4 @@ public class ListaOcio {
     private Boolean activo;
 
     private Rpp rpp;
-
-    private TicketOcio ticket_ocio;
-
 }

@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-//EJEMPLO DE ANOTACIONES DE JPA PARA MAPEAR ENTIDADES A TABLAS DE BASE DE DATOS DE FORMA AUTOMÁTICA
 @Entity
 @Table(name = "restaurante", schema = "notium", catalog = "postgres")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Restaurante {
 
 

@@ -17,6 +17,5 @@ public class ReservadoOcio {
 
     private Boolean activo;
 
-    private TicketOcio ticket_ocio;
 
 }

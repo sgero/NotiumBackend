@@ -1,13 +1,13 @@
 package com.example.notiumb.model;
 
-import io.swagger.models.auth.In;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "mesa")
 public class Mesa {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     private Integer num_plazas;
@@ -16,7 +16,7 @@ public class Mesa {
 
     private Boolean activo;
 
-    private Restaurante restaurante;
+//    private Restaurante restaurante;
 
 
 }
