@@ -18,6 +18,8 @@ public class EventoDTO {
     @NotBlank
     private String nombre;
     @NotBlank
+    private String descripcion;
+    @NotBlank
     private String tematica;
     @FutureOrPresent
     private Timestamp fecha;

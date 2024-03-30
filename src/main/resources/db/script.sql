@@ -58,7 +58,6 @@ create table cliente
     telefono         varchar(20)  not null,
     fecha_nacimiento timestamp(6)    not null,
     activo           boolean default true,
-    verificado      boolean default false,
     id_usuario       integer      not null,
     id_direccion    integer not null,
     primary key (id),
@@ -91,8 +90,8 @@ create table restaurante
     cif           varchar(9)    not null,
     direccion     varchar(200)  not null,
     telefono      varchar(20)   not null,
-    hora_apertura timestamp(6)     not null,
-    hora_cierre   timestamp(6)    not null,
+    hora_apertura time     not null,
+    hora_cierre   time    not null,
     valoracion    boolean,
     disponible    boolean,
     imagen_marca  varchar(1000) not null,
@@ -106,7 +105,7 @@ create table restaurante
 );
 
 
---Y el aforo???
+--Y el aforo??
 create table ocio_nocturno
 (
     id            serial        not null,
@@ -114,10 +113,8 @@ create table ocio_nocturno
     cif           varchar(9)    not null,
     direccion     varchar(200)  not null,
     telefono      varchar(20)   not null,
-    hora_apertura timestamp(6)    not null,
-    hora_cierre   timestamp(6)     not null,
-    valoracion    boolean,
-    disponible    boolean,
+    hora_apertura time    not null,
+    hora_cierre   time     not null,
     imagen_marca  varchar(1000) not null,
     activo        boolean default true,
     verificado boolean default false,

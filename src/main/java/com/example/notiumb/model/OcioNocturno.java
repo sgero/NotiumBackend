@@ -3,7 +3,7 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 import java.util.Set;
 
 @Entity
@@ -26,10 +26,10 @@ public class OcioNocturno {
     private String cif;
 
     @Column(name = "hora_apertura", nullable = false)
-    private Timestamp horaApertura;
+    private Time horaApertura;
 
     @Column(name = "hora_cierre", nullable = false)
-    private Timestamp horaCierre;
+    private Time horaCierre;
 
     @Column(name = "imagen_marca", nullable = false)
     private String imagenMarca;

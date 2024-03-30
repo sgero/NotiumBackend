@@ -1,11 +1,9 @@
 package com.example.notiumb.converter;
 
 import com.example.notiumb.dto.DireccionDTO;
-import com.example.notiumb.dto.EventoDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.Direccion;
-import com.example.notiumb.model.Evento;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.User;
 import org.mapstruct.Mapper;
