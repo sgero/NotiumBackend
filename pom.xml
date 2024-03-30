@@ -51,6 +51,18 @@
             <version>2.0.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>3.1.2.RELEASE</version>
+        </dependency>
+
 
 <!--        El swagger con springfox no funciona en springboot 3.x, hay que migrar a sprindoc-->
 <!--        <dependency>-->
