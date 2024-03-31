@@ -52,4 +52,11 @@ public class Evento {
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lista_ocio", fetch = FetchType.LAZY)
+    private Set<ListaOcio> listasOcio = new HashSet<>(0);
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "reservado_ocio", fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservado_ocio", nullable = false)
+    private ReservadoOcio reservadoOcio;
+
 }

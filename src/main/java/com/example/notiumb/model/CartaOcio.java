@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="carta_ocio")
+@Table(name="carta_ocio", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,6 +20,6 @@ public class CartaOcio {
     @Column(name = "activo")
     private Boolean activo = true;
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ocio", nullable = false)
+    @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 }

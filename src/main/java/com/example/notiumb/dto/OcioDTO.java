@@ -16,6 +16,6 @@ public class OcioDTO {
     private LocalDateTime hora_cierre;
     private String imagen_marca;
     private Boolean activo = true;
-    private UsuarioDTO usuarioDTO;
+    private UserDTO userDTO;
 
 }

@@ -1,6 +1,5 @@
 package com.example.notiumb.model;
 
-import io.swagger.models.auth.In;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
