@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CartaOcioDTO {
+public class CartaOcioNocturnoDTO {
 
     private Integer id;
     private Boolean activo;
