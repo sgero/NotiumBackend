@@ -41,16 +41,16 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private Set<OcioNocturno> ocioNocturnoSet = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OcioNocturno> ocioNocturnoSet;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private Set<Restaurante> restauranteSet = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Restaurante> restauranteSet;
 
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cliente cliente;
 
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Rpp rpp;
 
     @Override

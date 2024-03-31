@@ -3,7 +3,8 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.sql.Time;
+import java.util.Set;
 
 @Entity
 @Table(name = "ocio_nocturno", schema = "notium", catalog = "postgres")
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion"})
+@EqualsAndHashCode(exclude = {"user", "direccion", "eventoSet"})
 public class OcioNocturno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +26,13 @@ public class OcioNocturno {
     private String cif;
 
     @Column(name = "hora_apertura", nullable = false)
-    private LocalDateTime hora_apertura;
+    private Time horaApertura;
 
     @Column(name = "hora_cierre", nullable = false)
-    private LocalDateTime hora_cierre;
+    private Time horaCierre;
 
     @Column(name = "imagen_marca", nullable = false)
-    private String imagen_marca;
+    private String imagenMarca;
 
     @Column(name = "activo")
     private Boolean activo = true;
@@ -43,5 +44,8 @@ public class OcioNocturno {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
+
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    private Set<Evento> eventoSet;
 
 }
