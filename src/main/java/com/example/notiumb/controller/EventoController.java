@@ -24,7 +24,7 @@ public class EventoController {
     }
 
     @PostMapping(value = "/crear")
-    public EventoDTO crear(@RequestBody EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, ListaOcioDTO listaOcioDTO){
+    public EventoDTO crear(@RequestBody EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
         return eventoService.crearEvento(eventoDTO, entradaOcioDTO, reservadoOcioDTO, listaOcioDTO);
     }
 }

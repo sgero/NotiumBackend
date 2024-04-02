@@ -1,6 +1,8 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IEventoMapper;
+import com.example.notiumb.converter.IListaOcioMapper;
+import com.example.notiumb.converter.IRppMapper;
 import com.example.notiumb.dto.EntradaOcioDTO;
 import com.example.notiumb.dto.EventoDTO;
 import com.example.notiumb.dto.ListaOcioDTO;
@@ -10,6 +12,7 @@ import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,30 +29,32 @@ public class EventoService {
     private IListaOcioRepository listaOcioRepository;
     @Autowired
     private IReservadoOcioRepository reservadoOcioRepository;
+    @Autowired
+    private IRppMapper rppMapper;
 
     public List<EventoDTO> getAll() {
         return eventoMapper.toDTO(eventoRepository.findAll());
     }
 
-    public EventoDTO crearEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, ListaOcioDTO listaOcioDTO){
+    public EventoDTO crearEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
         OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(eventoDTO.getOcioNocturnoDTO().getId()).orElse(null);
 
         if (ocioNocturno != null && entradaOcioDTO != null && reservadoOcioDTO != null && listaOcioDTO != null){
             Evento evento = crearEventoPersonalizado(eventoDTO, ocioNocturno);
             EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
             ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
-            ListaOcio listaOcio = crearListasDeEvento(evento, listaOcioDTO);
+            List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
             eventoRepository.save(evento);
             entradaOcioRepository.save(entradaOcio);
             reservadoOcioRepository.save(reservadoOcio);
-            listaOcioRepository.save(listaOcio);
+            listaOcioRepository.saveAll(listaOcio);
             return eventoMapper.toDTO(evento);
         }else {
             return null;
         }
     }
 
-    private static Evento crearEventoPersonalizado(EventoDTO eventoDTO, OcioNocturno ocioNocturno) {
+    private Evento crearEventoPersonalizado(EventoDTO eventoDTO, OcioNocturno ocioNocturno) {
         Evento eventoACrear = new Evento();
         eventoACrear.setNombre(eventoDTO.getNombre());
         eventoACrear.setDescripcion(eventoDTO.getDescripcion());
@@ -61,7 +66,7 @@ public class EventoService {
         eventoACrear.setOcioNocturno(ocioNocturno);
         return eventoACrear;
     }
-    private static EntradaOcio crearEntradasDeEvento(Evento evento, EntradaOcioDTO entradaOcioDTO) {
+    private EntradaOcio crearEntradasDeEvento(Evento evento, EntradaOcioDTO entradaOcioDTO) {
         EntradaOcio entradaOcioACrear = new EntradaOcio();
         entradaOcioACrear.setEvento(evento);
         entradaOcioACrear.setPrecio(entradaOcioDTO.getPrecio());
@@ -69,13 +74,24 @@ public class EventoService {
         return entradaOcioACrear;
     }
 
-    private static ReservadoOcio crearReservadoDeEvento(Evento evento, ReservadoOcioDTO reservadoOcioDTO){
+    private ReservadoOcio crearReservadoDeEvento(Evento evento, ReservadoOcioDTO reservadoOcioDTO){
         ReservadoOcio reservadoOcioACrear = new ReservadoOcio();
+        reservadoOcioACrear.setCantidad_venta(reservadoOcioDTO.getTotal_entradas());
+        reservadoOcioACrear.setTotal_entradas(reservadoOcioDTO.getTotal_entradas());
+        reservadoOcioACrear.setEvento(evento);
         return reservadoOcioACrear;
     }
 
-    private static ListaOcio crearListasDeEvento(Evento evento, ListaOcioDTO listaOcioDTO){
+    private List<ListaOcio> crearListasDeEvento(Evento evento, List<ListaOcioDTO> listaOcioDTO){
+        List<ListaOcio> listasOcio = new ArrayList<>();
         ListaOcio listaOcioACrear = new ListaOcio();
-        return listaOcioACrear;
+        for (ListaOcioDTO l : listaOcioDTO) {
+            listaOcioACrear.setPrecio(l.getPrecio());
+            listaOcioACrear.setTotal_invitaciones(l.getTotal_invitaciones());
+            listaOcioACrear.setEvento(evento);
+            listaOcioACrear.setRpp(rppMapper.toEntity(l.getRppDTO()));
+            listasOcio.add(listaOcioACrear);
+        }
+        return listasOcio;
     }
 }
