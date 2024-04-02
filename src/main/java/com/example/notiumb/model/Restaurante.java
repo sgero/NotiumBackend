@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "restaurante", schema = "notium", catalog = "postgres")
@@ -52,4 +55,13 @@ public class Restaurante {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Turno> turnosSet;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Reserva> reservasSet;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mesa> mesasSet;
 }
