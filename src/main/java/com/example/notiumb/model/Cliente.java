@@ -47,10 +47,10 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<EntradaOcioCliente> entradaOcioClienteSet;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_cliente", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_reservado_ocio", fetch = FetchType.LAZY)
-    private Set<Reserva> reservadosOcioCliente = new HashSet<>(0);
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    private Set<ReservadoOcio> reservadosOcioCliente = new HashSet<>(0);
 
 }

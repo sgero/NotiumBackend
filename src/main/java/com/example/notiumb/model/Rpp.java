@@ -42,6 +42,6 @@ public class Rpp {
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lista_ocio", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rpp", fetch = FetchType.LAZY)
     private Set<ListaOcio> listasOcio = new HashSet<>(0);
 }

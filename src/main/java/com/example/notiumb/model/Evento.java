@@ -55,10 +55,10 @@ public class Evento {
     @OneToOne(mappedBy = "evento", fetch = FetchType.LAZY)
     private EntradaOcio entradaOcio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lista_ocio", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
     private Set<ListaOcio> listasOcio = new HashSet<>(0);
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "reservado_ocio", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservado_ocio", nullable = false)
     private ReservadoOcio reservadoOcio;
 

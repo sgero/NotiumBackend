@@ -33,7 +33,7 @@ public class ListaOcio {
     @JoinColumn(name = "id_evento", nullable = false)
     private Evento evento;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_lista_ocio", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaOcio", fetch = FetchType.LAZY)
     private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
 
 }
