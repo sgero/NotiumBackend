@@ -1,22 +1,39 @@
 package com.example.notiumb.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="listas_ocio")
+@Table(name="lista_ocio", schema = "notium", catalog = "postgres")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ListaOcio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String nombre;
-
+    @Column(name = "precio", nullable = false)
     private Double precio;
+    @Column(name = "total_invitaciones", nullable = false)
+    private Double total_invitaciones;
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
+    @ManyToOne
+    @JoinColumn(name = "id_rpp", nullable = false)
+    private Rpp rpp;
+    @ManyToOne
+    @JoinColumn(name = "id_evento", nullable = false)
+    private Evento evento;
 
-    private Double cantidad_venta;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaOcio", fetch = FetchType.LAZY)
+    private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
 
-    private Boolean activo;
-
-//    private Rpp rpp;
 }

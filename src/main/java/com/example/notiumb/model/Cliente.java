@@ -1,9 +1,11 @@
 package com.example.notiumb.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -44,4 +46,11 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<EntradaOcioCliente> entradaOcioClienteSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    private Set<ReservadoOcio> reservadosOcioCliente = new HashSet<>(0);
+
 }
