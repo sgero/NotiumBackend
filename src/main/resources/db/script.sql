@@ -12,6 +12,10 @@ drop table if exists carta_rest;
 drop table if exists reserva_restaurante;
 drop table if exists turno_restaurante;
 drop table if exists mesa_restaurante;
+drop table if exists reservado_ocio_cliente ;
+drop table if exists reservado_ocio ;
+drop table if exists lista_ocio_cliente;
+drop table if exists lista_ocio;
 drop table if exists entrada_ocio_cliente;
 drop table if exists entrada_ocio;
 drop table if exists evento;
@@ -161,6 +165,49 @@ create table entrada_ocio_cliente(
     constraint id_entrada_ocio_cliente_entrada_ocio_fk foreign key (id_entrada_ocio) references entrada_ocio(id)
 );
 
+create table lista_ocio (
+    id serial not null,
+    precio double not null,
+    total_invitaciones int not null,
+    activo boolean default true not null,
+    id_rpp int not null,
+    id_evento int not null,
+    primary key (id),
+    constraint id_lista_ocio_rpp_fk foreign key (id_rpp) references rpp(id),
+    constraint id_lista_ocio_evento_fk foreign key (id_evento) references evento(id)
+);
+
+create table lista_ocio_cliente(
+    id serial not null ,
+    fecha timestamp(6) not null ,
+    id_cliente int not null ,
+    id_lista_ocio int not null ,
+    primary key (id),
+    constraint id_lista_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
+    constraint id_lista_ocio_cliente_lista_ocio_fk foreign key (id_lista_ocio) references lista_ocio(id)
+);
+
+create table reservado_ocio(
+    id serial not null ,
+    reservados_disponibles int not null ,
+    precio double not null ,
+    activo boolean default true not null ,
+    id_evento int not null,
+    primary key (id),
+    constraint id_reservado_ocio_evento_fk foreign key (id_evento) references evento(id)
+);
+
+create table reservado_ocio_cliente(
+    id serial not null ,
+    codigo varchar(10) not null ,
+    fecha_compra timestamp(6) not null ,
+    cantidad_personas int not null ,
+    id_cliente int not null ,
+    id_reservado_ocio int not null ,
+    primary key (id),
+    constraint id_reservado_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
+    constraint id_reservado_ocio_cliente_reservado_ocio_fk foreign key (id_reservado_ocio) references reservado_ocio(id)
+);
 
 create table mesa_restaurante (
                         id serial not null ,
