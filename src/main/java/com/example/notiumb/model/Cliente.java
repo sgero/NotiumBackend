@@ -51,6 +51,6 @@ public class Cliente {
     private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<ReservadoOcio> reservadosOcioCliente = new HashSet<>(0);
+    private Set<ReservadoOcioCliente> reservadosOcioCliente = new HashSet<>(0);
 
 }

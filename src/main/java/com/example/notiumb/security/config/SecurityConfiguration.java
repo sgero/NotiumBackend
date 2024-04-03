@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -84,6 +85,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/cliente/**").hasAnyAuthority(Rol.ADMIN.name(),Rol.CLIENTE.name())
                         .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RPP.name())
                         .requestMatchers(GET, "/eventos/listarTodos").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name(), Rol.RPP.name())
+                        .requestMatchers(POST, "/eventos/crear").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .anyRequest().authenticated()
 
 

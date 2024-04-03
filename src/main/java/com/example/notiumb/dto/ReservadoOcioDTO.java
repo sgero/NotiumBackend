@@ -14,10 +14,9 @@ import java.util.Set;
 public class ReservadoOcioDTO {
 
     private Integer id;
-    private Double cantidad_venta;
-    private Double total_entradas;
-    private Boolean activo = true;
+    private Integer reservadosDisponibles;
+    private Integer personasMaximasPorReservado;
+    private Double precio;
     private EventoDTO eventoDTO;
-    private Set<ReservadoOcioClienteDTO> reservadosOcioClienteDTO;
 
 }

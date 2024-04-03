@@ -120,6 +120,7 @@ create table ocio_nocturno
     imagen_marca  varchar(1000) not null,
     activo        boolean default true,
     verificado boolean default false,
+    personas_max_por_reservado int not null default 2,
     id_usuario    integer       not null,
     id_direccion    integer not null,
     primary key (id),

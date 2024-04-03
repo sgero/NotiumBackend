@@ -20,23 +20,20 @@ public class ReservadoOcio {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "precio", nullable = false)
-    private Double cantidad_venta;
-    @Column(name = "total_entradas", nullable = false)
-    private Double total_entradas;
+    @Column(name = "reservados_disponibles", nullable = false)
+    private Integer reservadosDisponibles;
+    @Column(name = "personas_max_por_reservado", nullable = false)
+    private Integer personasMaximasPorReservado;
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
-
+    @Column(name = "precio", nullable = false)
+    private Double precio;
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_evento", nullable = false)
     private Evento evento;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservadoOcio", fetch = FetchType.LAZY)
     private Set<ReservadoOcioCliente> reservadosOcioCliente = new HashSet<>(0);
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_cliente", nullable = false)
-    private Cliente cliente;
 
 
 }

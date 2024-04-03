@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class EventoService {
@@ -44,11 +45,17 @@ public class EventoService {
             EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
             ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
             List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
-            eventoRepository.save(evento);
-            entradaOcioRepository.save(entradaOcio);
-            reservadoOcioRepository.save(reservadoOcio);
-            listaOcioRepository.saveAll(listaOcio);
-            return eventoMapper.toDTO(evento);
+            Double invitacionesLista = totalInvitacionesLista(listaOcio);
+            if (evento != null && evento.getAforo() >=
+                    (entradaOcio.getTotalEntradas() + (reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado()) + invitacionesLista)){
+                eventoRepository.save(evento);
+                entradaOcioRepository.save(entradaOcio);
+                reservadoOcioRepository.save(reservadoOcio);
+                listaOcioRepository.saveAll(listaOcio);
+                return eventoMapper.toDTO(evento);
+            }else {
+                return null;
+            }
         }else {
             return null;
         }
@@ -64,6 +71,9 @@ public class EventoService {
         eventoACrear.setEdadMinimaOcio(eventoDTO.getEdadMinimaOcio());
         eventoACrear.setAforo(eventoDTO.getAforo());
         eventoACrear.setOcioNocturno(ocioNocturno);
+        if (eventoACrear.getAforo() > ocioNocturno.getAforo()){
+            return null;
+        }
         return eventoACrear;
     }
     private EntradaOcio crearEntradasDeEvento(Evento evento, EntradaOcioDTO entradaOcioDTO) {
@@ -76,16 +86,17 @@ public class EventoService {
 
     private ReservadoOcio crearReservadoDeEvento(Evento evento, ReservadoOcioDTO reservadoOcioDTO){
         ReservadoOcio reservadoOcioACrear = new ReservadoOcio();
-        reservadoOcioACrear.setCantidad_venta(reservadoOcioDTO.getTotal_entradas());
-        reservadoOcioACrear.setTotal_entradas(reservadoOcioDTO.getTotal_entradas());
+        reservadoOcioACrear.setReservadosDisponibles(reservadoOcioDTO.getReservadosDisponibles());
+        reservadoOcioACrear.setPersonasMaximasPorReservado(reservadoOcioDTO.getPersonasMaximasPorReservado());
+        reservadoOcioACrear.setPrecio(reservadoOcioDTO.getPrecio());
         reservadoOcioACrear.setEvento(evento);
         return reservadoOcioACrear;
     }
 
     private List<ListaOcio> crearListasDeEvento(Evento evento, List<ListaOcioDTO> listaOcioDTO){
         List<ListaOcio> listasOcio = new ArrayList<>();
-        ListaOcio listaOcioACrear = new ListaOcio();
         for (ListaOcioDTO l : listaOcioDTO) {
+            ListaOcio listaOcioACrear = new ListaOcio();
             listaOcioACrear.setPrecio(l.getPrecio());
             listaOcioACrear.setTotal_invitaciones(l.getTotal_invitaciones());
             listaOcioACrear.setEvento(evento);
@@ -93,5 +104,13 @@ public class EventoService {
             listasOcio.add(listaOcioACrear);
         }
         return listasOcio;
+    }
+
+    private Double totalInvitacionesLista(List<ListaOcio> listaOcio){
+        Double total = 0.00;
+        for (ListaOcio l : listaOcio){
+            total += l.getTotal_invitaciones();
+        }
+        return total;
     }
 }

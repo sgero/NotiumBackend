@@ -18,9 +18,7 @@ public class RppDTO {
     private String dni;
     private String telefono;
     private Timestamp fecha_nacimiento;
-    private Boolean activo = true;
     private UserDTO userDTO;
     private DireccionDTO direccionDTO;
-    private Set<ListaOcioDTO> listasOcioDTO;
 
 }

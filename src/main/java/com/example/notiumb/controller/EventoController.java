@@ -1,11 +1,7 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.EntradaOcioDTO;
-import com.example.notiumb.dto.EventoDTO;
-import com.example.notiumb.dto.ListaOcioDTO;
-import com.example.notiumb.dto.ReservadoOcioDTO;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.service.EventoService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +20,7 @@ public class EventoController {
     }
 
     @PostMapping(value = "/crear")
-    public EventoDTO crear(@RequestBody EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
-        return eventoService.crearEvento(eventoDTO, entradaOcioDTO, reservadoOcioDTO, listaOcioDTO);
+    public EventoDTO crear(@RequestBody CrearEventoDTO crearEventoDTO){
+        return eventoService.crearEvento(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(), crearEventoDTO.getReservadoOcioDTO(), crearEventoDTO.getListaOcioDTO());
     }
 }
