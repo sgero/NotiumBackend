@@ -30,6 +30,8 @@ public class OcioNocturno {
 
     @Column(name = "hora_cierre", nullable = false)
     private Time horaCierre;
+    @Column(name = "aforo", nullable = false)
+    private Integer aforo;
 
     @Column(name = "imagen_marca", nullable = false)
     private String imagenMarca;

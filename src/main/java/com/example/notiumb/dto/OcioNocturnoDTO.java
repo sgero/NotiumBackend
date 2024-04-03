@@ -18,6 +18,8 @@ public class OcioNocturnoDTO {
     private Time horaApertura;
     private Time horaCierre;
     @NotBlank
+    private Integer aforo;
+    @NotBlank
     private String imagenMarca;
     @Valid
     private UserDTO userDTO;
