@@ -17,9 +17,9 @@ drop table if exists lista_ocio;
 drop table if exists entrada_ocio_cliente;
 drop table if exists entrada_ocio;
 drop table if exists evento;
+drop table if exists rpp;
 drop table if exists ocio_nocturno;
 drop table if exists restaurante;
-drop table if exists rpp;
 drop table if exists cliente;
 drop table if exists direccion;
 drop table if exists usuario;
@@ -67,30 +67,13 @@ create table cliente
     constraint id_cliente_direccion_fk foreign key (id_direccion) references direccion (id)
 );
 
-create table rpp
-(
-    id               serial       not null,
-    nombre           varchar(100) not null,
-    apellidos        varchar(100) not null,
-    dni              varchar(9)   not null,
-    telefono         varchar(20)  not null,
-    fecha_nacimiento timestamp(6)    not null,
-    direccion        varchar(150) not null,
-    activo           boolean default true,
-    verificado      boolean default false,
-    id_usuario       integer      not null,
-    id_direccion    integer not null,
-    primary key (id),
-    constraint id_rpp_usuario_fk foreign key (id_usuario) references usuario (id),
-    constraint id_rpp_direccion_fk foreign key (id_direccion) references direccion (id)
-);
+
 
 create table restaurante
 (
     id            serial        not null,
     nombre        varchar(100)  not null,
     cif           varchar(9)    not null,
-    direccion     varchar(200)  not null,
     telefono      varchar(20)   not null,
     hora_apertura time     not null,
     hora_cierre   time    not null,
@@ -112,7 +95,6 @@ create table ocio_nocturno
     id            serial        not null,
     nombre        varchar(100)  not null,
     cif           varchar(9)    not null,
-    direccion     varchar(200)  not null,
     telefono      varchar(20)   not null,
     hora_apertura time    not null,
     hora_cierre   time     not null,
@@ -120,12 +102,30 @@ create table ocio_nocturno
     imagen_marca  varchar(1000) not null,
     activo        boolean default true,
     verificado boolean default false,
-    personas_max_por_reservado int not null default 2,
     id_usuario    integer       not null,
     id_direccion    integer not null,
     primary key (id),
     constraint id_ocio_nocturno_usuario_fk foreign key (id_usuario) references usuario (id),
     constraint id_ocio_nocturno_direccion_fk foreign key (id_direccion) references direccion (id)
+);
+
+create table rpp
+(
+    id               serial       not null,
+    nombre           varchar(100) not null,
+    apellidos        varchar(100) not null,
+    dni              varchar(9)   not null,
+    telefono         varchar(20)  not null,
+    fecha_nacimiento timestamp(6)    not null,
+    activo           boolean default true,
+    verificado      boolean default false,
+    id_usuario       integer      not null,
+    id_direccion    integer not null,
+    id_ocio_nocturno integer not null ,
+    primary key (id),
+    constraint id_rpp_usuario_fk foreign key (id_usuario) references usuario (id),
+    constraint id_rpp_direccion_fk foreign key (id_direccion) references direccion (id),
+    constraint id_rpp_ocio_nocturno foreign key (id_ocio_nocturno) references ocio_nocturno(id)
 );
 
 create table evento (
@@ -189,6 +189,7 @@ create table lista_ocio_cliente(
 create table reservado_ocio(
                                id serial not null ,
                                reservados_disponibles int not null ,
+                               personas_max_por_reservado int not null default 2,
                                precio float not null ,
                                activo boolean default true not null ,
                                id_evento int not null,
@@ -232,6 +233,7 @@ create table reserva_restaurante (
                                      id serial not null ,
                                      codigo_reserva varchar(10) not null ,
                                      activo boolean default true not null ,
+                                     fecha date not null ,
                                      id_turno_restaurante integer not null ,
                                      id_cliente integer not null ,
                                      id_restaurante integer not null ,
@@ -267,8 +269,8 @@ create table producto (
                           nombre varchar(100) not null ,
                           tipo_categoria int not null,
                           activo boolean default true not null ,
-                          id_carta_rest integer not null ,
-                          id_carta_ocio integer not null ,
+                          id_carta_rest integer ,
+                          id_carta_ocio integer ,
                           primary key (id),
                           constraint id_producto_carta_restaurante_fk foreign key (id_carta_rest) references carta_rest (id),
                           constraint id_ocomentario_ocio_nocturno_fk foreign key (id_carta_ocio) references carta_ocio (id)

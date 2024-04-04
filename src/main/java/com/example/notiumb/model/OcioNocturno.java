@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion", "eventoSet"})
+@EqualsAndHashCode(exclude = {"user", "direccion", "eventoSet", "rppSet"})
 public class OcioNocturno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,5 +50,8 @@ public class OcioNocturno {
 
     @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Evento> eventoSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    private Set<Rpp> rppSet = new HashSet<>(0);
 
 }
