@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {""})
+@EqualsAndHashCode(exclude = {"restaurante","reservasSet"})
 public class Turno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Turno {
     @Column(name = "activo" , nullable = false)
     private Boolean activo;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "id_restaurante" , nullable = false)
     private Restaurante restaurante;
 
