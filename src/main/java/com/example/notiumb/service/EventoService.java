@@ -2,6 +2,7 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IEventoMapper;
 import com.example.notiumb.converter.IListaOcioMapper;
+import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.converter.IRppMapper;
 import com.example.notiumb.dto.EntradaOcioDTO;
 import com.example.notiumb.dto.EventoDTO;
@@ -32,6 +33,10 @@ public class EventoService {
     private IReservadoOcioRepository reservadoOcioRepository;
     @Autowired
     private IRppMapper rppMapper;
+    @Autowired
+    private IOcioNocturnoMapper ocioNocturnoMapper;
+    @Autowired
+    private IRppRepository rppRepository;
 
     public List<EventoDTO> getAll() {
         return eventoMapper.toDTO(eventoRepository.findAll());
@@ -96,12 +101,18 @@ public class EventoService {
     private List<ListaOcio> crearListasDeEvento(Evento evento, List<ListaOcioDTO> listaOcioDTO){
         List<ListaOcio> listasOcio = new ArrayList<>();
         for (ListaOcioDTO l : listaOcioDTO) {
-            ListaOcio listaOcioACrear = new ListaOcio();
-            listaOcioACrear.setPrecio(l.getPrecio());
-            listaOcioACrear.setTotal_invitaciones(l.getTotal_invitaciones());
-            listaOcioACrear.setEvento(evento);
-            listaOcioACrear.setRpp(rppMapper.toEntity(l.getRppDTO()));
-            listasOcio.add(listaOcioACrear);
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(evento.getOcioNocturno().getId()).orElse(null);
+            Rpp rpp = rppRepository.findById(l.getRppDTO().getId()).orElse(null);
+            assert ocioNocturno != null;
+            assert rpp != null;
+            if (rpp.getOcioNocturno() == ocioNocturno){
+                ListaOcio listaOcioACrear = new ListaOcio();
+                listaOcioACrear.setPrecio(l.getPrecio());
+                listaOcioACrear.setTotal_invitaciones(l.getTotal_invitaciones());
+                listaOcioACrear.setEvento(evento);
+                listaOcioACrear.setRpp(rppMapper.toEntity(l.getRppDTO()));
+                listasOcio.add(listaOcioACrear);
+            }
         }
         return listasOcio;
     }
