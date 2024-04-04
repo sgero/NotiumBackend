@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet"})
+@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet","reservas"})
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

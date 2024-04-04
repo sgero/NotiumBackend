@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"cliente","restaurante"})
+@EqualsAndHashCode
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
