@@ -10,6 +10,10 @@ import com.example.notiumb.dto.ListaOcioDTO;
 import com.example.notiumb.dto.ReservadoOcioDTO;
 import com.example.notiumb.model.*;
 import com.example.notiumb.repository.*;
+import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
+import com.example.notiumb.utilidades.RespuestaDTO;
+import com.example.notiumb.utilidades.ULogger;
+import com.example.notiumb.utilidades.UtilidadesAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,28 +46,36 @@ public class EventoService {
         return eventoMapper.toDTO(eventoRepository.findAll());
     }
 
-    public EventoDTO crearEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
-        OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(eventoDTO.getOcioNocturnoDTO().getId()).orElse(null);
+    public RespuestaDTO crearEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        try{
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(eventoDTO.getOcioNocturnoDTO().getId()).orElse(null);
 
-        if (ocioNocturno != null && entradaOcioDTO != null && reservadoOcioDTO != null && listaOcioDTO != null){
-            Evento evento = crearEventoPersonalizado(eventoDTO, ocioNocturno);
-            EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
-            ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
-            List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
-            Double invitacionesLista = totalInvitacionesLista(listaOcio);
-            if (evento != null && evento.getAforo() >=
-                    (entradaOcio.getTotalEntradas() + (reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado()) + invitacionesLista)){
-                eventoRepository.save(evento);
-                entradaOcioRepository.save(entradaOcio);
-                reservadoOcioRepository.save(reservadoOcio);
-                listaOcioRepository.saveAll(listaOcio);
-                return eventoMapper.toDTO(evento);
+            if (ocioNocturno != null && entradaOcioDTO != null && reservadoOcioDTO != null && listaOcioDTO != null){
+                Evento evento = crearEventoPersonalizado(eventoDTO, ocioNocturno);
+                EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
+                ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
+                List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
+                Double invitacionesLista = totalInvitacionesLista(listaOcio);
+                if (evento != null && evento.getAforo() >=
+                        (entradaOcio.getTotalEntradas() + (reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado()) + invitacionesLista)){
+                    eventoRepository.save(evento);
+                    entradaOcioRepository.save(entradaOcio);
+                    reservadoOcioRepository.save(reservadoOcio);
+                    listaOcioRepository.saveAll(listaOcio);
+                    EventoDTO eventoCreado = eventoMapper.toDTO(evento);
+                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_CREADO, eventoCreado);
+                }else {
+                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_2);
+                }
             }else {
-                return null;
+                UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_1);
             }
-        }else {
-            return null;
+        }catch (Exception e){
+            ULogger.error(e);
+            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_500);
         }
+        return respuestaDTO;
     }
 
     private Evento crearEventoPersonalizado(EventoDTO eventoDTO, OcioNocturno ocioNocturno) {
