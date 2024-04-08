@@ -38,12 +38,12 @@ public class EventoService {
     @Autowired
     private IRppMapper rppMapper;
     @Autowired
-    private IOcioNocturnoMapper ocioNocturnoMapper;
-    @Autowired
     private IRppRepository rppRepository;
 
-    public List<EventoDTO> getAll() {
-        return eventoMapper.toDTO(eventoRepository.findAll());
+    public RespuestaDTO getAll() {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findAll()));
+        return respuestaDTO;
     }
 
     public RespuestaDTO crearEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){

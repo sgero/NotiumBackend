@@ -19,7 +19,7 @@ public class EventoController {
     private EventoService eventoService;
 
     @GetMapping("/listarTodos")
-    public List<EventoDTO> obtenerTodos(){
+    public RespuestaDTO obtenerTodos(){
         return eventoService.getAll();
     }
 
