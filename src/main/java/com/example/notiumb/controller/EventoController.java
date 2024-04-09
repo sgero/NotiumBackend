@@ -9,8 +9,6 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/eventos")
 //@SecurityRequirement(name = "Bearer Authentication")
@@ -23,10 +21,18 @@ public class EventoController {
         return eventoService.getAll();
     }
 
-    @ApiOperation(value = "Crear Evento", response = RespuestaDTO.class)
+    @ApiOperation(value = "Crear evento para una fecha en concreto", response = RespuestaDTO.class)
     @ApiResponses({@ApiResponse(code = 200, message = "ok"), @ApiResponse(code = 500, message = "error interno del servidor")})
-    @PostMapping(value = "/crear")
-    public RespuestaDTO crear(@RequestBody CrearEventoDTO crearEventoDTO){
-        return eventoService.crearEvento(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(), crearEventoDTO.getReservadoOcioDTO(), crearEventoDTO.getListaOcioDTO());
+    @PostMapping(value = "/crearUnico")
+    public RespuestaDTO crearUnico(@RequestBody CrearEventoDTO crearEventoDTO){
+        return eventoService.crearEventoUnico(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(),
+                crearEventoDTO.getReservadoOcioDTO(), crearEventoDTO.getListaOcioDTO());
+    }
+
+    @PostMapping(value = "/crearCiclo")
+    public RespuestaDTO crearCiclo(@RequestBody CrearEventoCiclicoDTO crearEventoDTO){
+        return eventoService.crearEventoCiclico(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(),
+                crearEventoDTO.getReservadoOcioDTO(), crearEventoDTO.getListaOcioDTO(), crearEventoDTO.getRepetirCicloEventoOcio(),
+                crearEventoDTO.getDiasARepetirCicloEventoOcioList());
     }
 }
