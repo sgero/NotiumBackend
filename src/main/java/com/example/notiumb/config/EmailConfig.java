@@ -18,24 +18,39 @@ public class EmailConfig {
     @Value("${email.username}")
     private String email;
 
-
     @Value("${email.password}")
     private String password;
+
+    @Value("${email.host}")
+    private String host;
+
+    @Value("${email.port}")
+    private int port;
+
+    @Value("${email.auth}")
+    private boolean auth;
+
+    @Value("${email.starttls.enable}")
+    private boolean startTlsEnable;
+
+    @Value("${email.debug}")
+    private boolean debug;
 
     private Properties getMailProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.debug", String.valueOf(debug));
         return properties;
     }
 
     @Bean
-    public JavaMailSender javaMailSender () {
+    public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(host);
+        mailSender.setPort(port);
         mailSender.setUsername(email);
         mailSender.setPassword(password);
         mailSender.setJavaMailProperties(getMailProperties());
@@ -46,6 +61,4 @@ public class EmailConfig {
     public ResourceLoader resourceLoader() {
         return new DefaultResourceLoader();
     }
-
-
-    }
+}
