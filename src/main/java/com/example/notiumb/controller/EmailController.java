@@ -2,14 +2,12 @@ package com.example.notiumb.controller;
 
 
 import com.example.notiumb.service.IEmailService;
-import com.example.notiumb.service.model.EmailDTO;
+import com.example.notiumb.dto.EmailDTO;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/send-email")

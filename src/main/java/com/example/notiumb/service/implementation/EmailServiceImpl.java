@@ -2,7 +2,7 @@ package com.example.notiumb.service.implementation;
 
 
 import com.example.notiumb.service.IEmailService;
-import com.example.notiumb.service.model.EmailDTO;
+import com.example.notiumb.dto.EmailDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
