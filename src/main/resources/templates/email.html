@@ -1,10 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Notium</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            max-width: 5%;
+            height: auto;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .content img {
+            max-width: 5%;
+            height: auto;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
-<h1 style="color: #2f00ff;">Notium</h1>
-<p style="color: #4400ff;" th:text="${message}"></p>
+<div class="container">
+    <div class="header">
+
+    </div>
+    <div class="content">
+        <img src="https://img.freepik.com/vector-gratis/diseno-banner-violeta-sobre-fondo-blanco_1308-93566.jpg" alt="Banner">
+
+        <h1 style="color: #2f00ff;">Notium</h1>
+        <p style="color: #4400ff;" th:text="${message}"></p>
+    </div>
+    <div class="footer">
+        <p>Este es un correo electrónico de Notium. Por favor, no responda a este correo.</p>
+    </div>
+</div>
 </body>
 </html>
