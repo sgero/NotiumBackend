@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {""})
+@EqualsAndHashCode(exclude = {"carta_ocio","carta_res"})
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +18,19 @@ public class Producto {
     private Integer id;
     @Column(name = "nombre", nullable = false)
     private String nombre;
-    @Column(name = "precio", nullable = false)
-    private Double precio;
     @Column(name = "tipo_categoria", nullable = false)
     private TipoCategoria tipoCategoria;
     @Column(name = "activo", nullable = false)
     private Boolean activo;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_carta_ocio", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_carta_ocio")
     private CartaOcio carta_ocio;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_carta_rest", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_carta_rest")
     private CartaRestaurante carta_res;
 
+    @OneToOne(cascade = CascadeType.PERSIST,mappedBy = "producto", fetch = FetchType.LAZY)
+    private ProductoTipoBebida productoTipoBebida;
+    @OneToOne(cascade = CascadeType.PERSIST,mappedBy = "producto", fetch = FetchType.LAZY)
+    private ProductoTipoPlato productoTipoPlato;
 }

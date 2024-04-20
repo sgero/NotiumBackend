@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet"})
+@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet","reservas"})
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +51,9 @@ public class Cliente {
     private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<ReservadoOcio> reservadosOcioCliente = new HashSet<>(0);
+    private Set<ReservadoOcioCliente> reservadosOcioCliente = new HashSet<>(0);
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    private Set<Reserva> reservas = new HashSet<>(0);
 
 }

@@ -1,5 +1,4 @@
 package com.example.notiumb.converter;
-
 import com.example.notiumb.dto.ListaOcioDTO;
 import com.example.notiumb.model.ListaOcio;
 import org.mapstruct.Mapper;
