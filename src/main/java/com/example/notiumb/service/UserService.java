@@ -77,6 +77,8 @@ public class UserService implements UserDetailsService {
         return iUserMapper.toDTO(userRepository.getAllByUsernameAndPassword(username,password));
     }
 
+
+
     public User obtenerUsuarioPorToken(String token) {
         return (User) userRepository.findTopByToken(token).orElse(null);
     }

@@ -39,6 +39,12 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
+    @Column(name = "verificado")
+    private Boolean verificado;
+
+    @Column(name = "token")
+    private String token;
+
 
 
     @Override
