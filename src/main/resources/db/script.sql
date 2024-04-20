@@ -50,6 +50,8 @@ create table direccion(
                           primary key (id)
 );
 
+alter table usuario add column token varchar(100);
+
 
 create table cliente
 (

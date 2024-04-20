@@ -47,6 +47,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Restaurante> restauranteSet;
 
+    @Column(name = "verificado")
+    private Boolean verificado;
+
+    @Column(name = "token")
+    private String token;
+
+
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cliente cliente;
 
@@ -76,5 +83,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setVerificado(boolean b) {
+    }
+
+    public Object orElse(Object o) {
+        return null;
     }
 }
