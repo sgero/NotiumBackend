@@ -68,4 +68,8 @@ public class User implements UserDetails {
 
     public void setVerificado(boolean b) {
     }
+
+    public Object orElse(Object o) {
+        return null;
+    }
 }
