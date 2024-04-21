@@ -8,5 +8,7 @@ public class MapaCodigoRespuestaAPI {
     public static final CodigoRespuestaAPI CODIGO_ERROR_500 = new CodigoRespuestaAPI("500", "error.servidor");
     public static final CodigoRespuestaAPI CODIGO_ERROR_1 = new CodigoRespuestaAPI("1", "error.dto.null");
     public static final CodigoRespuestaAPI CODIGO_ERROR_2 = new CodigoRespuestaAPI("2", "error.mas entradas vendidas que aforo");
+    public static final CodigoRespuestaAPI CODIGO_200_EVENTO_ELIMINADO = new CodigoRespuestaAPI("2", "evento eliminado");
+
 
 }

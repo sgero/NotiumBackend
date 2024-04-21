@@ -247,4 +247,20 @@ public class EventoService {
         }
         return eventoACrear;
     }
+
+    public RespuestaDTO eliminarEvento(Integer id) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        Evento eventoAEliminar = eventoRepository.findById(id).orElse(null);
+        try{
+            if (eventoAEliminar != null){
+                eventoAEliminar.setActivo(false);
+                eventoRepository.save(eventoAEliminar);
+                UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_ELIMINADO);
+            }
+        }catch (Exception e){
+            ULogger.error(e);
+            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_500);
+        }
+        return respuestaDTO;
+    }
 }
