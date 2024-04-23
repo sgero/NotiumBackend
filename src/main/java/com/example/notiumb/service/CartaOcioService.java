@@ -5,6 +5,7 @@ import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.CartaOcioDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.CartaOcio;
+import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.repository.ICartaOcioRepository;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,45 +21,45 @@ public class CartaOcioService {
     private ICartaOcioRepository repository;
     @Autowired
     private IOcioNocturnoRepository ocioNocturnoRepository;
+    @Autowired
     private ICartaOcioMapper converter;
     @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
 
     public List<CartaOcioDTO> getAll() {
-        return converter.toDTO(repository.findAll());
+        return converter.toDTO(repository.findAllByActivoIsTrue());
     }
 
     public CartaOcio getById(@Param("id") Integer id) {
-        return repository.findById(id).orElse(null);
+        return repository.findByIdAndActivoIsTrue(id).orElse(null);
     }
-    public CartaOcioDTO save(CartaOcioDTO cartaOcioDTO ,OcioNocturnoDTO ocioNocturnoDTO){
+    public CartaOcioDTO save(CartaOcioDTO cartaOcioDTO){
         if (cartaOcioDTO.getId()==null){
-            CartaOcioDTO CartaNueva = CartaOcioDTO.builder()
-                    .ocioNocturnoDTO(ocioNocturnoDTO)
-                    .build();
-            repository.save(converter.toEntity(CartaNueva));
-            return CartaNueva;
-        }
+            CartaOcioDTO cartaNuevaDTO = new CartaOcioDTO();
+            cartaNuevaDTO.setOcioNocturnoDTO(cartaOcioDTO.getOcioNocturnoDTO());
+            repository.save(converter.toEntity(cartaNuevaDTO));
+            return cartaNuevaDTO;
+        }else{
         CartaOcio cartaModificar = repository.findById(cartaOcioDTO.getId()).orElse(null);
         if (cartaModificar==null){
             return null;
         }else{
-            cartaModificar.setOcioNocturno(ocioNocturnoMapper.toEntity(ocioNocturnoDTO));
+            cartaModificar.setOcioNocturno(ocioNocturnoMapper.toEntity(cartaOcioDTO.getOcioNocturnoDTO()));
             repository.save(cartaModificar);
+            return converter.toDTO(cartaModificar);
         }
-
-        return converter.toDTO(cartaModificar);
+        }
     }
 
-    public String delete(CartaOcioDTO cartaOcioDTO){
-        CartaOcio cataAEliminar = repository.findById(cartaOcioDTO.getId()).orElse(null);
+    public void delete(Integer id){
+
+        CartaOcio cataAEliminar = repository.findById(id).orElse(null);
 
         if (cataAEliminar!=null){
             cataAEliminar.setActivo(false);
+
             repository.save(cataAEliminar);
-            return "Datos eliminados correctamente";
         }
-        return "No se ha podido eliminar la carta";
     }
 
 

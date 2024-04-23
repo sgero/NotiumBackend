@@ -1,10 +1,8 @@
 package com.example.notiumb.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -13,6 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"cliente, reservadoOcio"})
 public class ReservadoOcioCliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
