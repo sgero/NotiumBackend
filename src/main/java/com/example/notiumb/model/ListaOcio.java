@@ -1,10 +1,7 @@
 package com.example.notiumb.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"rpp", "evento"})
 public class ListaOcio {
     @Id
     @Column(name = "id")
@@ -34,6 +32,6 @@ public class ListaOcio {
     private Evento evento;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "listaOcio", fetch = FetchType.LAZY)
-    private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
+    private Set<ListaOcioCliente> listasOcioCliente;
 
 }

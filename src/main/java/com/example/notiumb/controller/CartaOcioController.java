@@ -3,8 +3,8 @@ package com.example.notiumb.controller;
 import com.example.notiumb.dto.CartaOcioDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.CartaOcio;
+import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.service.CartaOcioService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +22,12 @@ public class CartaOcioController {
     }
     @GetMapping("/{id}")
     public CartaOcio cartaId(@PathVariable Integer id){
-        return service.getById(id);}
-    @PostMapping("/guardar")
-    public CartaOcioDTO guardarCarta(@RequestBody (required = true) CartaOcioDTO cartaOcioDTO,
-                                     @RequestBody (required = false)OcioNocturnoDTO ocioNocturnoDTO){
-        return service.save(cartaOcioDTO , ocioNocturnoDTO);}
-    @DeleteMapping("/eliminar")
-    public String eliminarCarta(@RequestBody CartaOcioDTO cartaOcioDTO){
-        return service.delete(cartaOcioDTO);
+        return service.getById(id);
     }
+    @PostMapping("/guardar")
+    public CartaOcioDTO guardarCarta(@RequestBody (required = false) CartaOcioDTO cartaOcioDTO){
+        return service.save(cartaOcioDTO);
+    }
+    @DeleteMapping("/{id}")
+    public void eliminarCarta(@PathVariable Integer id){ service.delete(id); }
 }

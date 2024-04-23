@@ -34,6 +34,6 @@ public class ListaOcioDTO {
     private RppDTO rppDTO;
     @Valid
     private EventoDTO eventoDTO;
-    @Valid
-    private Set<ListaOcioClienteDTO> listasOcioClienteDTO;
+//    @Valid
+//    private Set<ListaOcioClienteDTO> listasOcioClienteDTO;
 }

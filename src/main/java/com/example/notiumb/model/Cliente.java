@@ -48,12 +48,12 @@ public class Cliente {
     private Set<EntradaOcioCliente> entradaOcioClienteSet;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<ListaOcioCliente> listasOcioCliente = new HashSet<>(0);
+    private Set<ListaOcioCliente> listasOcioCliente;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<ReservadoOcioCliente> reservadosOcioCliente = new HashSet<>(0);
+    private Set<ReservadoOcioCliente> reservadosOcioCliente;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<Reserva> reservas = new HashSet<>(0);
+    private Set<Reserva> reservas;
 
 }
