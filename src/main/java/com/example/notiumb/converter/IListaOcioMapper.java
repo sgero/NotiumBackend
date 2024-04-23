@@ -23,11 +23,11 @@ public interface IListaOcioMapper {
 
     @Mapping(source = "rpp", target = "rppDTO", qualifiedByName = "convertToRppDTO")
     @Mapping(source = "evento", target = "eventoDTO", qualifiedByName = "convertToEventoDTO")
-    @Mapping(source = "listasOcioCliente", target = "listasOcioClienteDTO", qualifiedByName = "convertToListasOcioClienteDTO")
+//    @Mapping(source = "listasOcioCliente", target = "listasOcioClienteDTO", qualifiedByName = "convertToListasOcioClienteDTO")
     ListaOcioDTO toDTO(ListaOcio entity) ;
     @Mapping(source = "rppDTO", target = "rpp", qualifiedByName = "convertToRpp")
     @Mapping(source = "eventoDTO", target = "evento", qualifiedByName = "convertToEvento")
-    @Mapping(source = "listasOcioClienteDTO", target = "listasOcioCliente", qualifiedByName = "convertToListasOcioCliente")
+//    @Mapping(source = "listasOcioClienteDTO", target = "listasOcioCliente", qualifiedByName = "convertToListasOcioCliente")
     ListaOcio toEntity(ListaOcioDTO dto);
 
     List<ListaOcioDTO> toDTO(List<ListaOcio> listEntity);
@@ -46,10 +46,10 @@ public interface IListaOcioMapper {
     @Named(value = "convertToEventoDTO")
     default EventoDTO convertEvento(Evento entity){ return eventoMapper.toDTO(entity); }
 
-    @Named(value = "convertToListasOcioCliente")
-    default ListaOcioCliente convertListaOcioCliente(ListaOcioClienteDTO dto){ return listaMapper.toEntity(dto); }
-
-    @Named(value = "convertToListasOcioClienteDTO")
-    default ListaOcioClienteDTO convertListaOcioCliente(ListaOcioCliente entity){ return listaMapper.toDTO(entity); }
+//    @Named(value = "convertToListasOcioCliente")
+//    default ListaOcioCliente convertListaOcioCliente(ListaOcioClienteDTO dto){ return listaMapper.toEntity(dto); }
+//
+//    @Named(value = "convertToListasOcioClienteDTO")
+//    default ListaOcioClienteDTO convertListaOcioCliente(ListaOcioCliente entity){ return listaMapper.toDTO(entity); }
 
 }
