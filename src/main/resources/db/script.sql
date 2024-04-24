@@ -52,9 +52,6 @@ create table direccion(
                           primary key (id)
 );
 
-alter table usuario add column token varchar(100);
-
-
 create table cliente
 (
     id               serial       not null,
@@ -62,6 +59,7 @@ create table cliente
     apellidos        varchar(100) not null,
     dni              varchar(9)   not null,
     telefono         varchar(20)  not null,
+    token_verificacion         varchar(100)  not null,
     fecha_nacimiento timestamp(6)    not null,
     activo           boolean default true,
     id_usuario       integer      not null,
@@ -70,8 +68,6 @@ create table cliente
     constraint id_cliente_usuario_fk foreign key (id_usuario) references usuario (id),
     constraint id_cliente_direccion_fk foreign key (id_direccion) references direccion (id)
 );
-
-
 
 create table restaurante
 (

@@ -79,9 +79,9 @@ public class UserService implements UserDetailsService {
 
 
 
-    public User obtenerUsuarioPorToken(String token) {
-        return (User) userRepository.findTopByToken(token).orElse(null);
-    }
+//    public User obtenerUsuarioPorToken(String token) {
+//        return (User) userRepository.findTopByToken(token).orElse(null);
+//    }
 
 
 
@@ -203,5 +203,11 @@ public class UserService implements UserDetailsService {
         return token;
     }
 
+
+
+    public String deleteUser(User user) {
+        user.setActivo(false);
+        return "Usuario eliminado";
+    }
 
 }

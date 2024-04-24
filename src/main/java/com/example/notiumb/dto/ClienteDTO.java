@@ -20,6 +20,9 @@ public class ClienteDTO {
     private String dni;
     @Past
     private Date fechaNacimiento;
+
+    private String token_verificacion;
+
     @Valid
     private UserDTO userDTO;
     @Valid

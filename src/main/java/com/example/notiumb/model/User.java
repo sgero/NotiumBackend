@@ -50,9 +50,6 @@ public class User implements UserDetails {
     @Column(name = "verificado")
     private Boolean verificado;
 
-    @Column(name = "token")
-    private String token;
-
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cliente cliente;
