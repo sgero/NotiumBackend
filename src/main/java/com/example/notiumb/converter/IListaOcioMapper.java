@@ -21,14 +21,14 @@ public interface IListaOcioMapper {
     IEventoMapper eventoMapper = Mappers.getMapper(IEventoMapper.class);
     IListaOcioClienteMapper listaMapper = Mappers.getMapper(IListaOcioClienteMapper.class);
 
-    @Mapping(source = "rpp", target = "rppDTO", qualifiedByName = "convertToRppDTO")
-    @Mapping(source = "evento", target = "eventoDTO", qualifiedByName = "convertToEventoDTO")
-    @Mapping(source = "listasOcioCliente", target = "listasOcioClienteDTO", qualifiedByName = "convertToListasOcioClienteDTO")
-    ListaOcioDTO toDTO(ListaOcio entity) ;
-    @Mapping(source = "rppDTO", target = "rpp", qualifiedByName = "convertToRpp")
-    @Mapping(source = "eventoDTO", target = "evento", qualifiedByName = "convertToEvento")
-    @Mapping(source = "listasOcioClienteDTO", target = "listasOcioCliente", qualifiedByName = "convertToListasOcioCliente")
-    ListaOcio toEntity(ListaOcioDTO dto);
+//    @Mapping(source = "rpp", target = "rppDTO", qualifiedByName = "convertToRppDTO")
+//    @Mapping(source = "evento", target = "eventoDTO", qualifiedByName = "convertToEventoDTO")
+//    @Mapping(source = "listasOcioCliente", target = "listasOcioClienteDTO", qualifiedByName = "convertToListasOcioClienteDTO")
+//    ListaOcioDTO toDTO(ListaOcio entity) ;
+//    @Mapping(source = "rppDTO", target = "rpp", qualifiedByName = "convertToRpp")
+//    @Mapping(source = "eventoDTO", target = "evento", qualifiedByName = "convertToEvento")
+//    @Mapping(source = "listasOcioClienteDTO", target = "listasOcioCliente", qualifiedByName = "convertToListasOcioCliente")
+//    ListaOcio toEntity(ListaOcioDTO dto);
 
     List<ListaOcioDTO> toDTO(List<ListaOcio> listEntity);
 

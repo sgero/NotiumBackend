@@ -13,6 +13,5 @@ public class ProductoDTO {
 
     private Integer idCartaOcio;
     private Integer idCartaRestaurante;
-    private ProductoTipoBebidaDTO productoTipoBebida;
-    private ProductoTipoPlatoDTO productoTipoPlato;
+
 }
