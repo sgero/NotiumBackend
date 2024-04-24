@@ -1,6 +1,7 @@
 drop table if exists promocion;
-drop table if exists producto_tipo_bebida;
-drop table if exists producto_tipo_plato;
+drop table if exists producto_formato;
+drop table if exists formato;
+drop table if exists restaurante_clase;
 drop table if exists mensaje;
 drop table if exists chat;
 drop table if exists comentario;
@@ -19,6 +20,7 @@ drop table if exists entrada_ocio;
 drop table if exists evento;
 drop table if exists rpp;
 drop table if exists ocio_nocturno;
+drop table if exists clase;
 drop table if exists restaurante;
 drop table if exists cliente;
 drop table if exists direccion;
@@ -317,24 +319,36 @@ create table mensaje (
 
 );
 
-
-create table producto_tipo_plato (
-                                     id serial not null ,
-                                     precio float not null,
-                                     id_producto int not null,
-                                     tipo_plato int not null,
-                                     primary key (id),
-                                     constraint id_producto_tipo_plato_producto_fk foreign key (id_producto) references producto (id)
-
+create table clase (
+                         id serial not null ,
+                         clase varchar(100) not null ,
+                         primary key (id)
 );
 
-create table producto_tipo_bebida (
+create table restaurante_clase (
+                          id serial not null ,
+                          id_restaurante int not null,
+                          id_clase int not null,
+                          primary key (id),
+                          constraint id_restaurante_clase_fk foreign key (id_restaurante) references restaurante (id),
+                          constraint id_clase_restaurante_fk foreign key (id_clase) references clase (id)
+);
+
+
+create table formato (
+                                     id serial not null ,
+                                     formato varchar(100) not null ,
+                                     primary key (id)
+);
+
+create table producto_formato (
                                       id serial not null ,
                                       precio float not null,
                                       id_producto int not null,
-                                      tipo_bebida int not null,
+                                      id_formato int not null,
                                       primary key (id),
-                                      constraint id_producto_tipo_bebida_producto_fk foreign key (id_producto) references producto (id)
+                                      constraint id_producto_tipo_fk foreign key (id_producto) references producto (id),
+                                      constraint id_formato_tipo_fk foreign key (id_formato) references formato (id)
 );
 
 create table promocion (
@@ -349,3 +363,26 @@ create table promocion (
                            constraint id_promocion_evento_fk foreign key (id_evento) references evento (id),
                            constraint id_promocion_restaurante_fk foreign key (id_restaurante) references restaurante (id)
 );
+
+
+INSERT INTO clase (clase) VALUES
+                                  ('CHINO'),
+                                  ('KOREANO'),
+                                  ('JAPONES'),
+                                  ('ESPAÑOL'),
+                                  ('ITALIANO'),
+                                  ('FRANCES'),
+                                  ('ALEMAN'),
+                                  ('BRITANICO'),
+                                  ('MEXICANO');
+
+INSERT INTO formato (formato) VALUES
+                                  ('TAPA'),
+                                  ('MEDIA'),
+                                  ('RACION'),
+                                  ('CHUPITO'),
+                                  ('COPA'),
+                                  ('JARRA'),
+                                  ('VASO'),
+                                  ('PINTA'),
+                                  ('MACETA');

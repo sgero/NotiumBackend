@@ -2,10 +2,15 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IEventoMapper;
 import com.example.notiumb.converter.IListaOcioMapper;
+import com.example.notiumb.dto.ListaOcioDTO;
+import com.example.notiumb.model.ListaOcio;
 import com.example.notiumb.repository.IEventoRepository;
 import com.example.notiumb.repository.IListaOcioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ListaOcioService {
@@ -18,5 +23,21 @@ public class ListaOcioService {
     private IListaOcioMapper converter;
     @Autowired
     private IEventoMapper eventoMapper;
+
+    public List<ListaOcioDTO> getAll(){ return converter.toDTO(repository.findAllByActivoIsTrue()); }
+
+    public ListaOcio getById(@Param("id") Integer id) {
+        return repository.findByIdAndActivoIsTrue(id).orElse(null);
+    }
+
+    public void delete(@Param("id") Integer id){
+
+        ListaOcio listaAEliminar = repository.findByIdAndActivoIsTrue(id).orElse(null);
+
+        if (listaAEliminar!=null) {
+            listaAEliminar.setActivo(false);
+            repository.save(listaAEliminar);
+        }
+    }
 
 }

@@ -4,6 +4,8 @@ import com.example.notiumb.model.enums.TipoCategoria;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "producto", schema = "notium", catalog = "postgres")
 @Getter
@@ -29,8 +31,7 @@ public class Producto {
     @JoinColumn(name = "id_carta_rest")
     private CartaRestaurante carta_res;
 
-    @OneToOne(cascade = CascadeType.PERSIST,mappedBy = "producto", fetch = FetchType.LAZY)
-    private ProductoTipoBebida productoTipoBebida;
-    @OneToOne(cascade = CascadeType.PERSIST,mappedBy = "producto", fetch = FetchType.LAZY)
-    private ProductoTipoPlato productoTipoPlato;
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ProductoFormato> productoFormatoSet;
+
 }

@@ -3,9 +3,6 @@ package com.example.notiumb.controller;
 import com.example.notiumb.dto.*;
 import com.example.notiumb.service.EventoService;
 import com.example.notiumb.utilidades.RespuestaDTO;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +18,6 @@ public class EventoController {
         return eventoService.getAll();
     }
 
-    @ApiOperation(value = "Crear evento para una fecha en concreto", response = RespuestaDTO.class)
-    @ApiResponses({@ApiResponse(code = 200, message = "ok"), @ApiResponse(code = 500, message = "error interno del servidor")})
     @PostMapping(value = "/crearUnico")
     public RespuestaDTO crearUnico(@RequestBody CrearEventoDTO crearEventoDTO){
         return eventoService.crearEventoUnico(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(),
@@ -34,5 +29,10 @@ public class EventoController {
         return eventoService.crearEventoCiclico(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(),
                 crearEventoDTO.getReservadoOcioDTO(), crearEventoDTO.getListaOcioDTO(), crearEventoDTO.getRepetirCicloEventoOcio(),
                 crearEventoDTO.getDiasARepetirCicloEventoOcioList());
+    }
+
+    @PostMapping(value = "/eliminarEvento")
+    public RespuestaDTO eliminarEvento(@RequestBody Integer id){
+        return eventoService.eliminarEvento(id);
     }
 }

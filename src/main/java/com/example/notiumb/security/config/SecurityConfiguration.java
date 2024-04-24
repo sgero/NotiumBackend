@@ -2,7 +2,6 @@ package com.example.notiumb.security.config;
 
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.security.filter.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,6 +77,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/eventos/**").permitAll()
+                        .requestMatchers("/cartasOcio/**").permitAll()
+                        .requestMatchers("/listasOcio/**").permitAll()
                         .requestMatchers("/email/**").permitAll()
                         .requestMatchers("/email.html").permitAll()
                         .requestMatchers("/registrar/**").permitAll()
@@ -91,6 +90,8 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/rpp/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RPP.name())
                         .requestMatchers(GET, "/eventos/listarTodos").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name(), Rol.RPP.name())
                         .requestMatchers(POST, "/eventos/crear").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
+                        .requestMatchers(GET, "/cartasOcio/listar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name(), Rol.RPP.name(), Rol.CLIENTE.name())
+                        .requestMatchers(POST, "/cartasOcio/guardar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .anyRequest().authenticated()
 
 
@@ -104,10 +105,6 @@ public class SecurityConfiguration {
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
                 );
-
-
-
-
 
         return http.build();
     }

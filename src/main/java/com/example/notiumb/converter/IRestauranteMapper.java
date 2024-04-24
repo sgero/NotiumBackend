@@ -23,6 +23,8 @@ public interface IRestauranteMapper {
 
     RestauranteDTO toDTO(Restaurante entity);
 
+    Restaurante toEntity(RestauranteDTO dto);
+
     List<Restaurante> toEntity(List<RestauranteDTO> dtos);
 
     List<RestauranteDTO> toDTO(List<Restaurante> entities);
@@ -46,4 +48,5 @@ public interface IRestauranteMapper {
     default DireccionDTO transformarDireccion(Direccion entity){
         return direccionMapper.toDTO(entity);
     }
+
 }
