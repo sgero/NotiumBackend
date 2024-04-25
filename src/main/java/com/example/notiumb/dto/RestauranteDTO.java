@@ -1,7 +1,6 @@
 package com.example.notiumb.dto;
 
-import com.example.notiumb.model.Direccion;
-import com.example.notiumb.model.User;
+
 import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Data;
@@ -38,10 +37,10 @@ public class RestauranteDTO {
 
 
     @Valid
-    private User user;
+    private UserDTO userDTO;
 
     @Valid
-    private Direccion direccion;
+    private DireccionDTO direccionDTO;
 
 
 

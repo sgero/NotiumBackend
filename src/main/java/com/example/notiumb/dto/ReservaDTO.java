@@ -8,7 +8,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
+import lombok.Data;
 
+@Data
 public class ReservaDTO {
 
 
@@ -28,7 +30,7 @@ public class ReservaDTO {
 
     @Valid
     private RestauranteDTO restauranteDTO;
-    @Valid
 
+    @Valid
     private MesaDTO mesaDTO;
 }
