@@ -7,9 +7,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class ProductoFormatoDTO {
     private Integer id;
 
