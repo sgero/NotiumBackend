@@ -3,16 +3,19 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
 
-//EJEMPLO DE ANOTACIONES DE JPA PARA MAPEAR ENTIDADES A TABLAS DE BASE DE DATOS DE FORMA AUTOMÁTICA
+
 @Entity
-@Table(name = "restaurante")
+@Table(name = "restaurante", schema = "notium", catalog = "postgres")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EqualsAndHashCode(exclude = {"reservasSet"})
 public class Restaurante {
 
 
@@ -25,9 +28,6 @@ public class Restaurante {
 
     @Column(name = "cif", nullable = false)
     private String cif;
-
-    @Column(name = "direccion", nullable = false)
-    private String direccion;
 
     @Column(name = "telefono", nullable = false)
     private String telefono;
@@ -50,8 +50,20 @@ public class Restaurante {
     @Column(name = "activo")
     private Boolean activo;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Integer id_usuario;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private User user;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_direccion", nullable = false)
+    private Direccion direccion;
 
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Turno> turnosSet;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Reserva> reservasSet;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mesa> mesasSet;
 }

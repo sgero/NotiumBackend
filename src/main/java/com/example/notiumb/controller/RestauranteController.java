@@ -1,29 +1,37 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
+import com.example.notiumb.service.RestauranteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/restaurante")
 public class RestauranteController {
 
-    @GetMapping("/restaurantes")
-    public List<User> getRestaurantes() {
-        // implementación para obtener restaurantes
+    @Autowired
+    private RestauranteService restauranteService;
 
-        return null;
+
+    public RestauranteController(RestauranteService restauranteService) {
+        this.restauranteService = restauranteService;
+    }
+
+    @GetMapping("/listar")
+    public List<Restaurante> getRestaurantes() {
+        return restauranteService.listarRestaurantes();
     }
 
 
-    @PostMapping("/restaurantes")
-    public ResponseEntity<User> createRestaurante(@RequestBody Restaurante restaurante) {
-        // implementación para crear un restaurante
-
-        return null;
+    @PostMapping("/crear")
+    public void crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) {
+        restauranteService.crearRestaurante(restauranteDTO);
     }
 }
 

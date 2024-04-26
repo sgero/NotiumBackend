@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario", schema = "notium", catalog = "postgres")
@@ -15,7 +17,7 @@ import java.util.Collection;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@EqualsAndHashCode(exclude = {"activo"})
+@EqualsAndHashCode(exclude = {"ocioNocturnoSet", "restauranteSet", "cliente", "rpp"})
 public class User implements UserDetails {
 
     @Id
@@ -23,16 +25,16 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "rol")
+    @Column(name = "rol", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private Rol rol;
 
@@ -45,7 +47,17 @@ public class User implements UserDetails {
     @Column(name = "token")
     private String token;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OcioNocturno> ocioNocturnoSet;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Restaurante> restauranteSet;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Cliente cliente;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Rpp rpp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

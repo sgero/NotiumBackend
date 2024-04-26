@@ -159,6 +159,15 @@
             <artifactId>mapstruct</artifactId>
             <version>1.5.5.Final</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.13</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -217,3 +226,4 @@
     </build>
 
 </project>
+
