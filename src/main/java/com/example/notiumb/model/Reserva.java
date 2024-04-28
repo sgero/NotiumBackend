@@ -3,6 +3,8 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "reserva_restaurante", schema = "notium", catalog = "postgres")
 @Getter
@@ -21,6 +23,9 @@ public class Reserva {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
+
+    @Column(name = "fecha", nullable = false)
+    private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
