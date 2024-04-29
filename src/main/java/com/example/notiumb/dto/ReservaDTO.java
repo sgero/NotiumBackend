@@ -8,7 +8,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
+import lombok.Data;
 
+import java.time.LocalDate;
+
+@Data
 public class ReservaDTO {
 
 
@@ -20,6 +24,8 @@ public class ReservaDTO {
 
     private Boolean activo;
 
+    private LocalDate fecha;
+
     @Valid
     private ClienteDTO clienteDTO;
 
@@ -28,7 +34,7 @@ public class ReservaDTO {
 
     @Valid
     private RestauranteDTO restauranteDTO;
-    @Valid
 
+    @Valid
     private MesaDTO mesaDTO;
 }

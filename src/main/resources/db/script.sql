@@ -75,8 +75,8 @@ create table restaurante
     nombre        varchar(100)  not null,
     cif           varchar(9)    not null,
     telefono      varchar(20)   not null,
-    hora_apertura time     not null,
-    hora_cierre   time    not null,
+    hora_apertura varchar(7)     not null,
+    hora_cierre   varchar(7)    not null,
     valoracion    boolean,
     disponible    boolean,
     imagen_marca  varchar(1000) not null,
@@ -221,8 +221,8 @@ create table mesa_restaurante (
 
 create table turno_restaurante (
                                    id serial not null ,
-                                   hora_inicio time not null ,
-                                   hora_fin time not null ,
+                                   hora_inicio varchar(7) not null ,
+                                   hora_fin varchar(7) not null ,
                                    activo boolean default true not null ,
                                    id_restaurante integer not null ,
                                    primary key (id),

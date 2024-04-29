@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-
 public class CartaRestauranteDTO {
     private Integer id;
 
