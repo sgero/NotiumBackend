@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/eventos")
-//@SecurityRequirement(name = "Bearer Authentication")
 public class EventoController {
     @Autowired
     private EventoService eventoService;
