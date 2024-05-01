@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +55,8 @@ public class EventoService {
     }
     public RespuestaDTO getActivos() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
-        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findByActivoIsTrue()));
+        Date fechaActual = new Date();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findByActivoIsTrueAndFechaAfterOrderByFechaDesc(fechaActual)));
         return respuestaDTO;
     }
 
