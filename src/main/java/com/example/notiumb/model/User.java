@@ -41,17 +41,17 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
-//    @OneToMany(mappedBy = "user")
-//    private Set<OcioNocturno> ocioNocturnoSet;
+    @OneToMany(mappedBy = "user")
+    private Set<OcioNocturno> ocioNocturnoSet;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private Set<Restaurante> restauranteSet;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cliente cliente;
 
-//    @OneToOne(mappedBy = "user")
-//    private Rpp rpp;
+    @OneToOne(mappedBy = "user")
+    private Rpp rpp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

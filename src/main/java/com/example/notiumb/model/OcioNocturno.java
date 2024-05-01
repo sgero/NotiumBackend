@@ -48,10 +48,10 @@ public class OcioNocturno {
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 
-//    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
-//    private Set<Evento> eventoSet;
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    private Set<Evento> eventoSet;
 
-//    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
-//    private Set<Rpp> rppSet;
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    private Set<Rpp> rppSet;
 
 }

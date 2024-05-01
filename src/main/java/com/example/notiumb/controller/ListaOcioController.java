@@ -20,9 +20,10 @@ public class ListaOcioController {
     @GetMapping("/listar")
     public List<ListaOcioDTO> listarListas(){ return service.getAll(); }
 
-    @PostMapping("/{id}")
-    public ListaOcio listaId(@PathVariable Integer id){ return service.getById(id); }
-
+    @GetMapping("/{id}")
+    public ListaOcioDTO listaId(@PathVariable Integer id){ return service.getById(id); }
+    @GetMapping("/evento/{id}")
+    public List<ListaOcioDTO> listaOcioByEvento(@PathVariable Integer id){ return service.getAllByEventoId(id); }
     @DeleteMapping("/{id}")
     public void eliminarLista(@PathVariable Integer id){ service.delete(id); }
 }

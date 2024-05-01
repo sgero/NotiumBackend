@@ -37,14 +37,14 @@ public class Direccion {
     @Column(name = "pais", nullable = false)
     private String pais;
 
-//    @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
-//    private Rpp rpp;
+    @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
+    private Rpp rpp;
 
     @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
     private Cliente cliente;
 
-//    @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
-//    private OcioNocturno ocioNocturno;
+    @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
+    private OcioNocturno ocioNocturno;
 
     @OneToOne(mappedBy = "direccion", fetch = FetchType.LAZY)
     private Restaurante restaurante;

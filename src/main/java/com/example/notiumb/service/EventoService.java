@@ -44,6 +44,8 @@ public class EventoService {
     private IRppRepository rppRepository;
     @Autowired
     private IListaOcioMapper listaOcioMapper;
+    @Autowired
+    private ListaOcioService listaOcioService;
 
     public RespuestaDTO getAll() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
@@ -52,7 +54,7 @@ public class EventoService {
     }
 
     @Transactional
-    public RespuestaDTO crearEventoUnico(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
+    public RespuestaDTO guardarEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         try{
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(eventoDTO.getOcioNocturnoDTO().getId()).orElse(null);
@@ -189,6 +191,7 @@ public class EventoService {
         return total;
     }
 
+    @Transactional
     public RespuestaDTO crearEventoCiclico(EventoDTO eventoDTO,
                                            EntradaOcioDTO entradaOcioDTO,
                                            ReservadoOcioDTO reservadoOcioDTO,
@@ -299,13 +302,31 @@ public class EventoService {
         return eventoACrear;
     }
 
+    @Transactional
     public RespuestaDTO eliminarEvento(Integer id) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Evento eventoAEliminar = eventoRepository.findById(id).orElse(null);
         try{
             if (eventoAEliminar != null){
+                EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(eventoAEliminar.getId());
+                ReservadoOcio reservadoOcio = reservadoOcioRepository.findReservadoOcioByEventoIdAndActivoIsTrue(eventoAEliminar.getId());
+                List<ListaOcio> ocioList = listaOcioMapper.toEntity(listaOcioService.getAllByEventoId(eventoAEliminar.getId()));
+                List<ListaOcio> listaEliminar = new ArrayList<>();
+                if (!ocioList.isEmpty()){
+                    for (ListaOcio l : ocioList){
+                        l.setActivo(false);
+                        listaEliminar.add(l);
+                    }
+                }
                 eventoAEliminar.setActivo(false);
+                if (entradaOcio != null && reservadoOcio != null){
+                    entradaOcio.setActivo(false);
+                    reservadoOcio.setActivo(false);
+                    entradaOcioRepository.save(entradaOcio);
+                    reservadoOcioRepository.save(reservadoOcio);
+                }
                 eventoRepository.save(eventoAEliminar);
+                listaOcioRepository.saveAll(listaEliminar);
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_ELIMINADO);
             }
         }catch (Exception e){
