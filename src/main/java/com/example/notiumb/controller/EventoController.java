@@ -17,6 +17,11 @@ public class EventoController {
         return eventoService.getAll();
     }
 
+    @GetMapping("/activos")
+    public RespuestaDTO obtenerActivos(){
+        return eventoService.getActivos();
+    }
+
     @PostMapping(value = "/guardar")
     public RespuestaDTO guardarEvento(@RequestBody CrearEventoDTO crearEventoDTO){
         return eventoService.guardarEvento(crearEventoDTO.getEventoDTO(), crearEventoDTO.getEntradaOcioDTO(),
