@@ -48,15 +48,13 @@ public class ProductoService {
     }
 
     public List<ProductoDTO> listarProducto(TokenDTO tokenDTO) {
-
-        String username = jwtService.extractUsername(tokenDTO.getToken());
-        User user = userRepository.findTopByUsernameAndActivoTrue(username);
+        String tokensio = tokenDTO.getToken();
+        //String username = jwtService.extractUsername(tokenDTO.getToken());
+        User user = userRepository.findTopByUsernameAndActivoTrue("Pruebas");
         Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
-        List<ProductoDTO> listAsistentes = new ArrayList<>();
-        productoRepository.findByCartaResEqualsAndActivoTrue(carta);
 
-        return listAsistentes;
+        return productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(carta));
 
     }
 

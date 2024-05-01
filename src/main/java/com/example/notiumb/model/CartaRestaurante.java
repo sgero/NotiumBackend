@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name="carta_rest")
+@Table(name="carta_rest", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
