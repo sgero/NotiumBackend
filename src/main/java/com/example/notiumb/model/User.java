@@ -40,16 +40,16 @@ public class User implements UserDetails {
     @Column(name = "activo")
     private Boolean activo;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private Set<OcioNocturno> ocioNocturnoSet;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private Set<Restaurante> restauranteSet;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cliente cliente;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user")
     private Rpp rpp;
 
     @Override

@@ -47,12 +47,12 @@ public class Evento {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 
-    @OneToOne(mappedBy = "evento", fetch = FetchType.LAZY)
-    private EntradaOcio entradaOcio;
+//    @OneToOne(mappedBy = "evento", fetch = FetchType.LAZY)
+//    private EntradaOcio entradaOcio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
     private Set<ListaOcio> listasOcio;

@@ -19,7 +19,8 @@ public class ListaOcioController {
 
     @GetMapping("/{id}")
     public ListaOcioDTO listaId(@PathVariable Integer id){ return service.getById(id); }
-
+    @GetMapping("/evento/{id}")
+    public List<ListaOcioDTO> listaOcioByEvento(@PathVariable Integer id){ return service.getAllByEventoId(id); }
     @DeleteMapping("/{id}")
     public void eliminarLista(@PathVariable Integer id){ service.delete(id); }
 }

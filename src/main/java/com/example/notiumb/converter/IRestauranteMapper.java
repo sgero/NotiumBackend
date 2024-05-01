@@ -21,7 +21,13 @@ public interface IRestauranteMapper {
     IUserMapper userMapper = Mappers.getMapper(IUserMapper.class);
     IDireccionMapper direccionMapper = Mappers.getMapper(IDireccionMapper.class);
 
+    @Mapping(source = "user", target = "userDTO", qualifiedByName = "transformarUser")
+    @Mapping(source = "direccion", target = "direccionDTO", qualifiedByName = "transformarDireccion")
     RestauranteDTO toDTO(Restaurante entity);
+
+    @Mapping(source = "userDTO", target = "user", qualifiedByName = "transformarUserDTO")
+    @Mapping(source = "direccionDTO", target = "direccion", qualifiedByName = "transformarDireccionDTO")
+    Restaurante toEntity(RestauranteDTO dto);
 
     List<Restaurante> toEntity(List<RestauranteDTO> dtos);
 
@@ -46,4 +52,5 @@ public interface IRestauranteMapper {
     default DireccionDTO transformarDireccion(Direccion entity){
         return direccionMapper.toDTO(entity);
     }
+
 }

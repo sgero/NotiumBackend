@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/productoTipoBebida")
-public class ProductoTipoBebidaController {
-
+@RequestMapping("/mesa")
+public class MesaController {
 }

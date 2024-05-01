@@ -16,5 +16,6 @@ public interface IListaOcioRepository extends JpaRepository<ListaOcio, Integer> 
 
 //    @Query(nativeQuery = true, value = "select * from notium.lista_ocio where id = :id and activo = true")
     Optional<ListaOcio> findByIdAndActivoIsTrue(Integer id);
+    List<ListaOcio> findListaOcioByEventoIdAndActivoIsTrue (Integer id);
 
 }

@@ -54,7 +54,7 @@ public class Restaurante {
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 

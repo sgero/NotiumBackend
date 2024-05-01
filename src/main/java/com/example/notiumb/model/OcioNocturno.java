@@ -50,7 +50,7 @@ public class OcioNocturno {
     @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Evento> eventoSet;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Rpp> rppSet;
 
 }
