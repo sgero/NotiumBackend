@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface IEventoRepository extends JpaRepository<Evento, Integer> {
     List<Evento> findAll();
+
+    List<Evento> findByActivoIsTrue();
+
 }

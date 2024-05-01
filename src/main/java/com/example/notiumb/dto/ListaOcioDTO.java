@@ -20,7 +20,6 @@ public class ListaOcioDTO {
     private Double precio;
     @PositiveOrZero
     private Double total_invitaciones;
-    private Boolean activo = true;
     @Valid
     private RppDTO rppDTO;
     @Valid
