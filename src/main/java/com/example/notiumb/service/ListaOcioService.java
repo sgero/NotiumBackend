@@ -26,8 +26,8 @@ public class ListaOcioService {
 
     public List<ListaOcioDTO> getAll(){ return converter.toDTO(repository.findAllByActivoIsTrue()); }
 
-    public ListaOcio getById(@Param("id") Integer id) {
-        return repository.findByIdAndActivoIsTrue(id).orElse(null);
+    public ListaOcioDTO getById(@Param("id") Integer id) {
+        return converter.toDTO(repository.findByIdAndActivoIsTrue(id).orElse(null));
     }
 
     public void delete(@Param("id") Integer id){

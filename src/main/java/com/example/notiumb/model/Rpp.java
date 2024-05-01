@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "rpp", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"user", "direccion", "listasOcio","ocioNocturno"})
@@ -41,7 +41,7 @@ public class Rpp {
     private Direccion direccion;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rpp", fetch = FetchType.LAZY)
-    private Set<ListaOcio> listasOcio = new HashSet<>(0);
+    private Set<ListaOcio> listasOcio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)

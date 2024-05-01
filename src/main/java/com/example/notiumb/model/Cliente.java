@@ -1,11 +1,9 @@
 package com.example.notiumb.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet","reservas"})
+@EqualsAndHashCode(exclude = {"user", "direccion", "entradaOcioClienteSet","listasOcioCliente","reservadosOcioCliente","reservas"})
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
