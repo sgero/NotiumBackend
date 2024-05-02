@@ -3,7 +3,9 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -20,10 +22,10 @@ public class Turno {
     private Integer id;
 
     @Column(name = "hora_inicio" , nullable = false)
-    private LocalDateTime hora_inicio;
+    private String hora_inicio;
 
     @Column(name = "hora_fin" , nullable = false)
-    private LocalDateTime hora_fin;
+    private String hora_fin;
 
     @Column(name = "activo" , nullable = false)
     private Boolean activo;

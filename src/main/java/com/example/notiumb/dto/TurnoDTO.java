@@ -17,18 +17,12 @@ public class TurnoDTO {
     private Integer id;
 
     @NotBlank
-    private LocalDateTime hora_inicio;
+    private String hora_inicio;
 
     @NotBlank
-    private LocalDateTime hora_fin;
+    private String hora_fin;
 
     private Boolean activo;
-
     @Valid
     private RestauranteDTO restauranteDTO;
-
-
-
-
-
 }

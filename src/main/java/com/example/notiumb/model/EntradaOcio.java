@@ -27,7 +27,7 @@ public class EntradaOcio {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "id_evento")
     private Evento evento;
 

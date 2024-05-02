@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"rpp", "cliente", "ocioNocturno", "restaurante"})
+@EqualsAndHashCode(exclude = { "cliente", "ocioNocturno", "restaurante"})
 public class Direccion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
