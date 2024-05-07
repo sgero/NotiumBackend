@@ -7,12 +7,14 @@ import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.Cliente;
 import com.example.notiumb.model.Direccion;
 import com.example.notiumb.model.User;
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+@Mapper(componentModel = "spring")
 public interface IClienteMapper {
 
     IUserMapper userMapper = Mappers.getMapper(IUserMapper.class);
