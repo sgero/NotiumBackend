@@ -40,7 +40,7 @@ public class RppService {
                     .apellidos(rppDTO.getApellidos())
                     .dni(rppDTO.getDni())
                     .telefono(rppDTO.getTelefono())
-                    .fecha_nacimiento(rppDTO.getFecha_nacimiento())
+                    .fechaNacimiento(rppDTO.getFechaNacimiento())
                     .user(userMapper.toEntity(rppDTO.getUserDTO()))
                     .direccion(direccionMapper.toEntity(rppDTO.getDireccionDTO()))
                     .ocioNocturno(ocioNocturnoMapper.toEntity(rppDTO.getOcioNocturnoDTO()))
@@ -57,7 +57,7 @@ public class RppService {
                 rppModify.setApellidos(rppDTO.getApellidos());
                 rppModify.setDni(rppDTO.getDni());
                 rppModify.setTelefono(rppDTO.getTelefono());
-                rppModify.setFecha_nacimiento(rppDTO.getFecha_nacimiento());
+                rppModify.setFechaNacimiento(rppDTO.getFechaNacimiento());
                 rppModify.setUser(userMapper.toEntity(rppDTO.getUserDTO()));
                 rppModify.setDireccion(direccionMapper.toEntity(rppDTO.getDireccionDTO()));
                 rppModify.setOcioNocturno(ocioNocturnoMapper.toEntity(rppDTO.getOcioNocturnoDTO()));

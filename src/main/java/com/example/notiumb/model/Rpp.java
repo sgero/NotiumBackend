@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion","ocioNocturno"})
+@EqualsAndHashCode(exclude = {"user", "direccion","ocioNocturno", "listasOcio"})
 public class Rpp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Rpp {
     @Column(name = "telefono", nullable = false)
     private String telefono;
     @Column(name = "fecha_nacimiento", nullable = false)
-    private Timestamp fecha_nacimiento;
+    private Timestamp fechaNacimiento;
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
@@ -40,8 +40,8 @@ public class Rpp {
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 
-//    @OneToMany(mappedBy = "rpp")
-//    private Set<ListaOcio> listasOcio;
+    @OneToMany(mappedBy = "rpp")
+    private Set<ListaOcio> listasOcio;
 
     @ManyToOne
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
