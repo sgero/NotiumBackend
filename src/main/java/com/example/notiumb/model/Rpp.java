@@ -4,16 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "rpp", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "direccion", "listasOcio","ocioNocturno"})
+@EqualsAndHashCode(exclude = {"user", "direccion","ocioNocturno", "listasOcio"})
 public class Rpp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,22 +28,22 @@ public class Rpp {
     @Column(name = "telefono", nullable = false)
     private String telefono;
     @Column(name = "fecha_nacimiento", nullable = false)
-    private Timestamp fecha_nacimiento;
+    private Timestamp fechaNacimiento;
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rpp", fetch = FetchType.LAZY)
-    private Set<ListaOcio> listasOcio = new HashSet<>(0);
+    @OneToMany(mappedBy = "rpp")
+    private Set<ListaOcio> listasOcio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 }

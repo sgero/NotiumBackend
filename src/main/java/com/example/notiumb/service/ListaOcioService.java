@@ -23,11 +23,17 @@ public class ListaOcioService {
     private IListaOcioMapper converter;
     @Autowired
     private IEventoMapper eventoMapper;
+    @Autowired
+    private IListaOcioMapper listaOcioMapper;
 
     public List<ListaOcioDTO> getAll(){ return converter.toDTO(repository.findAllByActivoIsTrue()); }
 
-    public ListaOcio getById(@Param("id") Integer id) {
-        return repository.findByIdAndActivoIsTrue(id).orElse(null);
+    public ListaOcioDTO getById(@Param("id") Integer id) {
+        return listaOcioMapper.toDTO(repository.findByIdAndActivoIsTrue(id).orElse(null));
+    }
+
+    public List<ListaOcioDTO> getAllByEventoId(@Param("id") Integer id) {
+        return listaOcioMapper.toDTO(repository.findListaOcioByEventoIdAndActivoIsTrue(id));
     }
 
     public void delete(@Param("id") Integer id){
