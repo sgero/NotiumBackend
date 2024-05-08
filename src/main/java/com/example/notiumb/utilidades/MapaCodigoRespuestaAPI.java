@@ -10,6 +10,17 @@ public class MapaCodigoRespuestaAPI {
     public static final CodigoRespuestaAPI CODIGO_ERROR_1 = new CodigoRespuestaAPI("1", "error.dto.null");
     public static final CodigoRespuestaAPI CODIGO_ERROR_2 = new CodigoRespuestaAPI("2", "error.mas entradas vendidas que aforo");
     public static final CodigoRespuestaAPI CODIGO_200_EVENTO_ELIMINADO = new CodigoRespuestaAPI("2", "evento eliminado");
+    public static final CodigoRespuestaAPI CODIGO_400_MESA_NO_CREADA = new CodigoRespuestaAPI("400", "La mesa no se ha podido crear");
+    public static final CodigoRespuestaAPI CODIGO_200_MESA_CREADA = new CodigoRespuestaAPI("200", "La mesa se ha creado");
+    public static final CodigoRespuestaAPI CODIGO_200_MESA_DESACTIVADA = new CodigoRespuestaAPI("200", "La mesa se ha desactivado");
+    public static final CodigoRespuestaAPI CODIGO_400_NO_DESACTIVADA = new CodigoRespuestaAPI("400", "La mesa no se ha desactivado");
+    public static final CodigoRespuestaAPI CODIGO_200_TURNO_CREADO = new CodigoRespuestaAPI("200", "El turno se ha creado");
+    public static final CodigoRespuestaAPI CODIGO_400_TURNO_NO_CREADO = new CodigoRespuestaAPI("400", "El turno no se ha creado");
+    public static final CodigoRespuestaAPI CODIGO_200_TURNO_DESACTIVADO = new CodigoRespuestaAPI("200", "El turno se ha desactivado");
+    public static final CodigoRespuestaAPI CODIGO_400_TURNO_NO_DESACTIVADO = new CodigoRespuestaAPI("400", "El turno no se ha desactivado");
+    public static final CodigoRespuestaAPI CODIGO_200_VALORACION_CREADA = new CodigoRespuestaAPI("200", "La valoracion se ha creado correctamente");
+    public static final CodigoRespuestaAPI CODIGO_400_VALORACION_NO_CREADA = new CodigoRespuestaAPI("400", "La valoracion no se ha creado correctamente");
+
 
 
 }

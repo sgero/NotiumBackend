@@ -282,14 +282,14 @@ create table comentario (
                             id serial not null ,
                             texto varchar(150) not null ,
                             fecha_comentario timestamp(6) not null ,
+                            valoracion int,
+                            codigo_reserva varchar(50) not null,
                             activo boolean default true not null ,
                             id_restaurante integer not null ,
                             id_ocio_nocturno integer not null ,
-                            id_cliente integer not null ,
                             primary key (id),
                             constraint id_comentario_restaurante_fk foreign key (id_restaurante) references restaurante (id),
-                            constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id),
-                            constraint id_comentario_cliente_fk foreign key (id_cliente) references cliente (id)
+                            constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
 
@@ -382,3 +382,5 @@ INSERT INTO formato (formato) VALUES
                                   ('VASO'),
                                   ('PINTA'),
                                   ('MACETA');
+
+
