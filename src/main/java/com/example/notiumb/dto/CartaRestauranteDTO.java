@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 public class CartaRestauranteDTO {
     private Integer id;
 
