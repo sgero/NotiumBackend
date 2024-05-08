@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"restaurante"})
+@EqualsAndHashCode(exclude = {"restaurante","productoSet"})
 
 public class CartaRestaurante {
     @Id
@@ -26,5 +26,7 @@ public class CartaRestaurante {
     @JoinColumn(name = "id_restaurante", nullable = false)
     private Restaurante restaurante;
 
+    @OneToMany(mappedBy = "cartaRes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Producto> productoSet;
 
 }

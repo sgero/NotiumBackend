@@ -2,11 +2,14 @@ package com.example.notiumb.service;
 
 
 import com.example.notiumb.converter.IProductoMapper;
+import com.example.notiumb.dto.CartaRestauranteDTO;
+import com.example.notiumb.dto.ProductoAuxDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.TokenDTO;
 import com.example.notiumb.model.CartaRestaurante;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
+import com.example.notiumb.model.enums.TipoCategoria;
 import com.example.notiumb.repository.ICartaRestauranteRespository;
 import com.example.notiumb.repository.IProductoRepository;
 
@@ -41,7 +44,21 @@ public class ProductoService {
     @Autowired
     private ICartaRestauranteRespository cartaRestauranteRespository;
 
-    public ProductoDTO crearProducto(ProductoDTO productoDTO) {
+    public ProductoDTO crearProducto(ProductoAuxDTO productoAuxDTO) {
+
+        String tokensio = productoAuxDTO.getUsername();
+        //String username = jwtService.extractUsername(productoDTO.getUsername());
+        User user = userRepository.findTopByUsernameAndActivoTrue("Pruebas");
+        Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+        CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+        CartaRestauranteDTO cartaToSet = new CartaRestauranteDTO();
+        cartaToSet.setId(carta.getId());
+        ProductoDTO productoDTO = new ProductoDTO();
+        productoDTO.setNombre(productoAuxDTO.getNombre());
+        productoDTO.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
+        productoDTO.setCartaRes(cartaToSet);
+        productoDTO.setActivo(true);
+
 
         return productoMapper.toDTO(productoRepository.save(productoMapper.toEntity(productoDTO)));
 
