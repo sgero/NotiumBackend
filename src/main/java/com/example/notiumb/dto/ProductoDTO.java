@@ -16,7 +16,6 @@ public class ProductoDTO {
 
     private Boolean activo;
 
-
     private Integer idCartaOcio;
 
     private Integer idCartaRestaurante;

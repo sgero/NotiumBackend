@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -40,18 +39,18 @@ public class OcioNocturno {
     @Column(name = "activo")
     private Boolean activo = true;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 
     @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Evento> eventoSet;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Rpp> rppSet;
 
 }

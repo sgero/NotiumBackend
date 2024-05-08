@@ -77,8 +77,8 @@ create table restaurante
     nombre        varchar(100)  not null,
     cif           varchar(9)    not null,
     telefono      varchar(20)   not null,
-    hora_apertura time     not null,
-    hora_cierre   time    not null,
+    hora_apertura varchar(7)     not null,
+    hora_cierre   varchar(7)    not null,
     valoracion    boolean,
     disponible    boolean,
     imagen_marca  varchar(1000) not null,
@@ -223,8 +223,8 @@ create table mesa_restaurante (
 
 create table turno_restaurante (
                                    id serial not null ,
-                                   hora_inicio time not null ,
-                                   hora_fin time not null ,
+                                   hora_inicio varchar(7) not null ,
+                                   hora_fin varchar(7) not null ,
                                    activo boolean default true not null ,
                                    id_restaurante integer not null ,
                                    primary key (id),
@@ -284,14 +284,14 @@ create table comentario (
                             id serial not null ,
                             texto varchar(150) not null ,
                             fecha_comentario timestamp(6) not null ,
+                            valoracion int,
+                            codigo_reserva varchar(50) not null,
                             activo boolean default true not null ,
                             id_restaurante integer not null ,
                             id_ocio_nocturno integer not null ,
-                            id_cliente integer not null ,
                             primary key (id),
                             constraint id_comentario_restaurante_fk foreign key (id_restaurante) references restaurante (id),
-                            constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id),
-                            constraint id_comentario_cliente_fk foreign key (id_cliente) references cliente (id)
+                            constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
 
@@ -384,3 +384,5 @@ INSERT INTO formato (formato) VALUES
                                   ('VASO'),
                                   ('PINTA'),
                                   ('MACETA');
+
+

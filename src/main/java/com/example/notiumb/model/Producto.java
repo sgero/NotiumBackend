@@ -26,10 +26,10 @@ public class Producto {
     private Boolean activo;
     @ManyToOne
     @JoinColumn(name = "id_carta_ocio")
-    private CartaOcio carta_ocio;
+    private CartaOcio cartaOcio;
     @ManyToOne
     @JoinColumn(name = "id_carta_rest")
-    private CartaRestaurante carta_res;
+    private CartaRestaurante cartaRes;
 
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ProductoFormato> productoFormatoSet;

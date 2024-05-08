@@ -12,26 +12,27 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/restaurante")
+@RequestMapping("/restaurante")
 public class RestauranteController {
 
     @Autowired
     private RestauranteService restauranteService;
 
 
-    public RestauranteController(RestauranteService restauranteService) {
-        this.restauranteService = restauranteService;
-    }
-
-    @GetMapping("/listar")
-    public List<Restaurante> getRestaurantes() {
+    @GetMapping(value="/listar")
+    public List<RestauranteDTO> getRestaurantes() {
         return restauranteService.listarRestaurantes();
     }
 
+    @GetMapping(value = "/porID")
+    public RestauranteDTO getRestauranteById(@RequestParam Integer id) {
+        return restauranteService.getRestauranteByID(id);
+    }
 
-    @PostMapping("/crear")
-    public void crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) {
-        restauranteService.crearRestaurante(restauranteDTO);
+
+    @PostMapping(value="/crear")
+    public Restaurante crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) {
+        return restauranteService.crearRestaurante(restauranteDTO);
     }
 }
 
