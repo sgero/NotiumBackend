@@ -53,12 +53,11 @@ public class CartaOcioService {
 
     public void delete(Integer id){
 
-        CartaOcio cataAEliminar = repository.findById(id).orElse(null);
+        CartaOcio cartaAEliminar = repository.findById(id).orElse(null);
 
-        if (cataAEliminar!=null){
-            cataAEliminar.setActivo(false);
-
-            repository.save(cataAEliminar);
+        if (cartaAEliminar!=null){
+            cartaAEliminar.setActivo(false);
+            repository.save(cartaAEliminar);
         }
     }
 

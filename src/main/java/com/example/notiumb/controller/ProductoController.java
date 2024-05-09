@@ -1,5 +1,6 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.ProductoAuxDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.TokenDTO;
 import com.example.notiumb.security.auth.AuthenticationResponseDTO;
@@ -18,8 +19,8 @@ public class ProductoController {
     private ProductoService productoService;
 
     @PostMapping(value = "/crear")
-    public ProductoDTO crearProducto(@RequestBody ProductoDTO productoDTO) {
-        return productoService.crearProducto(productoDTO);
+    public ProductoDTO crearProducto(@RequestBody ProductoAuxDTO productoAuxDTO) {
+        return productoService.crearProducto(productoAuxDTO);
     }
 
     @PostMapping(value = "/listar")

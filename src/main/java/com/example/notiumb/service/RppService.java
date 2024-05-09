@@ -68,11 +68,11 @@ public class RppService {
     }
 
     public void delete(@Param("id") Integer id){
-        Rpp rppAEliminar = repository.findByIdAndActivoIsTrue(id).orElse(null);
+        Rpp deleteRpp = repository.findByIdAndActivoIsTrue(id).orElse(null);
 
-        if (rppAEliminar!=null){
-            rppAEliminar.setActivo(false);
-            repository.save(rppAEliminar);
+        if (deleteRpp!=null){
+            deleteRpp.setActivo(false);
+            repository.save(deleteRpp);
         }
     }
 }
