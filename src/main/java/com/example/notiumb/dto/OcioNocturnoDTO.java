@@ -2,13 +2,17 @@ package com.example.notiumb.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Time;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OcioNocturnoDTO {
     private Integer id;
     @NotBlank
