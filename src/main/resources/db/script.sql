@@ -285,8 +285,8 @@ create table comentario (
                             valoracion int,
                             codigo_reserva varchar(50) not null,
                             activo boolean default true not null ,
-                            id_restaurante integer not null ,
-                            id_ocio_nocturno integer not null ,
+                            id_restaurante integer ,
+                            id_ocio_nocturno integer ,
                             primary key (id),
                             constraint id_comentario_restaurante_fk foreign key (id_restaurante) references restaurante (id),
                             constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
