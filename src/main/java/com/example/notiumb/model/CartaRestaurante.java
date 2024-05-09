@@ -6,12 +6,12 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name="carta_rest")
+@Table(name="carta_rest", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"restaurante"})
+@EqualsAndHashCode(exclude = {"restaurante","productoSet"})
 
 public class CartaRestaurante {
     @Id
@@ -26,5 +26,7 @@ public class CartaRestaurante {
     @JoinColumn(name = "id_restaurante", nullable = false)
     private Restaurante restaurante;
 
+    @OneToMany(mappedBy = "cartaRes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Producto> productoSet;
 
 }

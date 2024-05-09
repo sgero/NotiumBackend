@@ -10,4 +10,7 @@ public interface IRestauranteRepository extends JpaRepository<Restaurante , Inte
 
     Restaurante findTopByUserEquals(User user);
 
+    Restaurante findTopById(Integer id);
+
+
 }

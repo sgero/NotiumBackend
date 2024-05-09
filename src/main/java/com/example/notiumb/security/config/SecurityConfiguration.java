@@ -82,6 +82,11 @@ public class SecurityConfiguration {
                         .requestMatchers("/rpps/**").permitAll()
                         .requestMatchers("/email/**").permitAll()
                         .requestMatchers("/email.html").permitAll()
+                        .requestMatchers("/mesa/**").permitAll()
+                        .requestMatchers("/turno/**").permitAll()
+                        .requestMatchers("/restaurante/**").permitAll()
+                        .requestMatchers("/comentario/**").permitAll()
+                        .requestMatchers("/producto/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
                         .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
@@ -91,6 +96,7 @@ public class SecurityConfiguration {
                         .requestMatchers(POST, "/eventos/crear").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .requestMatchers(GET, "/cartasOcio/listar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name(), Rol.RPP.name(), Rol.CLIENTE.name())
                         .requestMatchers(POST, "/cartasOcio/guardar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
+                        .requestMatchers(POST, "/eventos/fechas").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .anyRequest().authenticated()
 
 

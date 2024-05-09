@@ -3,10 +3,11 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="comentario")
+@Table(name="comentario", schema = "notium", catalog = "postgres")
 @Data
 public class Comentario {
     @Id
@@ -14,15 +15,27 @@ public class Comentario {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "texto")
     private String texto;
 
-    private LocalDateTime fecha_comentario;
+    @Column(name = "fecha_comentario")
+    private Timestamp fecha_comentario;
 
+    @Column(name = "valoracion")
+    private Integer valoracion;
+
+    @Column(name = "codigo_reserva")
+    private String codigoReserva;
+
+    @Column(name = "activo")
     private Boolean activo;
 
-//    private Restaurante restaurante;
-//
-//    private OcioNocturno ocio;
-//
-//    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "id_restaurante")
+    private Restaurante restaurante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ocio_nocturno")
+    private OcioNocturno ocio;
+
 }
