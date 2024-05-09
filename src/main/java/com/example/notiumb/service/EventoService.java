@@ -18,7 +18,9 @@ import com.example.notiumb.utilidades.UtilidadesAPI;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,6 +59,18 @@ public class EventoService {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Date fechaActual = new Date();
         UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findByActivoIsTrueAndFechaAfterOrderByFechaDesc(fechaActual)));
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO eventosEntreFechasDeOcio(Integer idOcio, Date fechaInicio, Date fechaFin) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.getEventosBetweenDatesByOcioId(idOcio, fechaInicio, fechaFin)));
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO eventosEntreFechas(Date fechaInicio, Date fechaFin) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.getEventosBetweenDates(fechaInicio, fechaFin)));
         return respuestaDTO;
     }
 
