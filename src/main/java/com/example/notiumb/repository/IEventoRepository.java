@@ -15,7 +15,12 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
     @NonNull
     List<Evento> findAll();
 
-    List<Evento> findByActivoIsTrueAndFechaAfterOrderByFechaDesc(Date fechaActual);
+    @Query(value = "select * from notium.evento e " +
+            "where e.fecha > :fecha and e.activo " +
+            "order by e.fecha, e.id " +
+            "limit :numElem offset :numPag ;", nativeQuery = true)
+    List<Evento> activosPresentesYFuturos(Date fecha, Integer numElem, Integer numPag);
+
     @Query(value = "select e.* from notium.evento e " +
             "join notium.ocio_nocturno o on e.id_ocio_nocturno = o.id " +
             "where o.id = :idOcio and e.fecha between :fechaInicio and :fechaFin and e.activo = true " +
@@ -26,5 +31,7 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
             "where e.fecha between :fechaInicio and :fechaFin and e.activo = true " +
             "order by e.fecha desc;", nativeQuery = true)
     List<Evento> getEventosBetweenDates(Date fechaInicio, Date fechaFin);
+
+    Evento findEventoByIdAndActivoIsTrue (Integer idEvento);
 
 }

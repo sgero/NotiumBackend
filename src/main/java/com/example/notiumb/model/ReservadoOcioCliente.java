@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name="reservado_ocio_cliente", schema = "notium", catalog = "postgres")
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"cliente", "reservadoOcio"})
+@EqualsAndHashCode(exclude = {"cliente", "reservadoOcio","datosCompradors"})
 public class ReservadoOcioCliente {
 
     @Id
@@ -35,4 +36,11 @@ public class ReservadoOcioCliente {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservado_ocio", nullable = false)
     private ReservadoOcio reservadoOcio;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_promocion")
+    private Promocion promocion;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservadoOcioCliente", fetch = FetchType.LAZY)
+    private Set<DatosComprador> datosCompradors;
 }

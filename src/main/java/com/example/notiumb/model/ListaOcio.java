@@ -1,5 +1,6 @@
 package com.example.notiumb.model;
 
+import com.example.notiumb.model.enums.Consumiciones;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,13 @@ public class ListaOcio {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
+
+    @Column(name = "detalle_lista", nullable = false)
+    private String detalleLista ;
+
+    @Column(name = "consumiciones", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Consumiciones consumiciones;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rpp", nullable = false)

@@ -1,5 +1,7 @@
 package com.example.notiumb.model;
 
+import com.example.notiumb.model.enums.Botellas;
+import com.example.notiumb.model.enums.Consumiciones;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +29,13 @@ public class ReservadoOcio {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
+
+    @Column(name = "detalle_reservado", nullable = false)
+    private String detalleReservado ;
+
+    @Column(name = "botellas", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Botellas botellas;
 
     @Column(name = "precio", nullable = false)
     private Double precio;

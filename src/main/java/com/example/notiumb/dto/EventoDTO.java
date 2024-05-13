@@ -23,6 +23,7 @@ public class EventoDTO {
     private String tematica;
     @FutureOrPresent
     private Timestamp fecha;
+    private String cartel;
     private CodigoVestimentaOcio codigoVestimentaOcio;
     private EdadMinimaOcio edadMinimaOcio;
     @Positive
