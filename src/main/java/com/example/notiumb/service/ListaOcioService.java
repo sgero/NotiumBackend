@@ -22,8 +22,6 @@ public class ListaOcioService {
     private IEventoRepository eventoRepository;
     @Autowired
     private IListaOcioMapper converter;
-    @Autowired
-    private IEventoMapper eventoMapper;
 
     public List<ListaOcioDTO> getAll(){ return converter.toDTO(repository.findAllByActivoIsTrue()); }
 
