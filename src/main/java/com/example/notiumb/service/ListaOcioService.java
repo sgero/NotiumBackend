@@ -30,8 +30,7 @@ public class ListaOcioService {
     public ListaOcioDTO getById(@Param("id") Integer id) {
         return converter.toDTO(repository.findByIdAndActivoIsTrue(id).orElse(null));
     }
-
-    public List<ListaOcioDTO> getAllByEventoId(@Param("id") Integer id) {
+    public ListaOcioDTO getActivaByEventoId(@Param("id") Integer id) {
         return converter.toDTO(repository.findListaOcioByEventoIdAndActivoIsTrue(id));
     }
 
