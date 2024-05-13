@@ -100,6 +100,8 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/cartasOcio/listar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name(), Rol.RPP.name(), Rol.CLIENTE.name())
                         .requestMatchers(POST, "/cartasOcio/guardar").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .requestMatchers(POST, "/eventos/fechas").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
+                        .requestMatchers(POST, "/eventos/fechas/{id}").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
+                        .requestMatchers(POST, "/eventos{id}").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
                         .anyRequest().authenticated()
 
 

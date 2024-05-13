@@ -1,5 +1,6 @@
 package com.example.notiumb.dto;
 
+import com.example.notiumb.model.enums.Botellas;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Positive;
@@ -22,6 +23,8 @@ public class ReservadoOcioDTO {
     private Integer personasMaximasPorReservado;
     @Digits(integer = 3, fraction = 2)
     private Double precio;
+    private String detalleReservado;
+    private Botellas botellas;
     @Valid
     private EventoDTO eventoDTO;
 

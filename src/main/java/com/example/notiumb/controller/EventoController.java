@@ -2,6 +2,7 @@ package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.CrearEventoCiclicoDTO;
 import com.example.notiumb.dto.CrearEventoDTO;
+import com.example.notiumb.dto.EventoDTO;
 import com.example.notiumb.service.EventoService;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,22 @@ public class EventoController {
     }
 
     @GetMapping("/activos")
-    public RespuestaDTO obtenerActivos(){
-        return eventoService.getActivos();
+    public RespuestaDTO obtenerActivos(@RequestParam Integer numElem, @RequestParam Integer numPag){
+        return eventoService.getActivos(numElem, numPag);
     }
 
-    @PostMapping("/fechasYOcio")
-    public RespuestaDTO fechasYOcio(@PathVariable(value = "Id del ocio nocturno") Integer idOcio, @RequestParam Date fechaInicio,@RequestBody Date fechaFin){
+    @GetMapping("/{id}")
+    public RespuestaDTO getById(@PathVariable(value = "id") Integer idEvento){
+        return eventoService.getById(idEvento);
+    }
+    @GetMapping("/{id}/entradas")
+    public RespuestaDTO informacionEntradas(@PathVariable(value = "id") Integer idEvento){
+        return eventoService.getInformacionEntradas(idEvento);
+    }
+
+
+    @GetMapping("/fechas/{id}")
+    public RespuestaDTO fechasYOcio(@PathVariable(value = "id") Integer idOcio, @RequestParam Date fechaInicio,@RequestParam Date fechaFin){
         return eventoService.eventosEntreFechasDeOcio(idOcio, fechaInicio, fechaFin);
     }
 
