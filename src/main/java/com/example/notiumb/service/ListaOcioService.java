@@ -1,6 +1,5 @@
 package com.example.notiumb.service;
 
-import com.example.notiumb.converter.IEventoMapper;
 import com.example.notiumb.converter.IListaOcioMapper;
 import com.example.notiumb.dto.ListaOcioDTO;
 import com.example.notiumb.model.Evento;
