@@ -90,6 +90,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/comentario/**").permitAll()
                         .requestMatchers("/cliente/**").permitAll()
                         .requestMatchers("/producto/**").permitAll()
+                        .requestMatchers("/productoFormato/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
                         .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())
