@@ -11,9 +11,13 @@ import java.util.List;
 public interface IEntradaOcioClienteMapper {
     @Mapping(source = "entradaOcioDTO", target = "entradaOcio")
     @Mapping(source = "clienteDTO", target = "cliente")
+    @Mapping(source = "promocionDTO", target = "promocion")
+    @Mapping(source = "datosCompradorDTO", target = "datosComprador")
     EntradaOcioCliente toEntity(EntradaOcioClienteDTO dto);
     @Mapping(source = "cliente", target = "clienteDTO")
     @Mapping(source = "entradaOcio", target = "entradaOcioDTO")
+    @Mapping(source = "promocion", target = "promocionDTO")
+    @Mapping(source = "datosComprador", target = "datosCompradorDTO")
     EntradaOcioClienteDTO toDTO(EntradaOcioCliente entity);
 
     List<EntradaOcioCliente> toEntity(List<EntradaOcioClienteDTO> dtos);
