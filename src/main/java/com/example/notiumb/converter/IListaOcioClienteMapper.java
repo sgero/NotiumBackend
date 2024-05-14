@@ -1,8 +1,10 @@
 package com.example.notiumb.converter;
 
 import com.example.notiumb.dto.CartaOcioDTO;
+import com.example.notiumb.dto.EntradaOcioClienteDTO;
 import com.example.notiumb.dto.ListaOcioClienteDTO;
 import com.example.notiumb.model.CartaOcio;
+import com.example.notiumb.model.EntradaOcioCliente;
 import com.example.notiumb.model.ListaOcioCliente;
 import org.mapstruct.Mapper;
 
@@ -17,6 +19,5 @@ public interface IListaOcioClienteMapper {
 
     List<ListaOcioClienteDTO> toDTO(List<ListaOcioCliente> listEntity);
 
-    List<ListaOcioCliente> toEntity(List<ListaOcioClienteDTO> listDTOs);
-
+    List<EntradaOcioCliente> toEntity(List<EntradaOcioClienteDTO> entradasOcioClienteLista);
 }

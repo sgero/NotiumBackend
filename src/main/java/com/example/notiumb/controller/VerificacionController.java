@@ -15,26 +15,26 @@ public class VerificacionController {
     @Autowired
     private UserService usuarioService;
 
-    @GetMapping
-    public ResponseEntity<String> verificarCuenta(@RequestParam("token") String token) {
-        // Lógica para verificar el token y cambiar el campo verificado del usuario
-        // Validar el token
-        if (token == null || token.isEmpty()) {
-            return ResponseEntity.badRequest().body("El token de verificación no es válido.");
-        }
-
-        // Buscar el usuario por el token
-        User usuario = usuarioService.obtenerUsuarioPorToken(token);
-        if (usuario != null) {
-            // Si se encuentra el usuario, marcarlo como verificado
-            usuario.setVerificado(true);
-            usuarioService.actualizarUsuario(usuario);
-            return ResponseEntity.ok("Cuenta verificada exitosamente.");
-        } else {
-            // Si no se encuentra el usuario, devolver una respuesta de error
-            return ResponseEntity.badRequest().body("El token de verificación no es válido.");
-        }
-}
+//    @GetMapping
+//    public ResponseEntity<String> verificarCuenta(@RequestParam("token") String token) {
+//        // Lógica para verificar el token y cambiar el campo verificado del usuario
+//        // Validar el token
+//        if (token == null || token.isEmpty()) {
+//            return ResponseEntity.badRequest().body("El token de verificación no es válido.");
+//        }
+//
+//        // Buscar el usuario por el token
+//        User usuario = usuarioService.obtenerUsuarioPorToken(token);
+//        if (usuario != null) {
+//            // Si se encuentra el usuario, marcarlo como verificado
+//            usuario.setVerificado(true);
+//            usuarioService.actualizarUsuario(usuario);
+//            return ResponseEntity.ok("Cuenta verificada exitosamente.");
+//        } else {
+//            // Si no se encuentra el usuario, devolver una respuesta de error
+//            return ResponseEntity.badRequest().body("El token de verificación no es válido.");
+//        }
+//}
 }
 
 

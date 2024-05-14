@@ -5,15 +5,21 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
 public class EntradaOcioClienteDTO {
     private Integer id;
     @NotBlank
     private String codigo;
-    private Double fechaCompra;
+    private Timestamp fechaCompra;
     @Valid
     private ClienteDTO clienteDTO;
     @Valid
     private EntradaOcioDTO entradaOcioDTO;
+    @Valid
+    private PromocionDTO promocionDTO;
+    @Valid
+    private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
 }

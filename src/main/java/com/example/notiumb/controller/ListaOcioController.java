@@ -20,7 +20,12 @@ public class ListaOcioController {
     @GetMapping("/{id}")
     public ListaOcioDTO listaId(@PathVariable Integer id){ return service.getById(id); }
     @GetMapping("/evento/{id}")
-    public List<ListaOcioDTO> listaOcioByEvento(@PathVariable Integer id){ return service.getAllByEventoId(id); }
+    public ListaOcioDTO listaOcioActivaByEvento(@PathVariable Integer id){ return service.getActivaByEventoId(id); }
+
+    @GetMapping("/evento/{idEvento}/actualizar/{idLista}")
+    public ListaOcioDTO actualizarEstadoListas(@PathVariable(value = "idEvento") Integer idEvento, @PathVariable(value = "idLista") Integer idLista){
+        return service.actualizarEstadoListas(idEvento, idLista);
+    }
     @DeleteMapping("/{id}")
     public void eliminarLista(@PathVariable Integer id){ service.delete(id); }
 }

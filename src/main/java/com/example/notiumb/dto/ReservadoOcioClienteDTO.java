@@ -33,4 +33,6 @@ public class ReservadoOcioClienteDTO {
     private ClienteDTO clienteDTO;
     @Valid
     private ReservadoOcioDTO reservadoOcioDTO;
+    @Valid
+    private PromocionDTO promocionDTO;
 }

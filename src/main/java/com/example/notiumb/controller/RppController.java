@@ -19,10 +19,10 @@ public class RppController {
     public List<RppDTO> listarRpps(){ return service.getAll(); }
 
     @GetMapping("/{id}")
-    public RppDTO RppId(@PathVariable Integer id){ return service.getById(id); }
+    public RppDTO rppId(@PathVariable Integer id){ return service.getById(id); }
 
     @PostMapping("/guardar")
-    public RppDTO saveRpp(@RequestBody RppDTO dto){ return service.save(dto); }
+    public RppDTO guardarRpp(@RequestBody RppDTO dto){ return service.save(dto); }
 
     @DeleteMapping("/{id}")
     public void eliminarRpp(@PathVariable Integer id){ service.delete(id); }

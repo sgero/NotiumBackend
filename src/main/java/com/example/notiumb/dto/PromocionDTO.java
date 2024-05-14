@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class TokenDTO {
-    private String token;
+@Builder
+public class PromocionDTO {
+    private Integer id;
 }

@@ -1,5 +1,6 @@
 package com.example.notiumb.dto;
 
+import com.example.notiumb.model.enums.Consumiciones;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -22,6 +23,9 @@ public class ListaOcioDTO {
     private Double total_invitaciones;
     @Valid
     private RppDTO rppDTO;
+    private String detalleLista;
+    private Consumiciones consumiciones;
     @Valid
     private EventoDTO eventoDTO;
+    private Boolean activo = false;
 }

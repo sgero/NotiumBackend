@@ -1,10 +1,21 @@
 package com.example.notiumb.service;
 
+import com.example.notiumb.converter.IEntradaOcioClienteMapper;
+import com.example.notiumb.converter.IListaOcioClienteMapper;
+import com.example.notiumb.dto.EntradaOcioClienteDTO;
 import com.example.notiumb.model.*;
 import com.example.notiumb.repository.*;
+import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
+import com.example.notiumb.utilidades.RespuestaDTO;
+import com.example.notiumb.utilidades.UtilidadesAPI;
+import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,13 +34,19 @@ public class CompraClienteOcioService {
     private IReservadoOcioRepository reservadoOcioRepository;
     @Autowired
     private IListaOcioRepository listaOcioRepository;
+    @Autowired
+    private IEntradaOcioClienteMapper entradaOcioClienteMapper;
+    @Autowired
+    private IClienteRepository clienteRepository;
+    @Autowired
+    private IListaOcioClienteMapper listaOcioClienteMapper;
 
     public boolean aforoNoCompleto(Evento evento, List<EntradaOcioCliente> entradasOcioCliente, ReservadoOcioCliente reservadoOcioCliente, List<ListaOcioCliente> listaOcioCliente){
         Integer aforoEvento = evento.getAforo();
 
         EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(evento.getId());
         ReservadoOcio reservadoOcio = reservadoOcioRepository.findReservadoOcioByEventoIdAndActivoIsTrue(evento.getId());
-        List<ListaOcio> listaOcio = listaOcioRepository.findListaOcioByEventoIdAndActivoIsTrue(evento.getId());
+        List<ListaOcio> listaOcio = listaOcioRepository.findAllByEventoId(evento.getId());
 
         Integer entradasVendidas = entradaOcioClienteRepository.cantidadEntradasVendidas(entradaOcio.getId());
         Integer reservadosVendidos = reservadoOcioClienteRepository.cantidadReservadosVendidos(reservadoOcio.getId());
@@ -53,5 +70,30 @@ public class CompraClienteOcioService {
                     && (listaOcioCliente.size() + clientesApuntadosALista) < aforoEvento;
         }
         return false;
+    }
+
+    public RespuestaDTO comprarEntradaNormal(Integer idEvento, Integer idCliente, Integer entradaOcioALaVenta, List<EntradaOcioClienteDTO> entradasOcioClienteLista) {
+        Cliente cliente = clienteRepository.findById(idCliente).orElse(null);
+        Evento evento = eventoRepository.findById(idEvento).orElse(null);
+        EntradaOcio entradaOcio = entradaOcioRepository.findById(entradaOcioALaVenta).orElse(null);
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        if (evento != null && cliente != null && entradaOcio != null && entradasOcioClienteLista != null){
+            List<EntradaOcioCliente> listaEntradasCompradas = listaOcioClienteMapper.toEntity(entradasOcioClienteLista);
+            if (aforoNoCompleto(evento, listaEntradasCompradas, null, null)){
+                entradasOcioClienteLista.forEach(e -> EntradaOcioCliente.builder()
+                        .fechaCompra(Timestamp.from(Instant.from(LocalDate.now())))
+                        .codigo("EOC" + "1")
+                        .cliente(cliente)
+                        .entradaOcio(entradaOcio)
+                        .build()
+                );
+
+                entradaOcioClienteRepository.saveAll(listaEntradasCompradas);
+                UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, entradasOcioClienteLista);
+            }
+        }else {
+            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_EVENTO);
+        }
+        return respuestaDTO;
     }
 }

@@ -25,7 +25,7 @@ public class CartaOcioController {
         return service.getById(id);
     }
     @PostMapping("/guardar")
-    public CartaOcioDTO guardarCarta(@RequestBody (required = false) CartaOcioDTO cartaOcioDTO){
+    public CartaOcioDTO guardarCarta(@RequestBody CartaOcioDTO cartaOcioDTO){
         return service.save(cartaOcioDTO);
     }
     @DeleteMapping("/{id}")
