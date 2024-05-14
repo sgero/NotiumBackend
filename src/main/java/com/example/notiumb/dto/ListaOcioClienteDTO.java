@@ -28,4 +28,8 @@ public class ListaOcioClienteDTO {
     private ClienteDTO clienteDTO;
     @Valid
     private ListaOcioDTO listaOcioDTO;
+    @Valid
+    private PromocionDTO promocionDTO;
+    @Valid
+    private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
 }

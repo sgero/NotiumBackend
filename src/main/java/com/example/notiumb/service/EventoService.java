@@ -1,25 +1,23 @@
 package com.example.notiumb.service;
 
-import com.example.notiumb.converter.IEventoMapper;
-import com.example.notiumb.converter.IRppMapper;
-import com.example.notiumb.dto.EntradaOcioDTO;
-import com.example.notiumb.dto.EventoDTO;
-import com.example.notiumb.dto.ListaOcioDTO;
-import com.example.notiumb.dto.ReservadoOcioDTO;
+import com.example.notiumb.converter.*;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
 import com.example.notiumb.model.enums.DiasARepetirCicloEventoOcio;
 import com.example.notiumb.model.enums.RepetirCicloEventoOcio;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
-import com.example.notiumb.utilidades.ULogger;
 import com.example.notiumb.utilidades.UtilidadesAPI;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,6 +38,14 @@ public class EventoService {
     private IRppMapper rppMapper;
     @Autowired
     private IRppRepository rppRepository;
+    @Autowired
+    private IListaOcioMapper listaOcioMapper;
+    @Autowired
+    private ListaOcioService listaOcioService;
+    @Autowired
+    private IEntradaOcioMapper entradaOcioMapper;
+    @Autowired
+    private IReservadoOcioMapper reservadoOcioMapper;
 
     public RespuestaDTO getAll() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
@@ -47,33 +53,95 @@ public class EventoService {
         return respuestaDTO;
     }
 
-    public RespuestaDTO crearEventoUnico(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
+    public RespuestaDTO getActivos(Integer numElem, Integer numPag) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        Date fechaActual = new Date();
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(fechaActual);
+        int year = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH);
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+        calendario.clear();
+        calendario.set(year, mes, dia);
+        Date fechaSinHora = calendario.getTime();
+        List<EventoDTO> eventosTotales =  eventoMapper.toDTO(eventoRepository.activosPresentesYFuturos(fechaSinHora, numElem, numPag));
+        List<EventoDTO> eventoDTOList = new ArrayList<>(eventosTotales);
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoDTOList);
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO eventosEntreFechasDeOcio(Integer idOcio, Date fechaInicio, Date fechaFin) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.getEventosBetweenDatesByOcioId(idOcio, fechaInicio, fechaFin)));
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO eventosEntreFechas(Date fechaInicio, Date fechaFin) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.getEventosBetweenDates(fechaInicio, fechaFin)));
+        return respuestaDTO;
+    }
+
+    @Transactional
+    public RespuestaDTO guardarEvento(EventoDTO eventoDTO, EntradaOcioDTO entradaOcioDTO, ReservadoOcioDTO reservadoOcioDTO, List<ListaOcioDTO> listaOcioDTO){
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         try{
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(eventoDTO.getOcioNocturnoDTO().getId()).orElse(null);
 
-            if (ocioNocturno != null && entradaOcioDTO != null && reservadoOcioDTO != null && listaOcioDTO != null){
-                Evento evento = crearEventoPersonalizado(eventoDTO, ocioNocturno);
-                EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
-                ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
-                List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
-                Double invitacionesLista = totalInvitacionesLista(listaOcio);
-                if (evento != null && evento.getAforo() >=
-                        (entradaOcio.getTotalEntradas() + (reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado()) + invitacionesLista)){
-                    eventoRepository.save(evento);
-                    entradaOcioRepository.save(entradaOcio);
-                    reservadoOcioRepository.save(reservadoOcio);
-                    listaOcioRepository.saveAll(listaOcio);
-                    EventoDTO eventoCreado = eventoMapper.toDTO(evento);
-                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_UNICO_CREADO, eventoCreado);
+            // Verificamos si es crear o editar
+            if (eventoDTO.getId() == null){
+                if (ocioNocturno != null && entradaOcioDTO != null && reservadoOcioDTO != null && listaOcioDTO != null){
+                    Evento evento = crearEventoPersonalizado(eventoDTO, ocioNocturno);
+                    EntradaOcio entradaOcio = crearEntradasDeEvento(evento, entradaOcioDTO);
+                    ReservadoOcio reservadoOcio = crearReservadoDeEvento(evento, reservadoOcioDTO);
+                    List<ListaOcio> listaOcio = crearListasDeEvento(evento, listaOcioDTO);
+                    Double invitacionesLista = totalInvitacionesLista(listaOcio);
+                    if (evento.getAforo() >=
+                            entradaOcio.getTotalEntradas() + reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado() + invitacionesLista){
+                        eventoRepository.save(evento);
+                        entradaOcioRepository.save(entradaOcio);
+                        reservadoOcioRepository.save(reservadoOcio);
+                        listaOcioRepository.saveAll(listaOcio);
+                        EventoDTO eventoGuardado = eventoMapper.toDTO(evento);
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_UNICO_CREADO, eventoGuardado);
+                    }else {
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_2);
+                    }
                 }else {
-                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_2);
+                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_1);
                 }
             }else {
-                UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_1);
+                Evento eventoEditar = eventoRepository.findById(eventoDTO.getId()).orElse(null);
+                EntradaOcio entradaOcioEditar = entradaOcioRepository.findById(entradaOcioDTO.getId()).orElse(null);
+                ReservadoOcio reservadoOcioEditar = reservadoOcioRepository.findById(reservadoOcioDTO.getId()).orElse(null);
+                if (eventoEditar != null && entradaOcioEditar != null && reservadoOcioEditar != null){
+                    setearEvento(eventoDTO, ocioNocturno, eventoEditar);
+                    setearEntrada(eventoEditar, entradaOcioDTO, entradaOcioEditar);
+                    setearReservado(eventoEditar, reservadoOcioDTO, reservadoOcioEditar);
+                    List<ListaOcio> listadoOcio = new ArrayList<>();
+                    for (ListaOcioDTO l : listaOcioDTO){
+                        ListaOcio l2 = listaOcioRepository.findById(l.getId()).orElse(null);
+                        l.setEventoDTO(eventoDTO);
+                        if (l2 != null) {
+                            setearLista(eventoEditar, l2, l);
+                            listadoOcio.add(listaOcioMapper.toEntity(l));
+                        }
+                    }
+                    Double invitacionesLista = totalInvitacionesLista(listadoOcio);
+                    if (eventoEditar.getAforo() >=
+                            entradaOcioEditar.getTotalEntradas() + reservadoOcioEditar.getReservadosDisponibles() * reservadoOcioEditar.getPersonasMaximasPorReservado() + invitacionesLista){
+                        eventoRepository.save(eventoEditar);
+                        entradaOcioRepository.save(entradaOcioEditar);
+                        reservadoOcioRepository.save(reservadoOcioEditar);
+                        listaOcioRepository.saveAll(listadoOcio);
+                        EventoDTO eventoGuardado = eventoMapper.toDTO(eventoEditar);
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_EDITADO, eventoGuardado);
+                    }else {
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_2);
+                    }
+                }
             }
         }catch (Exception e){
-            ULogger.error(e);
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_500);
         }
         return respuestaDTO;
@@ -81,53 +149,69 @@ public class EventoService {
 
     private Evento crearEventoPersonalizado(EventoDTO eventoDTO, OcioNocturno ocioNocturno) {
         Evento eventoACrear = new Evento();
-        eventoACrear.setNombre(eventoDTO.getNombre());
-        eventoACrear.setDescripcion(eventoDTO.getDescripcion());
-        eventoACrear.setTematica(eventoDTO.getTematica());
-        eventoACrear.setFecha(eventoDTO.getFecha());
-        eventoACrear.setCodigoVestimentaOcio(eventoDTO.getCodigoVestimentaOcio());
-        eventoACrear.setEdadMinimaOcio(eventoDTO.getEdadMinimaOcio());
-        eventoACrear.setAforo(eventoDTO.getAforo());
-        eventoACrear.setOcioNocturno(ocioNocturno);
-        if (eventoACrear.getAforo() > ocioNocturno.getAforo()){
-            return null;
-        }
+        setearEvento(eventoDTO, ocioNocturno, eventoACrear);
         return eventoACrear;
     }
+
+    private static void setearEvento(EventoDTO eventoDTO, OcioNocturno ocioNocturno, Evento eventoGuardar) {
+        eventoGuardar.setNombre(eventoDTO.getNombre());
+        eventoGuardar.setDescripcion(eventoDTO.getDescripcion());
+        eventoGuardar.setTematica(eventoDTO.getTematica());
+        eventoGuardar.setFecha(eventoDTO.getFecha());
+        eventoGuardar.setCodigoVestimentaOcio(eventoDTO.getCodigoVestimentaOcio());
+        eventoGuardar.setEdadMinimaOcio(eventoDTO.getEdadMinimaOcio());
+        eventoGuardar.setAforo(eventoDTO.getAforo());
+        eventoGuardar.setOcioNocturno(ocioNocturno);
+        eventoGuardar.setCartel(eventoDTO.getCartel());
+    }
+
     private EntradaOcio crearEntradasDeEvento(Evento evento, EntradaOcioDTO entradaOcioDTO) {
         EntradaOcio entradaOcioACrear = new EntradaOcio();
-        entradaOcioACrear.setEvento(evento);
-        entradaOcioACrear.setPrecio(entradaOcioDTO.getPrecio());
-        entradaOcioACrear.setTotalEntradas(entradaOcioDTO.getTotalEntradas());
+        setearEntrada(evento, entradaOcioDTO, entradaOcioACrear);
         return entradaOcioACrear;
+    }
+
+    private static void setearEntrada(Evento evento, EntradaOcioDTO entradaOcioDTO, EntradaOcio entradaOcioGuardar) {
+        entradaOcioGuardar.setEvento(evento);
+        entradaOcioGuardar.setPrecio(entradaOcioDTO.getPrecio());
+        entradaOcioGuardar.setTotalEntradas(entradaOcioDTO.getTotalEntradas());
     }
 
     private ReservadoOcio crearReservadoDeEvento(Evento evento, ReservadoOcioDTO reservadoOcioDTO){
         ReservadoOcio reservadoOcioACrear = new ReservadoOcio();
-        reservadoOcioACrear.setReservadosDisponibles(reservadoOcioDTO.getReservadosDisponibles());
-        reservadoOcioACrear.setPersonasMaximasPorReservado(reservadoOcioDTO.getPersonasMaximasPorReservado());
-        reservadoOcioACrear.setPrecio(reservadoOcioDTO.getPrecio());
-        reservadoOcioACrear.setEvento(evento);
+        setearReservado(evento, reservadoOcioDTO, reservadoOcioACrear);
         return reservadoOcioACrear;
+    }
+
+    private static void setearReservado(Evento evento, ReservadoOcioDTO reservadoOcioDTO, ReservadoOcio reservadoOcioGuardar) {
+        reservadoOcioGuardar.setReservadosDisponibles(reservadoOcioDTO.getReservadosDisponibles());
+        reservadoOcioGuardar.setPersonasMaximasPorReservado(reservadoOcioDTO.getPersonasMaximasPorReservado());
+        reservadoOcioGuardar.setPrecio(reservadoOcioDTO.getPrecio());
+        reservadoOcioGuardar.setEvento(evento);
     }
 
     private List<ListaOcio> crearListasDeEvento(Evento evento, List<ListaOcioDTO> listaOcioDTO){
         List<ListaOcio> listasOcio = new ArrayList<>();
+        OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(evento.getOcioNocturno().getId()).orElse(null);
         for (ListaOcioDTO l : listaOcioDTO) {
-            OcioNocturno ocioNocturno = ocioNocturnoRepository.findById(evento.getOcioNocturno().getId()).orElse(null);
             Rpp rpp = rppRepository.findById(l.getRppDTO().getId()).orElse(null);
-            assert ocioNocturno != null;
-            assert rpp != null;
-            if (rpp.getOcioNocturno() == ocioNocturno){
+            if (rpp != null && rpp.getOcioNocturno() == ocioNocturno){
                 ListaOcio listaOcioACrear = new ListaOcio();
-                listaOcioACrear.setPrecio(l.getPrecio());
-                listaOcioACrear.setTotal_invitaciones(l.getTotal_invitaciones());
-                listaOcioACrear.setEvento(evento);
-                listaOcioACrear.setRpp(rppMapper.toEntity(l.getRppDTO()));
+                setearLista(evento, listaOcioACrear, l);
                 listasOcio.add(listaOcioACrear);
             }
         }
         return listasOcio;
+    }
+
+    private void setearLista(Evento evento,  ListaOcio listaOcioGuardar, ListaOcioDTO indiceLista) {
+        listaOcioGuardar.setPrecio(indiceLista.getPrecio());
+        listaOcioGuardar.setTotal_invitaciones(indiceLista.getTotal_invitaciones());
+        listaOcioGuardar.setEvento(evento);
+        listaOcioGuardar.setRpp(rppMapper.toEntity(indiceLista.getRppDTO()));
+        if (indiceLista.getActivo()){
+            listaOcioGuardar.setActivo(true);
+        }
     }
 
     private Double totalInvitacionesLista(List<ListaOcio> listaOcio){
@@ -138,6 +222,7 @@ public class EventoService {
         return total;
     }
 
+    @Transactional
     public RespuestaDTO crearEventoCiclico(EventoDTO eventoDTO,
                                            EntradaOcioDTO entradaOcioDTO,
                                            ReservadoOcioDTO reservadoOcioDTO,
@@ -165,7 +250,7 @@ public class EventoService {
                         Integer totalAforoEvento = (int) (entradaOcio.getTotalEntradas()
                                 + (reservadoOcio.getReservadosDisponibles() * reservadoOcio.getPersonasMaximasPorReservado())
                                 + invitacionesLista);
-                        if (evento != null && evento.getAforo() >= totalAforoEvento){
+                        if (evento.getAforo() >= totalAforoEvento){
                             eventoRepository.save(evento);
                             entradaOcioRepository.save(entradaOcio);
                             reservadoOcioRepository.save(reservadoOcio);
@@ -184,7 +269,6 @@ public class EventoService {
             }
 
         }catch (Exception e){
-            ULogger.error(e);
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_500);
         }
         return respuestaDTO;
@@ -248,18 +332,54 @@ public class EventoService {
         return eventoACrear;
     }
 
+    @Transactional
     public RespuestaDTO eliminarEvento(Integer id) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Evento eventoAEliminar = eventoRepository.findById(id).orElse(null);
         try{
             if (eventoAEliminar != null){
+                EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(eventoAEliminar.getId());
+                ReservadoOcio reservadoOcio = reservadoOcioRepository.findReservadoOcioByEventoIdAndActivoIsTrue(eventoAEliminar.getId());
+                ListaOcio lista = listaOcioMapper.toEntity(listaOcioService.getActivaByEventoId(eventoAEliminar.getId()));
+                if (lista != null){
+                    lista.setActivo(false);
+                }
                 eventoAEliminar.setActivo(false);
+                if (entradaOcio != null && reservadoOcio != null){
+                    entradaOcio.setActivo(false);
+                    reservadoOcio.setActivo(false);
+                    entradaOcioRepository.save(entradaOcio);
+                    reservadoOcioRepository.save(reservadoOcio);
+                }
                 eventoRepository.save(eventoAEliminar);
+                listaOcioRepository.save(lista);
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_ELIMINADO);
             }
         }catch (Exception e){
-            ULogger.error(e);
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_500);
+        }
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO getById(Integer idEvento) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200, eventoMapper.toDTO(eventoRepository.findEventoByIdAndActivoIsTrue(idEvento)));
+        return respuestaDTO;
+    }
+
+    public RespuestaDTO getInformacionEntradas(Integer idEvento) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        Evento evento = eventoRepository.findById(idEvento).orElse(null);
+        if (evento != null){
+            EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(evento.getId());
+            ReservadoOcio reservadoOcio = reservadoOcioRepository.findReservadoOcioByEventoIdAndActivoIsTrue(evento.getId());
+            ListaOcio lista = listaOcioMapper.toEntity(listaOcioService.getActivaByEventoId(evento.getId()));
+            InformacionTiposEntradasEvento informacionTiposEntradasEvento = InformacionTiposEntradasEvento.builder()
+                    .entradaOcioDTO(entradaOcioMapper.toDTO(entradaOcio))
+                    .eventoDTO(eventoMapper.toDTO(evento))
+                    .reservadoOcioDTO(reservadoOcioMapper.toDTO(reservadoOcio))
+                    .listaOcioDTO(listaOcioMapper.toDTO(lista)).build();
+            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200, informacionTiposEntradasEvento);
         }
         return respuestaDTO;
     }

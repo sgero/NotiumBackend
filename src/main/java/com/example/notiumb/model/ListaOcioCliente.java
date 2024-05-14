@@ -11,18 +11,30 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"cliente", "listaOcio"})
+@EqualsAndHashCode(exclude = {"cliente", "listaOcio", "datosComprador"})
 public class ListaOcioCliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "fecha", nullable = false)
     private Timestamp fecha;
+
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "id_lista_ocio", nullable = false)
     private ListaOcio listaOcio;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_promocion")
+    private Promocion promocion;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "datos_comprador", nullable = false)
+    private DatosComprador datosComprador;
 }

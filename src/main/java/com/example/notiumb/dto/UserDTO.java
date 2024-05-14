@@ -15,5 +15,8 @@ public class UserDTO {
     private String password;
     @Email
     private String email;
+
+    private boolean activo;
+
     private Rol rol;
 }

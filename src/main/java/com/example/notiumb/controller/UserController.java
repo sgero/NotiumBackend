@@ -32,4 +32,11 @@ public class UserController {
 
         return null;
     }
+
+    @PostMapping("/eliminar")
+    public String deleteUser(@RequestBody User user) {
+        
+        return userService.deleteUser(user);
+
+    }
 }

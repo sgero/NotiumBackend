@@ -24,6 +24,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public AuthenticationResponseDTO register(@RequestBody UserDTO userDTO){
+        userDTO.setActivo(true);
         return  authenticationService.register(userDTO);
     }
 

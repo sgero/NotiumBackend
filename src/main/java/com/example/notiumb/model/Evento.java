@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"ocioNocturno", "entradaOcio"})
+@EqualsAndHashCode(exclude = {"ocioNocturno", "entradaOcio", "listasOcio", "reservadoOcio"})
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +44,13 @@ public class Evento {
     @Column(name = "aforo", nullable = false)
     private Integer aforo;
 
+    @Column(name = "cartel")
+    private String cartel;
+
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 
@@ -56,7 +58,7 @@ public class Evento {
     private EntradaOcio entradaOcio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
-    private Set<ListaOcio> listasOcio = new HashSet<>(0);
+    private Set<ListaOcio> listasOcio;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservado_ocio", nullable = false)

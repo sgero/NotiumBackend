@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ReservaDTO {
 
@@ -21,6 +23,8 @@ public class ReservaDTO {
 
 
     private Boolean activo;
+
+    private LocalDate fecha;
 
     @Valid
     private ClienteDTO clienteDTO;

@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findTopByUsername(String username);
-
+    User findTopByUsernameAndActivoTrue(String username);
     Boolean existsByUsernameAndPassword(String username, String password);
 
     List<User> findAll();
@@ -24,5 +24,4 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
 //    ScopedValue<Object> findTopByToken(String token);
 
-    User findTopByToken(String token);
 }

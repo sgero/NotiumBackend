@@ -25,7 +25,7 @@ public class RppDTO {
     @NotBlank
     private String telefono;
     @NotBlank
-    private Timestamp fecha_nacimiento;
+    private Timestamp fechaNacimiento;
     @Valid
     private UserDTO userDTO;
     @Valid

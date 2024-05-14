@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class ProductoDTO {
 
     private Integer id;
@@ -16,9 +15,8 @@ public class ProductoDTO {
 
     private Boolean activo;
 
+    private CartaOcioDTO cartaOcio;
 
-    private Integer idCartaOcio;
-
-    private Integer idCartaRestaurante;
+    private CartaRestauranteDTO cartaRes;
 
 }

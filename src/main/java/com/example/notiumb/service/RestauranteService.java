@@ -15,16 +15,17 @@ public class RestauranteService {
 
     @Autowired
     private IRestauranteRepository restauranteRepository;
+    @Autowired
+    private IRestauranteMapper restauranteMapper;
 
 
-    public List<Restaurante> listarRestaurantes(){
-        return restauranteRepository.findAll();
+    public List<RestauranteDTO> listarRestaurantes(){
+        return restauranteMapper.toDTO(restauranteRepository.findAll());
     }
 
-    public Restaurante getByID(Integer id){
-        return restauranteRepository.findById(id).orElse(null);
+    public RestauranteDTO getRestauranteByID(Integer id){
+        return restauranteMapper.toDTO(restauranteRepository.findById(id).orElse(null));
     }
-
 
     /*Crear restaurante*/
    public Restaurante crearRestaurante(RestauranteDTO restauranteDTO){
