@@ -35,17 +35,30 @@ public class UserController {
         return null;
     }
 
+//    @PostMapping("/registrar")
+//    public ResponseEntity<User> registrarUsuario(@RequestBody User user) {
+//        try {
+//            User usuario = userService.registrarUsuario(user);
+//            return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+//        } catch (MessagingException e) {
+//            // Manejar la excepción de mensajería (MessagingException) aquí si es necesario
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
     @PostMapping("/registrar")
-    public ResponseEntity<User> registrarUsuario(@RequestBody User user) {
+    public ResponseEntity<String> registrarUsuario(@RequestBody User user) {
         try {
-            User usuario = userService.registrarUsuario(user);
-            return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+            userService.registrarUsuario(user);
+            return ResponseEntity.ok("Usuario registrado correctamente");
         } catch (MessagingException e) {
             // Manejar la excepción de mensajería (MessagingException) aquí si es necesario
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar el correo de verificación");
         }
     }
+
 
     @PostMapping("/eliminar")
     public String deleteUser(@RequestBody User user) {
