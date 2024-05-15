@@ -52,8 +52,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Restaurante> restauranteSet;
 
-    @Column(name = "verificado")
-    private Boolean verificado;
+//    @Column(name = "verificado")
+//    private Boolean verificado;
 
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
