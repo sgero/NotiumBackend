@@ -18,11 +18,13 @@ public class ReservaDTO {
 
     private Integer id;
 
+    private Integer numPersonas;
 
-    private String codigo_reserva;
+    private String codigoReserva;
 
 
     private Boolean activo;
+
 
     private LocalDate fecha;
 

@@ -14,7 +14,7 @@ public class MesaDTO {
     private Integer id;
 
 
-    private Integer num_plazas;
+    private Integer numPlazas;
 
 
     private Boolean reservada;

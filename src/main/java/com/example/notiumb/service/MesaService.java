@@ -43,8 +43,8 @@ public class MesaService {
 
         try {
             Mesa nuevaMesa = new Mesa();
-                if(mesaDTO.getNum_plazas()!=0 && (numeroPlazasCubierta + mesaDTO.getNum_plazas()) < 100/*Aqui iría variable aforo*/) {
-                    nuevaMesa.setNum_plazas(mesaDTO.getNum_plazas());
+                if(mesaDTO.getNumPlazas()!=0 && (numeroPlazasCubierta + mesaDTO.getNumPlazas()) < 100/*Aqui iría variable aforo*/) {
+                    nuevaMesa.setNumPlazas(mesaDTO.getNumPlazas());
                     nuevaMesa.setReservada(mesaDTO.getReservada());
                     Restaurante restaurantesMesa = iRestauranteRepository.findTopById(mesaDTO.getRestauranteDTO().getId());
                     nuevaMesa.setRestaurante(restaurantesMesa);

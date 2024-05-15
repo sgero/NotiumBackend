@@ -56,4 +56,6 @@ public interface IReservaMapper {
     default Mesa transformarMesa(MesaDTO dto){ return mesaMapper.toEntity(dto);}
     @Named("transformarMesaToDTO")
     default MesaDTO transformarMesaDTO(Mesa entity){ return mesaMapper.toDTO(entity);}
+
+    ReservaDTO toDTO(MesaDTO mesaDTO);
 }

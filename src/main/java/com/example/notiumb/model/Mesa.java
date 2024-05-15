@@ -20,7 +20,7 @@ public class Mesa {
     private Integer id;
 
     @Column(name = "num_plazas" , nullable = false)
-    private Integer num_plazas;
+    private Integer numPlazas;
 
     @Column(name = "reservada", nullable = false)
     private Boolean reservada;

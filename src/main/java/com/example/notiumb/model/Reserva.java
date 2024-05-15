@@ -19,7 +19,7 @@ public class Reserva {
     private Integer id;
 
     @Column(name = "codigo_reserva", nullable = false)
-    private String codigo_reserva;
+    private String codigoReserva;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
