@@ -8,15 +8,11 @@ import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.security.SecureRandom;
-import java.math.BigInteger;
 
 import java.util.List;
 
@@ -94,7 +90,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public User registrarUsuario(User usuario) throws MessagingException {
+    public void registrarUsuario(User usuario) throws MessagingException {
         // Lógica para determinar el rol y realizar acciones específicas
         switch (usuario.getRol()) {
             case ADMIN:
@@ -120,7 +116,7 @@ public class UserService implements UserDetailsService {
         }
 
         // Guardar el usuario en el repositorio
-        return userRepository.save(usuario);
+        userRepository.save(usuario);
     }
 
 
