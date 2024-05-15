@@ -22,6 +22,8 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
     List<User> getAllByUsernameAndPassword(String username, String password);
 
+    User findTopByToken(String token);
+
 //    ScopedValue<Object> findTopByToken(String token);
 
 }

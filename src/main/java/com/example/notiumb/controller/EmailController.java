@@ -4,6 +4,7 @@ package com.example.notiumb.controller;
 import com.example.notiumb.model.User;
 import com.example.notiumb.service.IEmailService;
 import com.example.notiumb.dto.EmailDTO;
+import com.example.notiumb.service.UserService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,20 +29,6 @@ public class EmailController {
     }
 
 
-    @Autowired
-    private JavaMailSender javaMailSender;
 
-    public void enviarEmailVerificacion(User usuario) {
-        // Lógica para enviar email de verificación con un enlace único
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo(usuario.getEmail());
-        mensaje.setSubject("Verifica tu cuenta");
-        mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://tuaplicacion.com/verificar?token=" + generarToken(usuario));
-        javaMailSender.send(mensaje);
-    }
 
-    private String generarToken(User usuario) {
-        // Lógica para generar un token único
-        return UUID.randomUUID().toString();
-    }
 }

@@ -3,7 +3,6 @@ package com.example.notiumb.controller;
 import com.example.notiumb.model.User;
 import com.example.notiumb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,11 +10,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/verificar")
-public class VerificacionController {
+public class EmailVerificacionController {
     @Autowired
     private UserService usuarioService;
 
-//    @GetMapping
+
+@Autowired
+private UserService userService;
+
+    @GetMapping("/verificar")
+    public String verificarEmail(@RequestParam("token") String token) {
+        // Obtener el usuario asociado al token
+        User usuario = userService.obtenerUsuarioPorToken(token);
+
+        if (usuario != null) {
+            // Marcar el usuario como verificado
+            usuario.setVerificado(true);
+            userService.actualizarUsuario(usuario);
+            return "¡Email verificado correctamente!";
+        } else {
+            return "Token de verificación inválido o expirado.";
+        }
+    }
+
+
+
+    //    @GetMapping
 //    public ResponseEntity<String> verificarCuenta(@RequestParam("token") String token) {
 //        // Lógica para verificar el token y cambiar el campo verificado del usuario
 //        // Validar el token
@@ -35,6 +55,27 @@ public class VerificacionController {
 //            return ResponseEntity.badRequest().body("El token de verificación no es válido.");
 //        }
 //}
+
+
+
+//    @Autowired
+//    private UserService userService;
+//
+//    @GetMapping("/verificar")
+//    public String verificarEmail(@RequestParam("token") String token) {
+//        // Obtener el usuario asociado al token
+//        User usuario = userService.obtenerUsuarioPorToken(token);
+//
+//        if (usuario != null) {
+//            // Marcar el usuario como verificado
+//            usuario.setVerificado(true);
+//            userService.actualizarUsuario(usuario);
+//            return "¡Email verificado correctamente!";
+//        } else {
+//            return "Token de verificación inválido o expirado.";
+//        }
+//    }
+
 }
 
 
