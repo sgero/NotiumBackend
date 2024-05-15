@@ -18,8 +18,7 @@ public class EntradaOcioClienteDTO {
     private ClienteDTO clienteDTO;
     @Valid
     private EntradaOcioDTO entradaOcioDTO;
-    @Valid
     private PromocionDTO promocionDTO;
     @Valid
-    private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
+    private DatosCompradorDTO datosCompradorDTO;
 }

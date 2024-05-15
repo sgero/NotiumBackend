@@ -1,7 +1,6 @@
 package com.example.notiumb.dto;
 
 import com.example.notiumb.model.enums.Genero;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import lombok.Builder;
@@ -21,6 +20,5 @@ public class DatosCompradorDTO {
     @Past
     private Date fechaNacimiento;
     private Genero genero;
-    @Valid
     private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
 }
