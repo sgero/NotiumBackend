@@ -4,6 +4,7 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.User;
+import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
@@ -90,9 +91,42 @@ public class UserService implements UserDetailsService {
     }
 
 
+    //   public void registrarUsuario(User usuario) throws MessagingException {
+        //      // Lógica para determinar el rol y realizar acciones específicas
+        //      switch (usuario.getRol()) {
+            //          case ADMIN:
+                //              // Para el rol de Administrador, no enviar email de verificación
+                //              usuario.setVerificado(true);
+                //              break;
+            //           case CLIENTE:
+                //               // Para el rol de Cliente, enviar email de verificación al email del usuario
+                //              usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
+                //              emailService.enviarEmailVerificacion(usuario.getEmail());
+                //             break;
+            //          case RESTAURANTE:
+                //          case OCIONOCTURNO:
+                //              // Para los roles de Restaurante y OcioNocturno, enviar email de verificación al email notiumevents@gmail.com
+                //              usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
+                //              emailService.enviarEmailVerificacionEmpresas();
+                //             break;
+            //          // Otros casos y roles...
+            //          case RPP:
+                //               // Para el rol de RPP, setear el campo verificado como true
+                //             usuario.setVerificado(true);
+                //              break;
+            //       }
+
+        //       // Guardar el usuario en el repositorio
+        //       userRepository.save(usuario);
+        //   }
+
+
     public void registrarUsuario(User usuario) throws MessagingException {
-        // Lógica para determinar el rol y realizar acciones específicas
-        switch (usuario.getRol()) {
+        // Determinar el rol del usuario
+        Rol rol = usuario.getRol();
+
+        // Lógica específica basada en el rol del usuario
+        switch (rol) {
             case ADMIN:
                 // Para el rol de Administrador, no enviar email de verificación
                 usuario.setVerificado(true);
