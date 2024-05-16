@@ -39,6 +39,9 @@ public class OcioNocturno {
     @Column(name = "activo")
     private Boolean activo = true;
 
+    @Column(name = "verificado")
+    private Boolean verificado = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
@@ -52,5 +55,6 @@ public class OcioNocturno {
 
     @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Rpp> rppSet;
+
 
 }

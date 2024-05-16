@@ -2,6 +2,7 @@ package com.example.notiumb.dto;
 
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,6 +18,8 @@ public class RestauranteDTO {
 
     private String telefono;
 
+    @NotBlank
+    private String cif;
 
     private String hora_apertura;
 
@@ -41,7 +44,6 @@ public class RestauranteDTO {
 
     @Valid
     private DireccionDTO direccionDTO;
-
 
 
 }

@@ -3,6 +3,7 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
+import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -64,4 +65,11 @@ public class OcioNocturnoService {
         }
     }
 
+    public OcioNocturno getOcioNocturnoByCif(String cif){
+        return ocioNocturnoRepository.findByCif(cif);
+    }
+
+    public void actualizarOcioNocturno(OcioNocturno ocioNocturno) {
+        ocioNocturnoRepository.save(ocioNocturno);
+    }
 }

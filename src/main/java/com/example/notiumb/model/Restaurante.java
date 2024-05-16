@@ -41,6 +41,9 @@ public class Restaurante {
     @Column(name = "valoracion")
     private Boolean valoracion;
 
+    @Column(name = "verificado")
+    private Boolean verificado;
+
     @Column(name = "disponible")
     private Boolean disponible;
 
@@ -49,6 +52,8 @@ public class Restaurante {
 
     @Column(name = "activo")
     private Boolean activo;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario", nullable = false)
@@ -66,4 +71,6 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Mesa> mesasSet;
+
+
 }

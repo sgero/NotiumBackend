@@ -137,10 +137,14 @@ public class UserService implements UserDetailsService {
                 emailService.enviarEmailVerificacion(usuario.getEmail());
                 break;
             case RESTAURANTE:
-            case OCIONOCTURNO:
-                // Para los roles de Restaurante y OcioNocturno, enviar email de verificación al email notiumevents@gmail.com
+
                 usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                emailService.enviarEmailVerificacionEmpresas();
+                emailService.enviarEmailContinuidadRegistro(usuario.getEmail(), "RESTAURANTE");
+                break;
+            case OCIONOCTURNO:
+                //VAMOS A HACER QUE EL USUARIO SE VERIFIQUE, PERO QUE ADEMÁS LA LÓGICA DE ACTIVACIÓN DE LA CUENTA SEA DIFERENTE Y NECESITE AL ADMIN
+                usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
+                emailService.enviarEmailContinuidadRegistro(usuario.getEmail(), "OCIONOCTURNO");
                 break;
             // Otros casos y roles...
             case RPP:

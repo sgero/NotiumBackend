@@ -3,6 +3,7 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
+import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IRestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,13 @@ public class RestauranteService {
 
    }
 
+    public Restaurante getRestauranteByCif(String cif){
+        return restauranteRepository.findByCif(cif);
+    }
 
+
+
+    public void actualizarRestaurante(Restaurante restaurante) {
+        restauranteRepository.save(restaurante);
+    }
 }

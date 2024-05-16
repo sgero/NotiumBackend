@@ -28,7 +28,6 @@ drop table if exists direccion;
 drop table if exists usuario;
 
 
-
 create table usuario
 (
     id       serial       not null,
