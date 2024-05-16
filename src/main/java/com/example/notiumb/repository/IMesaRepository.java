@@ -17,4 +17,5 @@ public interface IMesaRepository extends JpaRepository<Mesa,Integer> {
 
     List<Mesa> findByRestauranteEquals(Restaurante restaurante);
 
+    List<Mesa> findByRestaurante(Restaurante restaurante);
 }

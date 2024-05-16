@@ -32,4 +32,7 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query("SELECT r FROM Reserva r WHERE r.turno = :turno AND r.fecha = :fecha")
     java.util.List<Reserva> findByTurnoAndFecha(Turno turno, LocalDate fecha);
 
+    List<Reserva> findByFechaAndRestaurante(LocalDate fecha, Restaurante restaurante);
+
+    List<Reserva> findByFecha(LocalDate fecha);
 }

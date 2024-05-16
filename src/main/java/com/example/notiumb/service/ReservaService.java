@@ -4,6 +4,7 @@ import com.example.notiumb.converter.*;
 import com.example.notiumb.dto.MesaDTO;
 import com.example.notiumb.dto.ReservaDTO;
 import com.example.notiumb.dto.RestauranteDTO;
+import com.example.notiumb.dto.TurnoDTO;
 import com.example.notiumb.model.Mesa;
 import com.example.notiumb.model.Reserva;
 import com.example.notiumb.model.Restaurante;
@@ -127,7 +128,7 @@ public class ReservaService {
 
 
     public ReservaDTO crearReserva(ReservaDTO reservaDTO) {
-        // Comprobar disponibilidad de mesas
+        // Comprueba la disponibilidad de mesas
         List<MesaDTO> mesasDisponibles = comprobarTurno(reservaDTO);
 
         if (mesasDisponibles.isEmpty()) {
@@ -151,7 +152,7 @@ public class ReservaService {
             nuevaReserva.setTurno(turnoMapper.toEntity(reservaDTO.getTurnoDTO()));
             nuevaReserva.setActivo(true); // Inicializar activo
 
-            // Guardar la reserva en la base de datos
+
             reservaRepository.save(nuevaReserva);
 
             // Actualizar el estado de la mesa a reservada
@@ -216,4 +217,55 @@ public class ReservaService {
     }
 
 
+    public List<TurnoDTO> comprobarTurnosDisponibles(int numPersonas, LocalDate fecha, Integer restauranteId) {
+        // Obtener el restaurante
+        Restaurante restaurante = restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RuntimeException("Restaurante no encontrado"));
+
+        // Obtener todas las reservas para el restaurante y la fecha especificada
+        List<Reserva> reservas = reservaRepository.findByFechaAndRestaurante(fecha, restaurante);
+
+        // Obtener todas las mesas del restaurante
+        List<Mesa> mesas = mesaRepository.findByRestaurante(restaurante);
+
+        // Agrupar las reservas por turno
+        Map<Turno, List<Reserva>> reservasPorTurno = reservas.stream()
+                .collect(Collectors.groupingBy(Reserva::getTurno));
+
+        List<TurnoDTO> turnosDisponibles = new ArrayList<>();
+
+        for (Turno turno : turnoRepository.findByRestauranteAndActivo(restaurante, true)) {
+            // Obtener las reservas para el turno actual
+            List<Reserva> reservasTurno = reservasPorTurno.getOrDefault(turno, new ArrayList<>());
+
+            // Filtrar mesas ocupadas
+            List<Mesa> mesasCogidas = reservasTurno.stream().map(Reserva::getMesa).collect(Collectors.toList());
+            List<Mesa> mesasDisponibles = new ArrayList<>(mesas);
+            mesasDisponibles.removeAll(mesasCogidas);
+
+            // Ordenar mesas por número de plazas de forma ascendente (de menor a mayor)
+            mesasDisponibles.sort(Comparator.comparingInt(Mesa::getNumPlazas));
+
+            int plazasDisponibles = 0;
+
+            // Buscar mesas que puedan acomodar el número de personas requerido
+            for (Mesa mesa : mesasDisponibles) {
+                if (plazasDisponibles >= numPersonas) {
+                    break;
+                }
+                plazasDisponibles += mesa.getNumPlazas();
+            }
+
+            // Verificar si hay suficientes plazas disponibles
+            if (plazasDisponibles >= numPersonas) {
+                turnosDisponibles.add(turnoMapper.toDTO(turno));
+            }
+        }
+
+        return turnosDisponibles;
+    }
 }
+
+
+
+
