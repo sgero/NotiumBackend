@@ -38,8 +38,8 @@ public class DatosComprador {
     @Enumerated(EnumType.ORDINAL)
     private Genero genero;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "reservado_ocio_cliente", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservado_ocio_cliente")
     private ReservadoOcioCliente reservadoOcioCliente;
 
     @OneToOne(mappedBy = "datosComprador", fetch = FetchType.LAZY)
