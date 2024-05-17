@@ -33,6 +33,9 @@ public class OcioNocturno {
     @Column(name = "aforo", nullable = false)
     private Integer aforo;
 
+    @Column(name = "telefono", nullable = false)
+    private String telefono;
+
     @Column(name = "imagen_marca", nullable = false)
     private String imagenMarca;
 
