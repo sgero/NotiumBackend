@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Past;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 @Data
 @Builder
@@ -17,8 +18,9 @@ public class DatosCompradorDTO {
     private String apellidos;
     @NotBlank
     private String email;
+    private String telefono;
     @Past
-    private Date fechaNacimiento;
+    private Timestamp fechaNacimiento;
     private Genero genero;
     private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
 }

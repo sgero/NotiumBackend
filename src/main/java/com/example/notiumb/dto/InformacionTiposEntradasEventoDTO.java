@@ -4,11 +4,9 @@ import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Builder
-public class InformacionTiposEntradasEvento {
+public class InformacionTiposEntradasEventoDTO {
     private int id;
     @Valid
     private EventoDTO eventoDTO;
