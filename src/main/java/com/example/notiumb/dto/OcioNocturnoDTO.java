@@ -35,4 +35,5 @@ public class OcioNocturnoDTO {
     private UserDTO userDTO;
     @Valid
     private DireccionDTO direccionDTO;
+    private String telefono;
 }

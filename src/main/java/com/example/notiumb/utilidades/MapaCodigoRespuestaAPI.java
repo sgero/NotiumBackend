@@ -6,7 +6,7 @@ public class MapaCodigoRespuestaAPI {
     public static final CodigoRespuestaAPI CODIGO_200_EVENTO_UNICO_CREADO = new CodigoRespuestaAPI("200", "evento único creado correctamente");
     public static final CodigoRespuestaAPI CODIGO_200_EVENTO_EDITADO = new CodigoRespuestaAPI("200", "evento editado correctamente");
     public static final CodigoRespuestaAPI CODIGO_200_EVENTO_LISTAR = new CodigoRespuestaAPI("200", "eventos listados correctamente");
-    public static final CodigoRespuestaAPI CODIGO_200_ENTRADAS_COMPRADAS = new CodigoRespuestaAPI("200", "entradas.compra");
+    public static final CodigoRespuestaAPI CODIGO_200_ENTRADAS_COMPRADAS = new CodigoRespuestaAPI("200", "entradas.compradas");
     public static final CodigoRespuestaAPI CODIGO_ERROR_500 = new CodigoRespuestaAPI("500", "error.servidor");
     public static final CodigoRespuestaAPI CODIGO_ERROR_1 = new CodigoRespuestaAPI("1", "error.dto.null");
     public static final CodigoRespuestaAPI CODIGO_ERROR_2 = new CodigoRespuestaAPI("2", "error.mas entradas vendidas que aforo");
@@ -23,5 +23,8 @@ public class MapaCodigoRespuestaAPI {
     public static final CodigoRespuestaAPI CODIGO_400_VALORACION_NO_CREADA = new CodigoRespuestaAPI("400", "La valoracion no se ha creado correctamente");
 
     public static final CodigoRespuestaAPI CODIGO_ERROR_EVENTO = new CodigoRespuestaAPI("412", "error.evento.null");
+    public static final CodigoRespuestaAPI CODIGO_ERROR_AFORO = new CodigoRespuestaAPI("412", "error.aforo.completo");
+    public static final CodigoRespuestaAPI CODIGO_ERROR_DATOS_CLIENTE = new CodigoRespuestaAPI("412", "error: los datos del primer asistente no son iguales a los del cliente que realiza la compra");
+    public static final CodigoRespuestaAPI CODIGO_ERROR_DATOS = new CodigoRespuestaAPI("412", "error.datos.incorrectos");
 
 }

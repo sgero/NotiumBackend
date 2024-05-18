@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"cliente", "listaOcio", "datosComprador"})
+@Builder
 public class ListaOcioCliente {
 
     @Id
@@ -22,6 +23,9 @@ public class ListaOcioCliente {
     @Column(name = "fecha", nullable = false)
     private Timestamp fecha;
 
+    @Column(name = "codigo", nullable = false)
+    private String codigo;
+
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
@@ -30,11 +34,11 @@ public class ListaOcioCliente {
     @JoinColumn(name = "id_lista_ocio", nullable = false)
     private ListaOcio listaOcio;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_promocion")
     private Promocion promocion;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "datos_comprador", nullable = false)
     private DatosComprador datosComprador;
 }

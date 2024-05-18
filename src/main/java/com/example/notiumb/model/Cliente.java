@@ -31,6 +31,9 @@ public class Cliente {
     @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
 
+    @Column(name = "telefono", nullable = false)
+    private String telefono;
+
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 

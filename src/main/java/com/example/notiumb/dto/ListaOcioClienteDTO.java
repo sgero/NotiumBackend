@@ -17,6 +17,7 @@ public class ListaOcioClienteDTO {
     private Integer id;
     @FutureOrPresent
     private Timestamp fecha;
+    private String codigo;
     @Valid
     private ClienteDTO clienteDTO;
     @Valid
