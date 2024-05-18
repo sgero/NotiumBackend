@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface IEntradaOcioRepository extends JpaRepository<EntradaOcio, Integer> {
 
-    EntradaOcio findEntradaOcioByEventoIdAndActivoIsTrue (Integer id);
+    EntradaOcio findEntradaOcioByEventoIdAndActivoIsTrue (Integer idEvento);
+
+    EntradaOcio findByIdAndActivoIsTrue (Integer id);
 
 }

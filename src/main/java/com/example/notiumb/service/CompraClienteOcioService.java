@@ -91,7 +91,7 @@ public class CompraClienteOcioService {
     public RespuestaDTO comprarEntradaNormal(Integer idEvento, Integer idCliente, Integer entradaOcioALaVenta, List<EntradaOcioClienteDTO> entradasOcioClienteLista) {
         Cliente cliente = clienteRepository.findByIdAndActivoIsTrue(idCliente).orElse(null);
         Evento evento = eventoRepository.findEventoByIdAndActivoIsTrue(idEvento);
-        EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(entradaOcioALaVenta);
+        EntradaOcio entradaOcio = entradaOcioRepository.findByIdAndActivoIsTrue(entradaOcioALaVenta);
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         if (evento != null && cliente != null && entradaOcio != null && !CollectionUtils.isEmpty(entradasOcioClienteLista) && evento.getFecha().after(fechaActual)){

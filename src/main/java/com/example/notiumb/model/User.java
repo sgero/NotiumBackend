@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name = "verificado")
     private Boolean verificado;
 
-    @Column(name = "token")
-    private String token;
-
     @OneToMany(mappedBy = "user")
     private Set<OcioNocturno> ocioNocturnoSet;
 
