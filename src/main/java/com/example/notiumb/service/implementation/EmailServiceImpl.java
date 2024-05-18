@@ -3,6 +3,7 @@ package com.example.notiumb.service.implementation;
 
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.dto.RestauranteDTO;
+import com.example.notiumb.model.User;
 import com.example.notiumb.service.IEmailService;
 import com.example.notiumb.dto.EmailDTO;
 import jakarta.mail.MessagingException;
@@ -16,6 +17,7 @@ import org.thymeleaf.context.Context;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
