@@ -37,6 +37,8 @@ public class Cliente {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
+
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;

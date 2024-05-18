@@ -28,9 +28,9 @@ private RestauranteService restauranteService;
 private OcioNocturnoService ocioNocturnoService;
 
     @GetMapping("/cliente")
-    public String verificarEmailCliente(@RequestParam("token") String token) {
+    public String verificarEmailCliente(@RequestParam("token") String tokenVerificacion) {
         // Obtener el usuario asociado al token
-        User usuario = userService.obtenerUsuarioPorToken(token);
+        User usuario = userService.obtenerUsuarioPorToken(tokenVerificacion);
 
         if (usuario != null) {
             // Marcar el usuario como verificado
@@ -44,9 +44,9 @@ private OcioNocturnoService ocioNocturnoService;
 
 
     @GetMapping("/continuarRegistroRestaurante")
-    public String verificarEmailRestaurante(@RequestParam("token") String token) {
+    public String verificarEmailRestaurante(@RequestParam("token") String tokenVerificacion) {
         // Obtener el usuario asociado al token
-        User usuario = userService.obtenerUsuarioPorToken(token);
+        User usuario = userService.obtenerUsuarioPorToken(tokenVerificacion);
 
         if (usuario != null) {
             // Marcar el usuario como verificado
@@ -60,9 +60,9 @@ private OcioNocturnoService ocioNocturnoService;
 
 
     @GetMapping("/continuarRegistroOcioNocturno")
-    public String verificarEmailOcioNocturno(@RequestParam("token") String token) {
+    public String verificarEmailOcioNocturno(@RequestParam("token") String tokenVerificacion) {
         // Obtener el usuario asociado al token
-        User usuario = userService.obtenerUsuarioPorToken(token);
+        User usuario = userService.obtenerUsuarioPorToken(tokenVerificacion);
 
         if (usuario != null) {
             // Marcar el usuario como verificado

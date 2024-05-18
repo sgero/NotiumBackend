@@ -37,6 +37,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     private Rol rol;
 
+    @Column(name = "token_verificacion")
+    private String tokenVerificacion;
+
     @Column(name = "activo")
     private Boolean activo;
 

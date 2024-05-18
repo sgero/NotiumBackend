@@ -80,8 +80,8 @@ public class UserService implements UserDetailsService {
         return "Usuario eliminado";
     }
 
-    public User obtenerUsuarioPorToken(String token) {
-        return (User) userRepository.findTopByToken(token).orElse(null);
+    public User obtenerUsuarioPorToken(String tokenVerificacion) {
+        return (User) userRepository.findTopByTokenVerificacion(tokenVerificacion).orElse(null);
     }
 
 
@@ -210,4 +210,8 @@ public class UserService implements UserDetailsService {
 //        return usuario;
 //
 //}
+
+
+
+
 }

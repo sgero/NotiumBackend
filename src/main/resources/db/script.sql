@@ -28,6 +28,7 @@ drop table if exists direccion;
 drop table if exists usuario;
 
 
+
 create table usuario
 (
     id       serial       not null,
@@ -35,6 +36,7 @@ create table usuario
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      integer not null,
+    token_verificacion varchar(100),
     activo   boolean default true,
     verificado boolean default false,
     primary key (id)
@@ -59,7 +61,6 @@ create table cliente
     apellidos        varchar(100) not null,
     dni              varchar(9)   not null,
     telefono         varchar(20)  not null,
-    token_verificacion         varchar(100)  not null,
     fecha_nacimiento timestamp(6)    not null,
     activo           boolean default true,
     id_usuario       integer      not null,
