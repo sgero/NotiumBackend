@@ -5,6 +5,7 @@ import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.CartaOcio;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.service.OcioNocturnoService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class OcioNocturnoController {
         return ocioNocturnoService.getById(id);
     }
     @PostMapping("/guardar")
-    public OcioNocturnoDTO guardarCarta(@RequestBody OcioNocturnoDTO ocioNocturnoDTO){
+    public OcioNocturnoDTO guardarCarta(@RequestBody OcioNocturnoDTO ocioNocturnoDTO) throws MessagingException {
         return ocioNocturnoService.save(ocioNocturnoDTO);
     }
     @DeleteMapping("/{id}")
