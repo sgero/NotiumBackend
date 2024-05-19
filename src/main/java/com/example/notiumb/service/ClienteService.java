@@ -61,6 +61,7 @@ public class ClienteService {
             cliente.setUser(usuario);
             cliente.setDireccion(direccionMapper.toEntity(userClienteDTO.getDireccionDTO()));
 
+            //Enviamos email de verificacion al cliente que se ha registrado
             emailService.enviarEmailVerificacion(usuario.getEmail(), "CLIENTE");
 
 
