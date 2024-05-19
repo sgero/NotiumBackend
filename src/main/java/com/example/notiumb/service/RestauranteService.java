@@ -45,6 +45,7 @@ public class RestauranteService {
         restaurante.setDisponible(restaurante.getDisponible());
         restaurante.setImagen_marca(restaurante.getImagen_marca());
 
+        //envio de email de verificacion
         emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
 
        return restauranteRepository.save(restaurante);

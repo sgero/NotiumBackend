@@ -40,6 +40,8 @@ public class OcioNocturnoService {
             ocioNuevo.setHoraCierre(ocioNocturnoDTO.getHoraCierre());
             ocioNuevo.setAforo(ocioNocturnoDTO.getAforo());
             ocioNuevo.setImagenMarca(ocioNocturnoDTO.getImagenMarca());
+
+            //envio de email de verificacion
             emailService.enviarEmailVerificacionOcioNocturno(ocioNuevo);
             ocioNocturnoRepository.save(ocioNocturnoMapper.toEntity(ocioNuevo));
             return ocioNuevo;
