@@ -5,6 +5,8 @@ import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
+import com.example.notiumb.service.implementation.EmailServiceImpl;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class OcioNocturnoService {
     @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
 
+    @Autowired
+    private EmailServiceImpl emailService;
 
     public List<OcioNocturnoDTO> getAll() {
         return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findAllByActivoIsTrue());
@@ -27,7 +31,7 @@ public class OcioNocturnoService {
     public OcioNocturno getById(@Param("id") Integer id) {
         return ocioNocturnoRepository.findByIdAndActivoIsTrue(id).orElse(null);
     }
-    public OcioNocturnoDTO save(OcioNocturnoDTO ocioNocturnoDTO){
+    public OcioNocturnoDTO save(OcioNocturnoDTO ocioNocturnoDTO) throws MessagingException {
         if (ocioNocturnoDTO.getId()==null){
             OcioNocturnoDTO ocioNuevo = new OcioNocturnoDTO();
             ocioNuevo.setNombre(ocioNocturnoDTO.getNombre());
@@ -36,6 +40,7 @@ public class OcioNocturnoService {
             ocioNuevo.setHoraCierre(ocioNocturnoDTO.getHoraCierre());
             ocioNuevo.setAforo(ocioNocturnoDTO.getAforo());
             ocioNuevo.setImagenMarca(ocioNocturnoDTO.getImagenMarca());
+            emailService.enviarEmailVerificacionOcioNocturno(ocioNuevo);
             ocioNocturnoRepository.save(ocioNocturnoMapper.toEntity(ocioNuevo));
             return ocioNuevo;
         }else{

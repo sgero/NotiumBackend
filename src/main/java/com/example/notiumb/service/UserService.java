@@ -91,34 +91,6 @@ public class UserService implements UserDetailsService {
     }
 
 
-    //   public void registrarUsuario(User usuario) throws MessagingException {
-        //      // Lógica para determinar el rol y realizar acciones específicas
-        //      switch (usuario.getRol()) {
-            //          case ADMIN:
-                //              // Para el rol de Administrador, no enviar email de verificación
-                //              usuario.setVerificado(true);
-                //              break;
-            //           case CLIENTE:
-                //               // Para el rol de Cliente, enviar email de verificación al email del usuario
-                //              usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                //              emailService.enviarEmailVerificacion(usuario.getEmail());
-                //             break;
-            //          case RESTAURANTE:
-                //          case OCIONOCTURNO:
-                //              // Para los roles de Restaurante y OcioNocturno, enviar email de verificación al email notiumevents@gmail.com
-                //              usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                //              emailService.enviarEmailVerificacionEmpresas();
-                //             break;
-            //          // Otros casos y roles...
-            //          case RPP:
-                //               // Para el rol de RPP, setear el campo verificado como true
-                //             usuario.setVerificado(true);
-                //              break;
-            //       }
-
-        //       // Guardar el usuario en el repositorio
-        //       userRepository.save(usuario);
-        //   }
 
 
     public void registrarUsuario(User usuario) throws MessagingException {
@@ -134,7 +106,7 @@ public class UserService implements UserDetailsService {
             case CLIENTE:
                 // Para el rol de Cliente, enviar email de verificación al email del usuario
                 usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                emailService.enviarEmailVerificacion(usuario.getEmail());
+                emailService.enviarEmailVerificacion(usuario.getEmail(), "CLIENTE");
                 break;
             case RESTAURANTE:
 
@@ -157,59 +129,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(usuario);
     }
 
-
-//    //ESTA LÓGICA DE REGISTRO YA NO ES NECESARIA AL EXISTIR LA ANTERIOR
-//
-//    //REGISTROS
-//    //REGISTRO DE USUARIO (CLIENTE)
-//    private User registrarCliente(User usuario) {
-//        usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-//        emailService.enviarEmailVerificacion(usuario.getEmail());
-//        return userRepository.save(usuario);
-//    }
-//
-//
-//    //REGISTRO DE USUARIO (RESTAURANTE Y OCIO NOCTURNO) "EMPRESAS"
-//    private User registrarEmpresa(User usuario) throws MessagingException {
-//        usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-//        emailService.enviarEmailVerificacionEmpresas();
-//        return userRepository.save(usuario);
-//    }
-
-
-
-
-
-
-
-    //    public User registrarUsuario(User usuario) throws MessagingException {
-//        // Lógica para determinar el rol y realizar acciones específicas
-//        switch(usuario.getRol()) {
-//            case ADMIN:
-//                // Para el rol de Administrador, no enviar email de verificación
-//                usuario.setVerificado(true);
-//                usuario = userRepository.save(usuario);
-//                break;
-//            case CLIENTE:
-//                // Para el rol de Cliente, enviar email de verificación al email del usuario
-//                usuario = registrarCliente(usuario);
-//                break;
-//            case RESTAURANTE, OCIONOCTURNO:
-//                // Para los roles de Restaurante y OcioNocturno, enviar email de verificación al email notiumevents@gmail.com
-//                usuario = registrarEmpresa(usuario);
-//                break;
-//            // Otros casos y roles...
-//            case RPP:
-//                // Para el rol de RPP, setear el campo verificado como true
-//                usuario.setVerificado(true);
-//                usuario = userRepository.save(usuario);
-//                break;
-//
-//        }
-//
-//        return usuario;
-//
-//}
 
 
 

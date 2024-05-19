@@ -5,6 +5,8 @@ import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IRestauranteRepository;
+import com.example.notiumb.service.implementation.EmailServiceImpl;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class RestauranteService {
     @Autowired
     private IRestauranteMapper restauranteMapper;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
 
     public List<RestauranteDTO> listarRestaurantes(){
         return restauranteMapper.toDTO(restauranteRepository.findAll());
@@ -29,7 +34,7 @@ public class RestauranteService {
     }
 
     /*Crear restaurante*/
-   public Restaurante crearRestaurante(RestauranteDTO restauranteDTO){
+   public Restaurante crearRestaurante(RestauranteDTO restauranteDTO) throws MessagingException {
 
         Restaurante restaurante = new Restaurante();
         restaurante.setNombre(restauranteDTO.getNombre());
@@ -39,6 +44,8 @@ public class RestauranteService {
         restaurante.setHora_cierre(restaurante.getHora_cierre());
         restaurante.setDisponible(restaurante.getDisponible());
         restaurante.setImagen_marca(restaurante.getImagen_marca());
+
+        emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
 
        return restauranteRepository.save(restaurante);
 

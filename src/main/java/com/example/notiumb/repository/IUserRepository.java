@@ -28,6 +28,10 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
     User findTopById(Integer id);
 
+
+
+    User findTopByEmail(String email);
+
 //    ScopedValue<Object> findTopByToken(String token);
 
 }

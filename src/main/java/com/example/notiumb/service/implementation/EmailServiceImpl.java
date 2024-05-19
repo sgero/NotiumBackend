@@ -4,10 +4,12 @@ package com.example.notiumb.service.implementation;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.service.IEmailService;
 import com.example.notiumb.dto.EmailDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +27,8 @@ public class EmailServiceImpl implements IEmailService {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
 
+    @Autowired
+    private IUserRepository usuarioRepository;
 
     public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
@@ -57,17 +61,24 @@ public class EmailServiceImpl implements IEmailService {
     }
 
 
-    public void enviarEmailVerificacion(String email) {
+
+    public void enviarEmailVerificacion(String email, String rol) {
         // Lógica para enviar email de verificación con un enlace único
+        User user = usuarioRepository.findTopByEmail(email);
         SimpleMailMessage mensaje = new SimpleMailMessage();
         mensaje.setTo(email);
         mensaje.setSubject("Verifica tu cuenta");
-        mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + generarToken());
-        javaMailSender.send(mensaje);
+        if (rol.equals("CLIENTE")) {
+            String tokenverificacion = generarToken();
+            mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + tokenverificacion);
+            user.setTokenVerificacion(tokenverificacion);
+            javaMailSender.send(mensaje);
+        }
     }
 
     public void enviarEmailContinuidadRegistro(String email, String rol) {
         // Lógica para enviar email para habilitar la continuidad del registro
+        User user = usuarioRepository.findTopByEmail(email);
         SimpleMailMessage mensaje = new SimpleMailMessage();
         mensaje.setTo(email);
         mensaje.setSubject("Valida tu email y continúa tu registro");
@@ -75,9 +86,13 @@ public class EmailServiceImpl implements IEmailService {
         // Mensaje personalizado dependiendo del rol del usuario
         String mensajeTexto = "";
         if (rol.equals("RESTAURANTE")) {
-            mensajeTexto = "Por favor haz clic en el siguiente enlace para continuar con el registro de tu restaurante: http://localhost:8080/verificar/continuarRegistroRestaurante?token=" + generarToken();
+            String tokenverificacion = generarToken();
+            mensajeTexto = "Por favor haz clic en el siguiente enlace para continuar con el registro de tu restaurante: http://localhost:8080/verificar/continuarRegistroRestaurante?token=" + tokenverificacion;
+            user.setTokenVerificacion(tokenverificacion);
         } else if (rol.equals("OCIONOCTURNO")) {
-            mensajeTexto = "Por favor haz clic en el siguiente enlace para continuar con el registro de tu establecimiento de ocio nocturno: http://localhost:8080/verificar/continuarRegistroOcioNocturno?token=" + generarToken();
+            String tokenverificacion = generarToken();
+            mensajeTexto = "Por favor haz clic en el siguiente enlace para continuar con el registro de tu establecimiento de ocio nocturno: http://localhost:8080/verificar/continuarRegistroOcioNocturno?token=" + tokenverificacion;
+            user.setTokenVerificacion(tokenverificacion);
         } else {
             // Manejo de error si el rol no es válido
             mensajeTexto = "Error: Rol no válido";
@@ -89,23 +104,10 @@ public class EmailServiceImpl implements IEmailService {
 
 
 
-//    public void enviarEmailVerificacionEmpresas() throws MessagingException {
-//        // Lógica para enviar el email de verificación a la dirección de correo especificada
-//        String enlaceVerificacion = "http://localhost:8080/verificarEmpresa"; // URL sin parámetro idEmpresa
-//        String mensajeTexto = "Se ha registrado una nueva empresa. Por favor, verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
-//
-//        SimpleMailMessage mensaje = new SimpleMailMessage();
-//        mensaje.setTo("notiumevents@gmail.com");
-//        mensaje.setSubject("Verificación de registro de empresa");
-//        mensaje.setText(mensajeTexto);
-//        javaMailSender.send(mensaje); // Utiliza el bean JavaMailSender para enviar el mensaje
-//    }
-
-
     public void enviarEmailVerificacionRestaurante(RestauranteDTO restauranteDTO) throws MessagingException {
         // Lógica para enviar el email de verificación a la dirección de correo especificada
-        String enlaceVerificacion = "http://localhost:8080/verificarEmpresa?idEmpresa=" + restauranteDTO.getCif(); // URL con parámetro idEmpresa
-        String mensajeTexto = "Se ha registrado un nuevo restaurante. Por favor, verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
+        String enlaceVerificacion = "http://localhost:8080/verificar/verificarRestaurante?idEmpresa=" + restauranteDTO.getCif(); // URL con parámetro idEmpresa
+        String mensajeTexto = "Se ha registrado un nuevo restaurante. Por favor, como ADMINISTRADOR verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
 
         SimpleMailMessage mensaje = new SimpleMailMessage();
         mensaje.setTo("notiumevents@gmail.com");
@@ -116,8 +118,8 @@ public class EmailServiceImpl implements IEmailService {
 
     public void enviarEmailVerificacionOcioNocturno(OcioNocturnoDTO ocioNocturnoDTO) throws MessagingException {
         // Lógica para enviar el email de verificación a la dirección de correo especificada
-        String enlaceVerificacion = "http://localhost:8080/verificarEmpresa?idEmpresa=" + ocioNocturnoDTO.getCif(); // URL con parámetro idEmpresa
-        String mensajeTexto = "Se ha registrado un nuevo establecimiento de ocio nocturno. Por favor, verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
+        String enlaceVerificacion = "http://localhost:8080/verificar/verificarOcioNocturno?idEmpresa=" + ocioNocturnoDTO.getCif(); // URL con parámetro idEmpresa
+        String mensajeTexto = "Se ha registrado un nuevo establecimiento de ocio nocturno. Por favor, como ADMINISTRADOR verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
 
         SimpleMailMessage mensaje = new SimpleMailMessage();
         mensaje.setTo("notiumevents@gmail.com");
@@ -157,60 +159,4 @@ public class EmailServiceImpl implements IEmailService {
 
 
 
-    //    private void enviarEmailVerificacionEmpresas(String correoDestino, Long idEmpresa) throws MessagingException {
-//        // Lógica para enviar el email de verificación a la dirección de correo especificada
-//        String enlaceVerificacion = "http://localhost:8080/verificarEmpresa?id=" + idEmpresa; // URL con el parámetro idEmpresa
-//        String mensajeTexto = "Se ha registrado una nueva empresa. Por favor, verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
-//
-//        SimpleMailMessage mensaje = new SimpleMailMessage();
-//        mensaje.setTo(correoDestino);
-//        mensaje.setSubject("Verificación de registro de empresa");
-//        mensaje.setText(mensajeTexto);
-//        javaMailSender.send(mensaje); // Utiliza el bean JavaMailSender para enviar el mensaje
-//    }
-
-//    private void enviarEmailVerificacionEmpresas() throws MessagingException {
-//        // Lógica para enviar el email de verificación a la dirección de correo especificada
-//        SimpleMailMessage mensaje = new SimpleMailMessage();
-//        mensaje.setTo("notiumevents@gmail.com");
-//        mensaje.setSubject("Verificación de registro de empresa");
-//        mensaje.setText("Se ha registrado una nueva empresa. Por favor, verifique esta solicitud.");
-//        javaMailSender.send(mensaje); // Utiliza el bean JavaMailSender para enviar el mensaje
-//    }
-
-
-
-    //    @Autowired
-//    private JavaMailSender javaMailSender;
-//
-//    public void enviarEmailVerificacion(User usuario) {
-//        // Lógica para enviar email de verificación con un enlace único
-//        SimpleMailMessage mensaje = new SimpleMailMessage();
-//        mensaje.setTo(usuario.getEmail());
-//        mensaje.setSubject("Verifica tu cuenta");
-//        mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://tuaplicacion.com/verificar?token=" + generarToken(usuario));
-//        javaMailSender.send(mensaje);
-//    }
-
-//    private String generarToken(User usuario) {
-//        // Lógica para generar un token único
-//        return UUID.randomUUID().toString();
-//    }
-
-//    @Autowired
-//    private JavaMailSender javaMailSender;
-
-    public void enviarEmailVerificacion(User usuario) {
-        // Lógica para enviar email de verificación con un enlace único
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo(usuario.getEmail());
-        mensaje.setSubject("Verifica tu cuenta");
-        mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar?token=" + generarToken(usuario));
-        javaMailSender.send(mensaje);
-    }
-
-    private String generarToken(User usuario) {
-        // Lógica para generar un token único
-        return UUID.randomUUID().toString();
-    }
 }
