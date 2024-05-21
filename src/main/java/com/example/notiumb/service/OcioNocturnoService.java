@@ -43,6 +43,7 @@ public class OcioNocturnoService {
 
             //envio de email de verificacion
             emailService.enviarEmailVerificacionOcioNocturno(ocioNuevo);
+
             ocioNocturnoRepository.save(ocioNocturnoMapper.toEntity(ocioNuevo));
             return ocioNuevo;
         }else{
