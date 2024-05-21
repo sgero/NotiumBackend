@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/ocioNocturno")
 public class OcioNocturnoController {
 
@@ -20,11 +21,11 @@ public class OcioNocturnoController {
     @GetMapping("/listar")
     public List<OcioNocturnoDTO> listarOcio(){ return ocioNocturnoService.getAll();}
     @GetMapping("/{id}")
-    public OcioNocturno cartaId(@PathVariable Integer id){
+    public OcioNocturno ocioId(@PathVariable Integer id){
         return ocioNocturnoService.getById(id);
     }
     @PostMapping("/guardar")
-    public OcioNocturnoDTO guardarCarta(@RequestBody OcioNocturnoDTO ocioNocturnoDTO){
+    public OcioNocturnoDTO guardarOcio(@RequestBody OcioNocturnoDTO ocioNocturnoDTO){
         return ocioNocturnoService.save(ocioNocturnoDTO);
     }
     @DeleteMapping("/{id}")

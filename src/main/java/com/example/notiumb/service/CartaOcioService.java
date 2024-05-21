@@ -34,21 +34,10 @@ public class CartaOcioService {
         return repository.findByIdAndActivoIsTrue(id).orElse(null);
     }
     public CartaOcioDTO save(CartaOcioDTO cartaOcioDTO){
-        if (cartaOcioDTO.getId()==null){
-            CartaOcioDTO cartaNuevaDTO = new CartaOcioDTO();
-            cartaNuevaDTO.setOcioNocturnoDTO(cartaOcioDTO.getOcioNocturnoDTO());
-            repository.save(converter.toEntity(cartaNuevaDTO));
-            return cartaNuevaDTO;
-        }else{
-        CartaOcio cartaModificar = repository.findById(cartaOcioDTO.getId()).orElse(null);
-        if (cartaModificar==null){
-            return null;
-        }else{
-            cartaModificar.setOcioNocturno(ocioNocturnoMapper.toEntity(cartaOcioDTO.getOcioNocturnoDTO()));
-            repository.save(cartaModificar);
-            return converter.toDTO(cartaModificar);
-        }
-        }
+        CartaOcioDTO cartaNuevaDTO = new CartaOcioDTO();
+        cartaNuevaDTO.setOcioNocturnoDTO(cartaOcioDTO.getOcioNocturnoDTO());
+        repository.save(converter.toEntity(cartaNuevaDTO));
+        return cartaNuevaDTO;
     }
 
     public void delete(Integer id){

@@ -29,7 +29,7 @@ public class Rpp {
     private String telefono;
     @Column(name = "fecha_nacimiento", nullable = false)
     private Timestamp fechaNacimiento;
-    @Column(name = "activo", nullable = false)
+    @Column(name = "activo")
     private Boolean activo = true;
 
     @OneToOne

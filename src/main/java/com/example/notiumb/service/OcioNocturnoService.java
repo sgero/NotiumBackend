@@ -1,5 +1,6 @@
 package com.example.notiumb.service;
 
+import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
@@ -17,6 +18,8 @@ public class OcioNocturnoService {
     private IOcioNocturnoRepository ocioNocturnoRepository;
     @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
+    @Autowired
+    private IDireccionMapper direccionMapper;
 
 
     public List<OcioNocturnoDTO> getAll() {
@@ -35,6 +38,7 @@ public class OcioNocturnoService {
             ocioNuevo.setHoraCierre(ocioNocturnoDTO.getHoraCierre());
             ocioNuevo.setAforo(ocioNocturnoDTO.getAforo());
             ocioNuevo.setImagenMarca(ocioNocturnoDTO.getImagenMarca());
+            ocioNuevo.setDireccionDTO(ocioNocturnoDTO.getDireccionDTO());
             ocioNocturnoRepository.save(ocioNocturnoMapper.toEntity(ocioNuevo));
             return ocioNuevo;
         }else{
@@ -48,6 +52,7 @@ public class OcioNocturnoService {
                 ocioModificar.setHoraCierre(ocioNocturnoDTO.getHoraCierre());
                 ocioModificar.setAforo(ocioNocturnoDTO.getAforo());
                 ocioModificar.setImagenMarca(ocioNocturnoDTO.getImagenMarca());
+                ocioModificar.setDireccion(direccionMapper.toEntity(ocioNocturnoDTO.getDireccionDTO()));
                 ocioNocturnoRepository.save(ocioModificar);
                 return ocioNocturnoMapper.toDTO(ocioModificar);
             }

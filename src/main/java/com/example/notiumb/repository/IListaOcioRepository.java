@@ -1,9 +1,7 @@
 package com.example.notiumb.repository;
 
-import com.example.notiumb.dto.ListaOcioDTO;
 import com.example.notiumb.model.ListaOcio;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +16,8 @@ public interface IListaOcioRepository extends JpaRepository<ListaOcio, Integer> 
     Optional<ListaOcio> findByIdAndActivoIsTrue(Integer id);
     ListaOcio findListaOcioByEventoIdAndActivoIsTrue (Integer id);
     List<ListaOcio> findAllByEventoId (Integer id);
+
+    List<ListaOcio> findAllByRppIdAndActivoIsTrue (Integer id);
+
 
 }

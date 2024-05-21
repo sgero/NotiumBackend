@@ -1,9 +1,12 @@
 package com.example.notiumb.repository;
 
 import com.example.notiumb.model.ListaOcioCliente;
+import com.example.notiumb.model.ReservadoOcioCliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface IListaOcioClienteRepository extends JpaRepository<ListaOcioCliente, Integer> {
@@ -12,4 +15,7 @@ public interface IListaOcioClienteRepository extends JpaRepository<ListaOcioClie
             "join notium.evento e on lo.id_evento = e.id " +
             "where e.id = :id and lo.activo = true;", nativeQuery = true)
     Integer cantidadClientesTotales (Integer id);
+
+    List<ListaOcioCliente> findByClienteId(Integer idCliente);
 }
+

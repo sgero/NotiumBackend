@@ -17,9 +17,11 @@ public class EventoController {
     private EventoService eventoService;
 
     @GetMapping("/listarTodos")
-    public RespuestaDTO obtenerTodos(){
-        return eventoService.getAll();
-    }
+    public RespuestaDTO obtenerTodos(){ return eventoService.getAll();}
+
+    @GetMapping("/listarByOcio/{id}")
+    public RespuestaDTO getByOcioId(@PathVariable(value = "id") Integer idOcio){
+        return eventoService.getAllByOcio(idOcio);}
 
     @GetMapping("/activos")
     public RespuestaDTO obtenerActivos(@RequestParam Integer numElem, @RequestParam Integer numPag){

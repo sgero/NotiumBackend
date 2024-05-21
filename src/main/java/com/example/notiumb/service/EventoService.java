@@ -53,6 +53,12 @@ public class EventoService {
         return respuestaDTO;
     }
 
+    public RespuestaDTO getAllByOcio(Integer idOcio) {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findAllByOcioNocturnoIdAndActivoIsTrue(idOcio)));
+        return respuestaDTO;
+    }
+
     public RespuestaDTO getActivos(Integer numElem, Integer numPag) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Date fechaActual = new Date();
