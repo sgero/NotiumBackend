@@ -37,8 +37,14 @@ public class User implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     private Rol rol;
 
+    @Column(name = "token_verificacion")
+    private String tokenVerificacion;
+
     @Column(name = "activo")
     private Boolean activo;
+
+    @Column(name = "verificado")
+    private Boolean verificado;
 
     @OneToMany(mappedBy = "user")
     private Set<OcioNocturno> ocioNocturnoSet;
@@ -46,8 +52,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Restaurante> restauranteSet;
 
-    @Column(name = "verificado")
-    private Boolean verificado;
+//    @Column(name = "verificado")
+//    private Boolean verificado;
 
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)

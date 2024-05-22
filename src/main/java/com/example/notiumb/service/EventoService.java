@@ -181,6 +181,8 @@ public class EventoService {
         entradaOcioGuardar.setEvento(evento);
         entradaOcioGuardar.setPrecio(entradaOcioDTO.getPrecio());
         entradaOcioGuardar.setTotalEntradas(entradaOcioDTO.getTotalEntradas());
+        entradaOcioGuardar.setDetalleEntrada(entradaOcioDTO.getDetalleEntrada());
+        entradaOcioGuardar.setConsumiciones(entradaOcioDTO.getConsumiciones());
     }
 
     private ReservadoOcio crearReservadoDeEvento(Evento evento, ReservadoOcioDTO reservadoOcioDTO){
@@ -192,6 +194,8 @@ public class EventoService {
     private static void setearReservado(Evento evento, ReservadoOcioDTO reservadoOcioDTO, ReservadoOcio reservadoOcioGuardar) {
         reservadoOcioGuardar.setReservadosDisponibles(reservadoOcioDTO.getReservadosDisponibles());
         reservadoOcioGuardar.setPersonasMaximasPorReservado(reservadoOcioDTO.getPersonasMaximasPorReservado());
+        reservadoOcioGuardar.setDetalleReservado(reservadoOcioDTO.getDetalleReservado());
+        reservadoOcioGuardar.setBotellas(reservadoOcioDTO.getBotellas());
         reservadoOcioGuardar.setPrecio(reservadoOcioDTO.getPrecio());
         reservadoOcioGuardar.setEvento(evento);
     }
@@ -215,6 +219,8 @@ public class EventoService {
         listaOcioGuardar.setTotal_invitaciones(indiceLista.getTotal_invitaciones());
         listaOcioGuardar.setEvento(evento);
         listaOcioGuardar.setRpp(rppMapper.toEntity(indiceLista.getRppDTO()));
+        listaOcioGuardar.setConsumiciones(indiceLista.getConsumiciones());
+        listaOcioGuardar.setDetalleLista(indiceLista.getDetalleLista());
         if (indiceLista.getActivo()){
             listaOcioGuardar.setActivo(true);
         }
@@ -380,12 +386,12 @@ public class EventoService {
             EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(evento.getId());
             ReservadoOcio reservadoOcio = reservadoOcioRepository.findReservadoOcioByEventoIdAndActivoIsTrue(evento.getId());
             ListaOcio lista = listaOcioMapper.toEntity(listaOcioService.getActivaByEventoId(evento.getId()));
-            InformacionTiposEntradasEvento informacionTiposEntradasEvento = InformacionTiposEntradasEvento.builder()
+            InformacionTiposEntradasEventoDTO informacionTiposEntradasEventoDTO = InformacionTiposEntradasEventoDTO.builder()
                     .entradaOcioDTO(entradaOcioMapper.toDTO(entradaOcio))
                     .eventoDTO(eventoMapper.toDTO(evento))
                     .reservadoOcioDTO(reservadoOcioMapper.toDTO(reservadoOcio))
                     .listaOcioDTO(listaOcioMapper.toDTO(lista)).build();
-            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200, informacionTiposEntradasEvento);
+            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200, informacionTiposEntradasEventoDTO);
         }
         return respuestaDTO;
     }

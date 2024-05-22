@@ -12,6 +12,7 @@ import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IClienteRepository;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthController;
+import com.example.notiumb.service.implementation.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class ClienteService {
     @Autowired
     private AuthController authController;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     public ClienteDTO crearYModificarCliente(UserClienteDTO userClienteDTO) {
 
         if (userClienteDTO.getId()==null){
@@ -56,6 +60,9 @@ public class ClienteService {
             cliente.setFechaNacimiento(userClienteDTO.getFechaNacimiento());
             cliente.setUser(usuario);
             cliente.setDireccion(direccionMapper.toEntity(userClienteDTO.getDireccionDTO()));
+
+            //Enviamos email de verificacion al cliente que se ha registrado
+            emailService.enviarEmailVerificacion(usuario.getEmail(), "CLIENTE");
 
 
             repository.save(cliente);

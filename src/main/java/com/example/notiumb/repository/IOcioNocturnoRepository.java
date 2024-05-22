@@ -14,4 +14,6 @@ public interface IOcioNocturnoRepository extends JpaRepository<OcioNocturno, Int
     List<OcioNocturno> findAllByActivoIsTrue();
     Optional<OcioNocturno> findByIdAndActivoIsTrue(Integer id);
 
+    OcioNocturno findByCif(String cif);
+
 }

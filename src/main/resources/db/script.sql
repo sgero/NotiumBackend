@@ -36,6 +36,7 @@ create table usuario
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      integer not null,
+    token_verificacion varchar(100),
     activo   boolean default true,
     verificado boolean default false,
     primary key (id)
@@ -60,7 +61,6 @@ create table cliente
     apellidos        varchar(100) not null,
     dni              varchar(9)   not null,
     telefono         varchar(20)  not null,
-    token_verificacion         varchar(100)  not null,
     fecha_nacimiento timestamp(6)    not null,
     activo           boolean default true,
     id_usuario       integer      not null,
@@ -131,7 +131,7 @@ create table rpp
 
 create table evento (
                         id serial not null ,
-                        nombre varchar(30) not null ,
+                        nombre varchar(200) not null ,
                         descripcion varchar(200) not null ,
                         fecha timestamp(6) not null ,
                         tematica varchar(50) not null ,
@@ -189,6 +189,7 @@ create table lista_ocio (
 create table lista_ocio_cliente(
                                    id serial not null ,
                                    fecha timestamp(6) not null ,
+                                   codigo varchar(200),
                                    id_cliente int not null ,
                                    id_lista_ocio int not null ,
                                    id_promocion integer,
@@ -371,10 +372,9 @@ create table promocion (
                            titulo varchar(50) not null ,
                            foto varchar(10000) not null,
                            activo boolean default true not null ,
-                           id_reservado_ocio_cliente integer not null ,
-                           id_restaurante integer not null ,
+                           codigo varchar(100) not null,
+                           id_restaurante integer,
                            primary key (id),
-                           constraint fk_promocion_reservado_ocio_cliente foreign key (id_reservado_ocio_cliente) references reservado_ocio_cliente (id),
                            constraint id_promocion_restaurante_fk foreign key (id_restaurante) references restaurante (id)
 );
 

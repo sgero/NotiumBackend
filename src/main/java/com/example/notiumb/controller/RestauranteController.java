@@ -4,6 +4,7 @@ import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.service.RestauranteService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class RestauranteController {
 
 
     @PostMapping(value="/crear")
-    public Restaurante crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) {
+    public Restaurante crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) throws MessagingException {
         return restauranteService.crearRestaurante(restauranteDTO);
     }
 }

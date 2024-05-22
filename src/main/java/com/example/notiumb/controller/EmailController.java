@@ -28,20 +28,5 @@ public class EmailController {
     }
 
 
-    @Autowired
-    private JavaMailSender javaMailSender;
 
-    public void enviarEmailVerificacion(User usuario) {
-        // Lógica para enviar email de verificación con un enlace único
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo(usuario.getEmail());
-        mensaje.setSubject("Verifica tu cuenta");
-        mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://tuaplicacion.com/verificar?token=" + generarToken(usuario));
-        javaMailSender.send(mensaje);
-    }
-
-    private String generarToken(User usuario) {
-        // Lógica para generar un token único
-        return UUID.randomUUID().toString();
-    }
 }
