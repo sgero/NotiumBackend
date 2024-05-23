@@ -9,21 +9,19 @@ import com.example.notiumb.dto.EntradaOcioClienteDTO;
 import com.example.notiumb.dto.ListaOcioClienteDTO;
 import com.example.notiumb.dto.ReservadoOcioClienteDTO;
 import com.example.notiumb.model.*;
-import com.example.notiumb.model.enums.TipoPromocion;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import com.example.notiumb.utilidades.UtilidadesAPI;
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CompraClienteOcioService {
@@ -67,9 +65,7 @@ public class CompraClienteOcioService {
         Integer entradasVendidas = entradaOcioClienteRepository.cantidadEntradasVendidas(entradaOcio.getId());
         Integer reservadosVendidos = reservadoOcioClienteRepository.cantidadReservadosVendidos(reservadoOcio.getId());
         Integer personasTotalesReservadosVendidos = reservadoOcioClienteRepository.cantidadPersonas(reservadoOcio.getId());
-        Double invitacionesTotalesLista = listaOcio.stream()
-                .mapToDouble(ListaOcio::getTotal_invitaciones)
-                .sum();
+        Integer invitacionesTotalesLista = listaOcio.stream().mapToInt(ListaOcio::getTotal_invitaciones).sum();
         Integer clientesApuntadosALista = listaOcioClienteRepository.cantidadClientesTotales(evento.getId());
 
         if (!CollectionUtils.isEmpty(entradasOcioCliente)){

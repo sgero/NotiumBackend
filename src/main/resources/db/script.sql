@@ -32,7 +32,7 @@ drop table if exists usuario;
 create table usuario
 (
     id       serial       not null,
-    username varchar(100) not null,
+    username varchar(100) not null unique,
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      integer not null,

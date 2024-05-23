@@ -20,7 +20,7 @@ public class ListaOcioDTO {
     @PositiveOrZero
     private Double precio;
     @PositiveOrZero
-    private Double total_invitaciones;
+    private Integer total_invitaciones;
     @Valid
     private RppDTO rppDTO;
     private String detalleLista;
