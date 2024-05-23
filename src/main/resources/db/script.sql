@@ -292,7 +292,6 @@ create table comentario (
                             constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
-
 create table chat (
                       id serial not null ,
                       activo boolean default true not null ,
@@ -359,6 +358,7 @@ create table promocion (
                            constraint id_promocion_evento_fk foreign key (id_evento) references evento (id),
                            constraint id_promocion_restaurante_fk foreign key (id_restaurante) references restaurante (id)
 );
+
 
 
 INSERT INTO clase (clase) VALUES

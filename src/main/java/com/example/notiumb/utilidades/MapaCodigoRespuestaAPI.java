@@ -20,6 +20,8 @@ public class MapaCodigoRespuestaAPI {
     public static final CodigoRespuestaAPI CODIGO_400_TURNO_NO_DESACTIVADO = new CodigoRespuestaAPI("400", "El turno no se ha desactivado");
     public static final CodigoRespuestaAPI CODIGO_200_VALORACION_CREADA = new CodigoRespuestaAPI("200", "La valoracion se ha creado correctamente");
     public static final CodigoRespuestaAPI CODIGO_400_VALORACION_NO_CREADA = new CodigoRespuestaAPI("400", "La valoracion no se ha creado correctamente");
+    public static final CodigoRespuestaAPI CODIGO_200_RANKING_ACTUALIZADO = new CodigoRespuestaAPI("200", "El ranking ha sido actualizado correctamente");
+    public static final CodigoRespuestaAPI CODIGO_400_RANKING_NO_ACTUALIZADO = new CodigoRespuestaAPI("400", "El ranking no ha sido actualizado correctamente");
 
 
 

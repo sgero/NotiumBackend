@@ -3,6 +3,7 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
+import com.example.notiumb.repository.IComentarioRepository;
 import com.example.notiumb.repository.IRestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class RestauranteService {
     private IRestauranteRepository restauranteRepository;
     @Autowired
     private IRestauranteMapper restauranteMapper;
+    @Autowired
+    private IComentarioRepository iComentarioRepository;
 
 
     public List<RestauranteDTO> listarRestaurantes(){
@@ -40,10 +43,12 @@ public class RestauranteService {
         restaurante.setImagen_marca(restaurante.getImagen_marca());
 
        return restauranteRepository.save(restaurante);
-
-
-
    }
+
+
+
+
+
 
 
 }
