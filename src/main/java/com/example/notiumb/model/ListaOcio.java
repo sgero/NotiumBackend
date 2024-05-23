@@ -24,7 +24,7 @@ public class ListaOcio {
     private Double precio;
 
     @Column(name = "total_invitaciones", nullable = false)
-    private Double total_invitaciones;
+    private Integer total_invitaciones;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo = false;
