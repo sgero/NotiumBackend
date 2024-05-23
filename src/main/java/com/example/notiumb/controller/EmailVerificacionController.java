@@ -1,6 +1,5 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
