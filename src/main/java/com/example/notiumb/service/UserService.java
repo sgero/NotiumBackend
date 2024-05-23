@@ -44,11 +44,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findTopByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        return userRepository.findTopByUsername(username);
     }
 
     public UserDTO getByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findTopByUsername(username).orElse(null);
+        User user = userRepository.findTopByUsername(username);
 
         if (user != null) {
             return iUserMapper.toDTO(user);
@@ -63,16 +63,8 @@ public class UserService implements UserDetailsService {
     }
 
     public Boolean existByCredentials(String username, String password) {
-        User user = userRepository.findTopByUsername(username).orElse(null);
+        User user = userRepository.findTopByUsername(username);
         return user != null && passwordEncoder.matches(password, user.getPassword());
-    }
-
-    public Boolean existsByUsernameAndPassword(String username, String password) {
-        return userRepository.existsByUsernameAndPassword(username, password);
-    }
-
-    public List<UserDTO> getAllByUsernameAndPassword(String username, String password) {
-        return iUserMapper.toDTO(userRepository.getAllByUsernameAndPassword(username, password));
     }
 
     public String deleteUser(User user) {
