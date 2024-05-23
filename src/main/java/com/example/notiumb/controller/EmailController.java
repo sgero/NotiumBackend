@@ -1,14 +1,11 @@
 package com.example.notiumb.controller;
 
 
-import com.example.notiumb.model.User;
 import com.example.notiumb.service.IEmailService;
 import com.example.notiumb.dto.EmailDTO;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
