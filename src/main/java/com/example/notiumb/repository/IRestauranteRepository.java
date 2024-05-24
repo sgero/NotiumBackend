@@ -14,6 +14,7 @@ public interface IRestauranteRepository extends JpaRepository<Restaurante , Inte
 
     Restaurante findTopById(Integer id);
 
-
     Restaurante findByCif(String cif);
+
+    Restaurante findByIdAndActivoIsTrue(Integer id);
 }
