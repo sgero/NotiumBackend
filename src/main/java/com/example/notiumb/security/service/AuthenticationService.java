@@ -61,4 +61,27 @@ public class AuthenticationService {
         return userService.existByCredentials(loginDTO.getUsername(),loginDTO.getPassword());
 
     }
+
+//    public String authenticateUser(String username, String password) {
+//        // Implementar la lógica de autenticación y retornar el rol
+//        // Integrate database access here
+//        String role = null;
+//        // Execute query to retrieve role based on username and password
+//        // Validate retrieved role
+//        if ("ADMIN".equals(username) && "password".equals(password)) {
+//            role = "ADMIN";
+//        } else if ("CLIENTE".equals(username) && "password".equals(password)) {
+//            role = "CLIENTE";
+//        } else if ("RESTAURANTE".equals(username) && "password".equals(password)) {
+//            role = "RESTAURANTE";
+//        } else if ("OCIONOCTURNO".equals(username) && "password".equals(password)) {
+//            role = "OCIONOCTURNO";
+//        } else if ("RPP".equals(username) && "password".equals(password)) {
+//            role = "RPP";
+//        }
+//        // Return the retrieved role or null if not found
+//        return role;
+//    }
+
+
 }

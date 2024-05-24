@@ -3,14 +3,17 @@ package com.example.notiumb.security.auth;
 
 import com.example.notiumb.dto.LoginDTO;
 import com.example.notiumb.dto.UserDTO;
+import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.service.AuthenticationService;
+import com.example.notiumb.security.service.JWTService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -20,6 +23,21 @@ public class AuthController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private IUserRepository userRepository;
+
+    @GetMapping("/getusuario")
+    public User getUsername(@RequestHeader HashMap<String, String> headers){
+        String key = "authorization";
+        String localToken = headers.get(key);
+        String token = localToken.substring(7);
+        String username = jwtService.extractUsername(token);
+        return userRepository.findTopByUsername(username);
+    }
 
 
     @PostMapping("/registrocliente")

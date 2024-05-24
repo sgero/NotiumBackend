@@ -8,5 +8,5 @@ import java.util.List;
 @Builder
 public class ComprarReservadoDTO {
     private ReservadoOcioClienteDTO reservadoOcioClienteDTO;
-    List<DatosCompradorDTO> datosCompradorDTOS;
+    private List<DatosCompradorDTO> datosCompradorDTOS;
 }

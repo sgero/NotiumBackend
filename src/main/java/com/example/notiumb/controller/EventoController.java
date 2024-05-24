@@ -65,4 +65,10 @@ public class EventoController {
     public RespuestaDTO eliminarEvento(@RequestParam Integer id){
         return eventoService.eliminarEvento(id);
     }
+
+    @GetMapping("/restante/{id}")
+    public RespuestaDTO cantidadRestanteEntradas(@PathVariable Integer id){
+        return eventoService.getCantidadRestanteEvento(id);
+    }
+
 }

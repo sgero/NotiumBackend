@@ -32,7 +32,7 @@ drop table if exists usuario;
 create table usuario
 (
     id       serial       not null,
-    username varchar(100) not null,
+    username varchar(100) not null unique,
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      integer not null,
@@ -311,7 +311,6 @@ create table comentario (
                             constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
-
 create table chat (
                       id serial not null ,
                       activo boolean default true not null ,
@@ -390,6 +389,7 @@ create table datos_comprador (
      primary key (id),
     constraint fk_datos_comprador_reservado_ocio_cliente foreign key (reservado_ocio_cliente) references reservado_ocio_cliente(id)
 );
+
 
 INSERT INTO clase (clase) VALUES
                                   ('CHINO'),

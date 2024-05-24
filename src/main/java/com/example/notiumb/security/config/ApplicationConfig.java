@@ -23,7 +23,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> iUserRepository.findTopByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        return iUserRepository::findTopByUsername;
     }
 
     @Bean

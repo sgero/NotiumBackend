@@ -4,6 +4,7 @@ import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IComentarioRepository;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
@@ -20,6 +21,8 @@ public class RestauranteService {
     private IRestauranteRepository restauranteRepository;
     @Autowired
     private IRestauranteMapper restauranteMapper;
+    @Autowired
+    private IComentarioRepository iComentarioRepository;
 
     @Autowired
     private EmailServiceImpl emailService;
@@ -49,10 +52,12 @@ public class RestauranteService {
         emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
 
        return restauranteRepository.save(restaurante);
-
-
-
    }
+
+
+
+
+
 
     public Restaurante getRestauranteByCif(String cif){
         return restauranteRepository.findByCif(cif);
