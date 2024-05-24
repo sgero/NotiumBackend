@@ -93,4 +93,7 @@ public class ClienteService {
 
     }
 
+    public ClienteDTO getByUserId(Integer id) {
+        return converter.toDTO(repository.findByIdUser(id));
+    }
 }

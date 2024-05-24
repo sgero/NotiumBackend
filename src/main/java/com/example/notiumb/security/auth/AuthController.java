@@ -1,6 +1,7 @@
 package com.example.notiumb.security.auth;
 
 
+import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.LoginDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.User;
@@ -29,18 +30,20 @@ public class AuthController {
 
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private IUserMapper userMapper;
 
     @GetMapping("/getusuario")
-    public User getUsername(@RequestHeader HashMap<String, String> headers){
+    public UserDTO getUsername(@RequestHeader HashMap<String, String> headers){
         String key = "authorization";
         String localToken = headers.get(key);
         String token = localToken.substring(7);
         String username = jwtService.extractUsername(token);
-        return userRepository.findTopByUsername(username);
+        return userMapper.toDTO(userRepository.findTopByUsername(username));
     }
 
 
-    @PostMapping("/registrocliente")
+    @PostMapping("/registro")
     public AuthenticationResponseDTO register(@RequestBody UserDTO userDTO){
         userDTO.setActivo(true);
         return  authenticationService.register(userDTO);
