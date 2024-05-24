@@ -18,4 +18,8 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query(value = "select CAST(rr.fecha AS DATE) from notium.reserva_restaurante rr where rr.id_restaurante = :id_restaurante", nativeQuery = true)
     List<Date> listadoReservaFecha(Integer id_restaurante);
 
+    @Query(value = "select rr.* from notium.reserva_restaurante rr where rr.codigo_reserva = %:codigoReserva%", nativeQuery = true)
+    Reserva buscarValoracion(String codigoReserva);
+
+
 }
