@@ -28,8 +28,6 @@ public class ProductoService {
     @Autowired
     private IProductoMapper productoMapper;
 
-    @Autowired
-    private JWTService jwtService;
 
     @Autowired
     private IUserRepository userRepository;
@@ -48,9 +46,9 @@ public class ProductoService {
 
     public ProductoDTO crearProducto(ProductoAuxDTO productoAuxDTO) {
 
-        String tokensio = productoAuxDTO.getUsername();
+        //String tokensio = productoAuxDTO.getUsername();
         //String username = jwtService.extractUsername(productoDTO.getUsername());
-        User user = userRepository.findTopByUsernameAndActivoTrue("Pruebas");
+        User user = userRepository.findTopByUsernameAndActivoTrue(productoAuxDTO.getUsername());
         Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
         CartaRestauranteDTO cartaToSet = new CartaRestauranteDTO();
@@ -67,9 +65,9 @@ public class ProductoService {
     }
 
     public List<ListadoProductosDTO> listarProducto(TokenDTO tokenDTO) {
-        String tokensio = tokenDTO.getToken();
+        //String tokensio = tokenDTO.getToken();
         //String username = jwtService.extractUsername(tokenDTO.getToken());
-        User user = userRepository.findTopByUsernameAndActivoTrue("Pruebas");
+        User user = userRepository.findTopByUsernameAndActivoTrue(tokenDTO.getToken());
         Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
         List<Producto> productos = productoRepository.findByCartaResEqualsAndActivoTrue(carta);
