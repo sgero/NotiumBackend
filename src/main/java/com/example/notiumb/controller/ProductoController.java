@@ -28,4 +28,9 @@ public class ProductoController {
     public List<ListadoProductosDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
     }
+
+    @PutMapping(value = "/baja")
+    public String crearProducto(@RequestBody ProductoDTO productoDTO) {
+        return productoService.BajaAltaProducto(productoDTO);
+    }
 }

@@ -85,4 +85,15 @@ public class ProductoService {
 
     }
 
+    public String BajaAltaProducto(ProductoDTO productoDTO){
+        Producto producto = productoRepository.findTopById(productoDTO.getId());
+        if (producto.getActivo()){
+            producto.setActivo(false);
+        } else {
+            producto.setActivo(true);
+        }
+        productoRepository.save(producto);
+        return "Borrado lógico";
+    }
+
 }
