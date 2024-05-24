@@ -8,6 +8,7 @@ import com.example.notiumb.model.CartaOcio;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.repository.ICartaOcioRepository;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -30,19 +31,23 @@ public class CartaOcioService {
         return converter.toDTO(repository.findAllByActivoIsTrue());
     }
 
-    public CartaOcio getById(@Param("id") Integer id) {
-        return repository.findByIdAndActivoIsTrue(id).orElse(null);
+    public CartaOcioDTO getById(@Param("id") Integer id) {
+        return converter.toDTO(repository.findByIdAndActivoIsTrue(id).orElseThrow(() -> new EntityNotFoundException("CartaOcio not found")));
     }
+
     public CartaOcioDTO save(CartaOcioDTO cartaOcioDTO){
-        CartaOcioDTO cartaNuevaDTO = new CartaOcioDTO();
-        cartaNuevaDTO.setOcioNocturnoDTO(cartaOcioDTO.getOcioNocturnoDTO());
-        repository.save(converter.toEntity(cartaNuevaDTO));
-        return cartaNuevaDTO;
+        CartaOcio cartaNueva = converter.toEntity(cartaOcioDTO);
+        Integer OcioId = cartaOcioDTO.getOcioNocturnoDTO().getId();
+        OcioNocturno ocioNocturno = ocioNocturnoRepository.findByIdAndActivoIsTrue(OcioId).orElseThrow(() -> new EntityNotFoundException("OcioNocturno not found"));
+//        cartaNueva = converter.toEntity(cartaOcioDTO);
+        cartaNueva.setOcioNocturno(ocioNocturno);
+        repository.save(cartaNueva);
+        return converter.toDTO(cartaNueva);
     }
 
     public void delete(Integer id){
 
-        CartaOcio cartaAEliminar = repository.findById(id).orElse(null);
+        CartaOcio cartaAEliminar = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("CartaOcio not found"));
 
         if (cartaAEliminar!=null){
             cartaAEliminar.setActivo(false);

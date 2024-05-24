@@ -21,9 +21,7 @@ public class CartaOcioController {
         return service.getAll();
     }
     @GetMapping("/{id}")
-    public CartaOcio cartaId(@PathVariable Integer id){
-        return service.getById(id);
-    }
+    public CartaOcioDTO cartaId(@PathVariable Integer id){ return service.getById(id);}
     @PostMapping("/guardar")
     public CartaOcioDTO guardarCarta(@RequestBody CartaOcioDTO cartaOcioDTO){
         return service.save(cartaOcioDTO);

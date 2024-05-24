@@ -21,17 +21,13 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 //    @NotNull
     List<User> findAll();
 
-
     List<User> getAllByUsernameAndPassword(String username, String password);
 
     User findTopByTokenVerificacion(String tokenVerificacion);
 
     User findTopById(Integer id);
 
-
-
     User findTopByEmail(String email);
 
 //    ScopedValue<Object> findTopByToken(String token);
-
 }

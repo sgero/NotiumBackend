@@ -43,7 +43,6 @@ public class OcioNocturnoService {
             ocioNuevo.setAforo(ocioNocturnoDTO.getAforo());
             ocioNuevo.setImagenMarca(ocioNocturnoDTO.getImagenMarca());
             ocioNuevo.setDireccionDTO(ocioNocturnoDTO.getDireccionDTO());
-
             //envio de email de verificacion
             emailService.enviarEmailVerificacionOcioNocturno(ocioNuevo);
             ocioNocturnoRepository.save(ocioNocturnoMapper.toEntity(ocioNuevo));

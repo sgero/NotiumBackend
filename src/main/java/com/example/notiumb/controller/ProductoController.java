@@ -23,6 +23,11 @@ public class ProductoController {
         return productoService.crearProducto(productoAuxDTO);
     }
 
+    @PostMapping(value = "/guardar")
+    public ProductoDTO guardarProducto(@RequestBody ProductoAuxDTO productoAuxDTO) {
+        return productoService.guardarProducto(productoAuxDTO);
+    }
+
     @PostMapping(value = "/listar")
     public List<ProductoDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
