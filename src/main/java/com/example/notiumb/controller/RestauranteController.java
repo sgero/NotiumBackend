@@ -2,6 +2,7 @@ package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.ComprobarCodigoDTO;
 import com.example.notiumb.dto.RestauranteDTO;
+import com.example.notiumb.dto.UserRestauranteDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.service.ComentarioService;
@@ -35,8 +36,8 @@ public class RestauranteController {
     }
 
     @PostMapping(value="/crear")
-    public Restaurante crearRestaurante(@RequestBody RestauranteDTO restauranteDTO) throws MessagingException {
-        return restauranteService.crearRestaurante(restauranteDTO);
+    public RestauranteDTO crearYModificarRestaurante(@RequestBody UserRestauranteDTO userRestauranteDTO) throws MessagingException {
+        return restauranteService.crearYModificarRestaurante(userRestauranteDTO);
     }
 
     @GetMapping(value="/notaMedia")

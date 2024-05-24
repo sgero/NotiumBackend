@@ -92,6 +92,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/producto/**").permitAll()
                         .requestMatchers("/comprar/**").permitAll()
                         .requestMatchers("/promocion/**").permitAll()
+                        .requestMatchers("/ocioNocturno/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(Rol.ADMIN.name())
                         .requestMatchers(GET, "/restaurante/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.RESTAURANTE.name())
                         .requestMatchers(GET, "/ocionocturno/**").hasAnyAuthority(Rol.ADMIN.name(), Rol.OCIONOCTURNO.name())

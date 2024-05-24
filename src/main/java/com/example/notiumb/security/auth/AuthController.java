@@ -8,12 +8,9 @@ import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.service.AuthenticationService;
 import com.example.notiumb.security.service.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
-import java.util.Map;
 
 
 @RestController
@@ -39,8 +36,7 @@ public class AuthController {
         return userRepository.findTopByUsername(username);
     }
 
-
-    @PostMapping("/registrocliente")
+    @PostMapping("/registro")
     public AuthenticationResponseDTO register(@RequestBody UserDTO userDTO){
         userDTO.setActivo(true);
         return  authenticationService.register(userDTO);
