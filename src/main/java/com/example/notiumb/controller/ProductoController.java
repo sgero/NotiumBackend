@@ -32,6 +32,8 @@ public class ProductoController {
         return productoService.listarProducto(tokenDTO);
     }
 
+    // Carlos o Isra: este metodo no existe y me da error asi que lo dejo comentado
+
 //    @PutMapping(value = "/baja")
 //    public String crearProducto(@RequestBody ProductoDTO productoDTO) {
 //        return productoService.BajaAltaProducto(productoDTO);
