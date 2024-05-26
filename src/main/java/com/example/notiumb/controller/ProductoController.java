@@ -1,10 +1,8 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.ListadoProductosDTO;
 import com.example.notiumb.dto.ProductoAuxDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.TokenDTO;
-import com.example.notiumb.security.auth.AuthenticationResponseDTO;
 import com.example.notiumb.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +28,12 @@ public class ProductoController {
     }
 
     @PostMapping(value = "/listar")
-    public List<ListadoProductosDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
+    public List<ProductoDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
     }
 
-    @PutMapping(value = "/baja")
-    public String crearProducto(@RequestBody ProductoDTO productoDTO) {
-        return productoService.BajaAltaProducto(productoDTO);
-    }
+//    @PutMapping(value = "/baja")
+//    public String crearProducto(@RequestBody ProductoDTO productoDTO) {
+//        return productoService.BajaAltaProducto(productoDTO);
+//    }
 }
