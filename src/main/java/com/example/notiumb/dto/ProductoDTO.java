@@ -13,7 +13,7 @@ public class ProductoDTO {
 
     private TipoCategoria tipoCategoria;
 
-    private Boolean activo;
+    private Boolean activo = true;
 
     private CartaOcioDTO cartaOcio;
 

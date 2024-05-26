@@ -20,7 +20,7 @@ public class OcioNocturnoController {
     @GetMapping("/listar")
     public List<OcioNocturnoDTO> listarOcio(){ return ocioNocturnoService.getAll();}
     @GetMapping("/{id}")
-    public OcioNocturno cartaId(@PathVariable Integer id){
+    public OcioNocturno ocioId(@PathVariable Integer id){
         return ocioNocturnoService.getById(id);
     }
 
@@ -30,5 +30,5 @@ public class OcioNocturnoController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarCarta(@PathVariable Integer id){ ocioNocturnoService.delete(id); }
+    public void eliminarOcio(@PathVariable Integer id){ ocioNocturnoService.delete(id); }
 }

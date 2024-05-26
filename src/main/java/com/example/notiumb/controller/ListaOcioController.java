@@ -17,8 +17,11 @@ public class ListaOcioController {
     @GetMapping("/listar")
     public List<ListaOcioDTO> listarListas(){ return service.getAll(); }
 
+    @GetMapping("/rpp/{id}")
+    public List<ListaOcioDTO> getByOcioId(@PathVariable(value = "id") Integer idRpp){
+        return service.getAllByRpp(idRpp);}
     @GetMapping("/{id}")
-    public ListaOcioDTO listaId(@PathVariable Integer id){ return service.getById(id); }
+    public ListaOcioDTO listaId(@PathVariable(value = "id") Integer id){ return service.getById(id); }
     @GetMapping("/evento/{id}")
     public ListaOcioDTO listaOcioActivaByEvento(@PathVariable Integer id){ return service.getActivaByEventoId(id); }
 

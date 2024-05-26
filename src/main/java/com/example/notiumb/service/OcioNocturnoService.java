@@ -1,17 +1,12 @@
 package com.example.notiumb.service;
 
-import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.OcioNocturnoDTO;
-import com.example.notiumb.dto.UserClienteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
-import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
-import com.example.notiumb.repository.IUserRepository;
-import com.example.notiumb.security.auth.AuthController;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;

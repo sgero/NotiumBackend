@@ -5,7 +5,9 @@ import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.converter.IRppMapper;
 import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.RppDTO;
+import com.example.notiumb.model.ListaOcio;
 import com.example.notiumb.model.Rpp;
+import com.example.notiumb.repository.IListaOcioRepository;
 import com.example.notiumb.repository.IRppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +21,8 @@ public class RppService {
     @Autowired
     private IRppRepository repository;
     @Autowired
+    private IListaOcioRepository listaOcioRepository;
+    @Autowired
     private IRppMapper converter;
     @Autowired
     private IUserMapper userMapper;
@@ -28,6 +32,8 @@ public class RppService {
     private IOcioNocturnoMapper ocioNocturnoMapper;
 
     public List<RppDTO> getAll(){return converter.toDTO(repository.findAllByActivoIsTrue());}
+
+    public List<RppDTO> getAllByOcio(@Param("id") Integer idOcio){return converter.toDTO(repository.findAllByOcioNocturnoIdAndActivoIsTrue(idOcio));}
 
     public RppDTO getById(@Param("id") Integer id){
         return converter.toDTO(repository.findByIdAndActivoIsTrue(id).orElse(null));
@@ -69,10 +75,16 @@ public class RppService {
 
     public void delete(@Param("id") Integer id){
         Rpp deleteRpp = repository.findByIdAndActivoIsTrue(id).orElse(null);
+        List<ListaOcio> listasRpp = listaOcioRepository.findAllByRppIdAndActivoIsTrue(id);
 
         if (deleteRpp!=null){
             deleteRpp.setActivo(false);
             repository.save(deleteRpp);
+            if (listasRpp!=null){
+                listasRpp.stream().forEach(l->l.setActivo(false));
+                listaOcioRepository.saveAll(listasRpp);
+            }
+
         }
     }
 }

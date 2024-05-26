@@ -23,7 +23,7 @@ public class Producto {
     @Column(name = "tipo_categoria", nullable = false)
     private TipoCategoria tipoCategoria;
     @Column(name = "activo", nullable = false)
-    private Boolean activo;
+    private Boolean activo = true;
     @ManyToOne
     @JoinColumn(name = "id_carta_ocio")
     private CartaOcio cartaOcio;
