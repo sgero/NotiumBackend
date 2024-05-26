@@ -22,10 +22,12 @@ public class CartaOcioController {
     }
     @GetMapping("/{id}")
     public CartaOcioDTO cartaId(@PathVariable Integer id){ return service.getById(id);}
-    @PostMapping("/guardar")
-    public CartaOcioDTO guardarCarta(@RequestBody CartaOcioDTO cartaOcioDTO){
-        return service.save(cartaOcioDTO);
+    @GetMapping("/listarByOcio/{id}")
+    public CartaOcioDTO cartabyOcio(@PathVariable(value = "id") Integer idOcio){ return service.getByOcioId(idOcio);}
+    @PostMapping("/guardar/{id}")
+    public CartaOcioDTO guardarCarta(@PathVariable(value = "id") Integer idOcio, @RequestBody CartaOcioDTO cartaOcioDTO){
+        return service.save(idOcio, cartaOcioDTO);
     }
     @DeleteMapping("/{id}")
-    public void eliminarCarta(@PathVariable Integer id){ service.delete(id); }
+    public void eliminarCarta(@PathVariable(value = "id") Integer idOcio){ service.delete(idOcio); }
 }

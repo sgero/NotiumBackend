@@ -25,6 +25,4 @@ public class CartaOcio {
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 
-//    @OneToMany(mappedBy = "carta_ocio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Set<Producto> productoSet;
 }
