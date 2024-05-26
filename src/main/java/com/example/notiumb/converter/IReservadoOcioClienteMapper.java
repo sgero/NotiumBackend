@@ -12,10 +12,12 @@ public interface IReservadoOcioClienteMapper {
     @Mapping(source = "cliente", target = "clienteDTO")
     @Mapping(source = "reservadoOcio", target = "reservadoOcioDTO")
     @Mapping(source = "promocion", target = "promocionDTO")
+    @Mapping(source = "reservadoOcio.evento", target = "reservadoOcioDTO.eventoDTO")
     ReservadoOcioClienteDTO toDTO(ReservadoOcioCliente entity) ;
     @Mapping(source = "clienteDTO", target = "cliente")
     @Mapping(source = "reservadoOcioDTO", target = "reservadoOcio")
     @Mapping(source = "promocionDTO", target = "promocion")
+    @Mapping(source = "reservadoOcioDTO.eventoDTO", target = "reservadoOcio.evento")
     ReservadoOcioCliente toEntity(ReservadoOcioClienteDTO dto);
 
     List<ReservadoOcioClienteDTO> toDTO(List<ReservadoOcioCliente> listEntity);

@@ -4,10 +4,7 @@ import com.example.notiumb.converter.IDatosCompradorMapper;
 import com.example.notiumb.converter.IEntradaOcioClienteMapper;
 import com.example.notiumb.converter.IListaOcioClienteMapper;
 import com.example.notiumb.converter.IReservadoOcioClienteMapper;
-import com.example.notiumb.dto.DatosCompradorDTO;
-import com.example.notiumb.dto.EntradaOcioClienteDTO;
-import com.example.notiumb.dto.ListaOcioClienteDTO;
-import com.example.notiumb.dto.ReservadoOcioClienteDTO;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
@@ -154,7 +151,11 @@ public class CompraClienteOcioService {
                         datosCompradorSet.forEach(d -> d.setReservadoOcioCliente(reservadoOcioCliente));
                         datosCompradorRepository.saveAll(datosCompradorSet);
                         reservadoOcioClienteRepository.save(reservadoOcioCliente);
-                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, reservadoOcioClienteMapper.toDTO(reservadoOcioCliente));
+                        ComprarReservadoDTO comprarReservadoDTO = ComprarReservadoDTO.builder()
+                                .reservadoOcioClienteDTO(reservadoOcioClienteMapper.toDTO(reservadoOcioCliente))
+                                .datosCompradorDTOS(datosCompradorMapper.toDTO(datosCompradorSet))
+                                .build();
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, comprarReservadoDTO);
                     }
                 } else {
                     UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_DATOS);
