@@ -1,7 +1,7 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.*;
-import com.example.notiumb.model.CartaOcio;
+import com.example.notiumb.dto.OcioNocturnoDTO;
+import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.service.OcioNocturnoService;
 import jakarta.mail.MessagingException;

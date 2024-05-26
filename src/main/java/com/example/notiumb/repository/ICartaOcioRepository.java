@@ -15,4 +15,5 @@ public interface ICartaOcioRepository extends JpaRepository<CartaOcio, Integer> 
     List<CartaOcio> findAllByActivoIsTrue();
     Optional<CartaOcio> findByIdAndActivoIsTrue(Integer id);
     CartaOcio findTopByOcioNocturnoEqualsAndActivoIsTrue(OcioNocturno ocioNocturno);
+    CartaOcio findByOcioNocturnoId(Integer idOcio);
 }

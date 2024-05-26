@@ -1,6 +1,5 @@
 package com.example.notiumb.repository;
 
-import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.model.Formato;
 import com.example.notiumb.model.Producto;
 import com.example.notiumb.model.ProductoFormato;
@@ -16,4 +15,5 @@ public interface IProductoFormatoRepository extends JpaRepository<ProductoFormat
     List<ProductoFormato> findByProductoEquals(Producto producto);
 
     List<ProductoFormato> findByProductoEqualsAndFormatoEquals(Producto producto, Formato formato);
+
 }
