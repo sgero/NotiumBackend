@@ -19,4 +19,5 @@ public interface IClienteRepository extends JpaRepository<Cliente, Integer> {
             "where u.id = :id and u.activo = true and c.activo = true; ")
     Cliente findByIdUser(Integer id);
 
+
 }

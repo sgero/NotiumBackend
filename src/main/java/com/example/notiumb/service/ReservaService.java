@@ -1,18 +1,9 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.*;
-import com.example.notiumb.dto.MesaDTO;
-import com.example.notiumb.dto.ReservaDTO;
-import com.example.notiumb.dto.RestauranteDTO;
-import com.example.notiumb.dto.TurnoDTO;
-import com.example.notiumb.model.Mesa;
-import com.example.notiumb.model.Reserva;
-import com.example.notiumb.model.Restaurante;
-import com.example.notiumb.model.Turno;
-import com.example.notiumb.repository.IMesaRepository;
-import com.example.notiumb.repository.IReservaRepository;
-import com.example.notiumb.repository.IRestauranteRepository;
-import com.example.notiumb.repository.ITurnoRepository;
+import com.example.notiumb.dto.*;
+import com.example.notiumb.model.*;
+import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -56,6 +47,9 @@ public class ReservaService {
     @Autowired
     private IMesaMapper mesaMapper;
 
+    @Autowired
+    private IClienteRepository clienteRepository;
+
     public List<ReservaDTO> getAll() {
         return reservaMapper.toDTO(reservaRepository.findAllByActivoIsTrue());
     }
@@ -64,6 +58,8 @@ public class ReservaService {
 
         return reservaRepository.findByIdAndActivoIsTrue(id);
     }
+
+
 
     public List<MesaDTO> comprobarTurno(ReservaDTO reservaDTO) {
         LocalDate fecha = reservaDTO.getFecha();
@@ -127,9 +123,21 @@ public class ReservaService {
 
 
 
-    public ReservaDTO crearReserva(ReservaDTO reservaDTO) {
+    public ReservaDTO crearReserva(DatosReservaDTO reservaDTO) {
         // Comprueba la disponibilidad de mesas
-        List<MesaDTO> mesasDisponibles = comprobarTurno(reservaDTO);
+
+        Cliente clienteact = clienteRepository.findByIdUser(reservaDTO.getUsuarioDTO().getId());
+
+        ReservaDTO reservaDTO1 = new ReservaDTO();
+        reservaDTO1.setFecha(reservaDTO.getFecha());
+        reservaDTO1.setNumPersonas(reservaDTO.getNumPersonas());
+        reservaDTO1.setRestauranteDTO(reservaDTO.getRestauranteDTO());
+        reservaDTO1.setTurnoDTO(reservaDTO.getTurnoDTO());
+        reservaDTO1.setClienteDTO(clienteMapper.toDTO(clienteact));
+
+
+        List<MesaDTO> mesasDisponibles = comprobarTurno(reservaDTO1);
+
 
         if (mesasDisponibles.isEmpty()) {
             throw new RuntimeException("No hay suficientes mesas disponibles para acomodar a " + reservaDTO.getNumPersonas() + " personas.");
@@ -146,7 +154,7 @@ public class ReservaService {
             Reserva nuevaReserva = new Reserva();
             nuevaReserva.setCodigoReserva(codigoReserva);
             nuevaReserva.setFecha(reservaDTO.getFecha());
-            nuevaReserva.setCliente(clienteMapper.toEntity(reservaDTO.getClienteDTO()));
+            nuevaReserva.setCliente(clienteact);
             nuevaReserva.setRestaurante(restauranteMapper.toEntity(reservaDTO.getRestauranteDTO()));
             nuevaReserva.setMesa(mesaMapper.toEntity(mesaDTO));
             nuevaReserva.setTurno(turnoMapper.toEntity(reservaDTO.getTurnoDTO()));

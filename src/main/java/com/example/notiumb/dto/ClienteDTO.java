@@ -27,4 +27,7 @@ public class ClienteDTO {
     private UserDTO userDTO;
     @Valid
     private DireccionDTO direccionDTO;
+
+
+
 }

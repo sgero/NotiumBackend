@@ -1,6 +1,7 @@
 package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.CartaOcioDTO;
+import com.example.notiumb.dto.DatosReservaDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.ReservaDTO;
 import com.example.notiumb.model.CartaOcio;
@@ -22,7 +23,7 @@ public class ReservaController {
     private ReservaService service;
 
     @PostMapping(value = "/crear")
-    public ReservaDTO crearReserva(@RequestBody  ReservaDTO  reservaDTO) {
+    public ReservaDTO crearReserva(@RequestBody DatosReservaDTO reservaDTO) {
         return service.crearReserva(reservaDTO);
     }
 
@@ -33,8 +34,8 @@ public class ReservaController {
 
 
     @GetMapping("/{id}")
-    public Reserva getReservaById() {
-        return service.getReservaById(getReservaById().getId());
+    public Reserva getReservaById(@PathVariable Integer id) {
+        return service.getReservaById(id);
     }
 
     @PostMapping("/eliminar/{id}")
