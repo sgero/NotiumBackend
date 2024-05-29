@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IFormatoRepository extends JpaRepository<Formato, Integer> {
+
+    Formato findTopById(Integer id);
 }

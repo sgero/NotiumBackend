@@ -44,6 +44,9 @@ public class Evento {
     @Column(name = "aforo", nullable = false)
     private Integer aforo;
 
+    @Column(name = "cartel")
+    private String cartel;
+
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
@@ -51,8 +54,8 @@ public class Evento {
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
 
-//    @OneToOne(mappedBy = "evento", fetch = FetchType.LAZY)
-//    private EntradaOcio entradaOcio;
+    @OneToOne(mappedBy = "evento", fetch = FetchType.LAZY)
+    private EntradaOcio entradaOcio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento", fetch = FetchType.LAZY)
     private Set<ListaOcio> listasOcio;

@@ -1,3 +1,4 @@
+drop table if exists datos_comprador;
 drop table if exists promocion;
 drop table if exists producto_formato;
 drop table if exists formato;
@@ -31,10 +32,11 @@ drop table if exists usuario;
 create table usuario
 (
     id       serial       not null,
-    username varchar(100) not null,
+    username varchar(100) not null unique,
     email    varchar(100) not null,
     password varchar(100) not null,
     rol      integer not null,
+    token_verificacion varchar(100),
     activo   boolean default true,
     verificado boolean default false,
     primary key (id)
@@ -59,7 +61,6 @@ create table cliente
     apellidos        varchar(100) not null,
     dni              varchar(9)   not null,
     telefono         varchar(20)  not null,
-    token_verificacion         varchar(100)  not null,
     fecha_nacimiento timestamp(6)    not null,
     activo           boolean default true,
     id_usuario       integer      not null,
@@ -130,7 +131,7 @@ create table rpp
 
 create table evento (
                         id serial not null ,
-                        nombre varchar(30) not null ,
+                        nombre varchar(200) not null ,
                         descripcion varchar(200) not null ,
                         fecha timestamp(6) not null ,
                         tematica varchar(50) not null ,
@@ -138,6 +139,7 @@ create table evento (
                         edad integer not null ,
                         aforo integer not null ,
                         activo boolean default true not null ,
+                        cartel varchar(50000),
                         id_ocio_nocturno integer not null ,
                         primary key (id),
                         constraint id_evento_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
@@ -148,6 +150,8 @@ create table entrada_ocio (
                               precio float not null ,
                               total_entradas integer not null ,
                               activo boolean default  true not null ,
+                              detalle_entrada varchar(200),
+                              consumiciones integer,
                               id_evento integer not null ,
                               primary key (id),
                               constraint id_entrada_ocio_evento_fk foreign key (id_evento) references evento(id)
@@ -159,9 +163,13 @@ create table entrada_ocio_cliente(
                                      fecha_compra timestamp(6) not null ,
                                      id_cliente integer not null ,
                                      id_entrada_ocio integer not null ,
+                                     id_promocion integer,
+                                     datos_comprador integer,
                                      primary key  (id),
                                      constraint id_entrada_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
-                                     constraint id_entrada_ocio_cliente_entrada_ocio_fk foreign key (id_entrada_ocio) references entrada_ocio(id)
+                                     constraint id_entrada_ocio_cliente_entrada_ocio_fk foreign key (id_entrada_ocio) references entrada_ocio(id),
+                                     constraint  fk_entrada_ocio_cliente_promocion foreign key (id_promocion) references promocion(id),
+                                     constraint fk_entrada_ocio_cliente_datos_comprador foreign key (datos_comprador) references datos_comprador(id)
 );
 
 create table lista_ocio (
@@ -169,6 +177,8 @@ create table lista_ocio (
                             precio float not null,
                             total_invitaciones int not null,
                             activo boolean default true not null,
+                            detalle_lista varchar(200),
+                            consumiciones integer,
                             id_rpp int not null,
                             id_evento int not null,
                             primary key (id),
@@ -179,11 +189,16 @@ create table lista_ocio (
 create table lista_ocio_cliente(
                                    id serial not null ,
                                    fecha timestamp(6) not null ,
+                                   codigo varchar(200),
                                    id_cliente int not null ,
                                    id_lista_ocio int not null ,
+                                   id_promocion integer,
+                                   datos_comprador integer,
                                    primary key (id),
                                    constraint id_lista_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
-                                   constraint id_lista_ocio_cliente_lista_ocio_fk foreign key (id_lista_ocio) references lista_ocio(id)
+                                   constraint id_lista_ocio_cliente_lista_ocio_fk foreign key (id_lista_ocio) references lista_ocio(id),
+                                   constraint  fk_lista_ocio_cliente_promocion foreign key (id_promocion) references promocion(id),
+                                   constraint fk_lista_ocio_cliente_datos_comprador foreign key (datos_comprador) references datos_comprador(id)
 );
 
 create table reservado_ocio(
@@ -192,6 +207,8 @@ create table reservado_ocio(
                                personas_max_por_reservado int not null default 2,
                                precio float not null ,
                                activo boolean default true not null ,
+                               detalle_reservado varchar(200),
+                               botellas integer,
                                id_evento int not null,
                                primary key (id),
                                constraint id_reservado_ocio_evento_fk foreign key (id_evento) references evento(id)
@@ -204,9 +221,11 @@ create table reservado_ocio_cliente(
                                        cantidad_personas int not null ,
                                        id_cliente int not null ,
                                        id_reservado_ocio int not null ,
+                                       id_promocion integer,
                                        primary key (id),
                                        constraint id_reservado_ocio_cliente_cliente_fk foreign key (id_cliente) references cliente(id),
-                                       constraint id_reservado_ocio_cliente_reservado_ocio_fk foreign key (id_reservado_ocio) references reservado_ocio(id)
+                                       constraint id_reservado_ocio_cliente_reservado_ocio_fk foreign key (id_reservado_ocio) references reservado_ocio(id),
+                                       constraint fk_reservado_ocio_cliente_promocion foreign key (id_promocion) references promocion(id)
 );
 
 create table mesa_restaurante (
@@ -292,7 +311,6 @@ create table comentario (
                             constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
 );
 
-
 create table chat (
                       id serial not null ,
                       activo boolean default true not null ,
@@ -353,11 +371,23 @@ create table promocion (
                            titulo varchar(50) not null ,
                            foto varchar(10000) not null,
                            activo boolean default true not null ,
-                           id_evento integer not null ,
-                           id_restaurante integer not null ,
+                           codigo varchar(100) not null,
+                           id_restaurante integer,
                            primary key (id),
-                           constraint id_promocion_evento_fk foreign key (id_evento) references evento (id),
                            constraint id_promocion_restaurante_fk foreign key (id_restaurante) references restaurante (id)
+);
+
+create table datos_comprador (
+     id               serial       not null,
+     nombre           varchar(100) not null,
+     apellidos        varchar(100) not null,
+     email            varchar(100)   not null,
+     telefono         varchar(20)  not null,
+     fecha_nacimiento timestamp(6)    not null,
+     reservado_ocio_cliente integer,
+     genero integer,
+     primary key (id),
+    constraint fk_datos_comprador_reservado_ocio_cliente foreign key (reservado_ocio_cliente) references reservado_ocio_cliente(id)
 );
 
 

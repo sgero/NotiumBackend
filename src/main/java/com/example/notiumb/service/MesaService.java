@@ -8,7 +8,6 @@ import com.example.notiumb.repository.IMesaRepository;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
-import com.example.notiumb.utilidades.ULogger;
 import com.example.notiumb.utilidades.UtilidadesAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -19,14 +19,22 @@ public class OcioNocturnoDTO {
     private String nombre;
     @NotBlank
     private String cif;
+
+    private String telefono;
+
     private Time horaApertura;
+
     private Time horaCierre;
+
     @NotBlank
     private Integer aforo;
+
     @NotBlank
     private String imagenMarca;
     @Valid
     private UserDTO userDTO;
     @Valid
     private DireccionDTO direccionDTO;
+
+
 }

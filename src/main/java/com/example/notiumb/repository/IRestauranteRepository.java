@@ -5,6 +5,8 @@ import com.example.notiumb.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IRestauranteRepository extends JpaRepository<Restaurante , Integer> {
 
@@ -12,5 +14,7 @@ public interface IRestauranteRepository extends JpaRepository<Restaurante , Inte
 
     Restaurante findTopById(Integer id);
 
+    Restaurante findByCif(String cif);
 
+    Restaurante findByIdAndActivoIsTrue(Integer id);
 }

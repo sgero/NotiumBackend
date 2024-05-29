@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class ProductoFormatoDTO {
     private Integer id;
 

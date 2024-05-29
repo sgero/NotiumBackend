@@ -1,17 +1,13 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.ITurnoMapper;
-import com.example.notiumb.dto.MesaDTO;
 import com.example.notiumb.dto.TurnoDTO;
-import com.example.notiumb.model.Evento;
-import com.example.notiumb.model.Mesa;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.Turno;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.ITurnoRepository;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
-import com.example.notiumb.utilidades.ULogger;
 import com.example.notiumb.utilidades.UtilidadesAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +82,6 @@ public class TurnoService {
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_TURNO_DESACTIVADO);
             }
         }catch (Exception e){
-            ULogger.error(e);
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_400_TURNO_NO_DESACTIVADO);
         }
         return respuestaDTO;
