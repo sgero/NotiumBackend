@@ -88,6 +88,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/turno/**").permitAll()
                         .requestMatchers("/restaurante/**").permitAll()
                         .requestMatchers("/comentario/**").permitAll()
+                        .requestMatchers("/reserva/**").permitAll()
                         .requestMatchers("/cliente/**").permitAll()
                         .requestMatchers("/producto/**").permitAll()
                         .requestMatchers("/comprar/**").permitAll()
