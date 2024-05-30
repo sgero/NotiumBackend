@@ -1,7 +1,6 @@
 package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.TurnoDTO;
-import com.example.notiumb.model.Turno;
 import com.example.notiumb.service.TurnoService;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
