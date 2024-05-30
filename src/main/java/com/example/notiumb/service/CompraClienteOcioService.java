@@ -4,26 +4,21 @@ import com.example.notiumb.converter.IDatosCompradorMapper;
 import com.example.notiumb.converter.IEntradaOcioClienteMapper;
 import com.example.notiumb.converter.IListaOcioClienteMapper;
 import com.example.notiumb.converter.IReservadoOcioClienteMapper;
-import com.example.notiumb.dto.DatosCompradorDTO;
-import com.example.notiumb.dto.EntradaOcioClienteDTO;
-import com.example.notiumb.dto.ListaOcioClienteDTO;
-import com.example.notiumb.dto.ReservadoOcioClienteDTO;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
-import com.example.notiumb.model.enums.TipoPromocion;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import com.example.notiumb.utilidades.UtilidadesAPI;
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CompraClienteOcioService {
@@ -57,7 +52,7 @@ public class CompraClienteOcioService {
     @Autowired
     private IDatosCompradorMapper datosCompradorMapper;
 
-    public boolean aforoNoCompleto(Evento evento, List<EntradaOcioCliente> entradasOcioCliente, ReservadoOcioCliente reservadoOcioCliente, List<ListaOcioCliente> listaOcioCliente){
+    public boolean aforoNoCompleto(Evento evento, List<EntradaOcioCliente> entradasOcioCliente, ReservadoOcioCliente reservadoOcioCliente, List<ListaOcioCliente> listaOcioCliente) {
         Integer aforoEvento = evento.getAforo();
 
         EntradaOcio entradaOcio = entradaOcioRepository.findEntradaOcioByEventoIdAndActivoIsTrue(evento.getId());
@@ -67,20 +62,18 @@ public class CompraClienteOcioService {
         Integer entradasVendidas = entradaOcioClienteRepository.cantidadEntradasVendidas(entradaOcio.getId());
         Integer reservadosVendidos = reservadoOcioClienteRepository.cantidadReservadosVendidos(reservadoOcio.getId());
         Integer personasTotalesReservadosVendidos = reservadoOcioClienteRepository.cantidadPersonas(reservadoOcio.getId());
-        Double invitacionesTotalesLista = listaOcio.stream()
-                .mapToDouble(ListaOcio::getTotal_invitaciones)
-                .sum();
+        Integer invitacionesTotalesLista = listaOcio.stream().mapToInt(ListaOcio::getTotal_invitaciones).sum();
         Integer clientesApuntadosALista = listaOcioClienteRepository.cantidadClientesTotales(evento.getId());
 
-        if (!CollectionUtils.isEmpty(entradasOcioCliente)){
+        if (!CollectionUtils.isEmpty(entradasOcioCliente)) {
             return entradasVendidas < entradaOcio.getTotalEntradas()
                     && (entradasOcioCliente.size() + entradasVendidas) < entradaOcio.getTotalEntradas()
                     && (entradasOcioCliente.size() + entradasVendidas) < aforoEvento;
-        }else if (reservadoOcioCliente != null && reservadoOcioCliente.getCantidad_personas() != null){
-            return reservadoOcioCliente.getCantidad_personas() < reservadoOcio.getPersonasMaximasPorReservado()
+        } else if (reservadoOcioCliente != null && reservadoOcioCliente.getCantidad_personas() != null) {
+            return reservadoOcioCliente.getCantidad_personas() <= reservadoOcio.getPersonasMaximasPorReservado()
                     && reservadosVendidos < reservadoOcio.getReservadosDisponibles()
-                    && (reservadoOcioCliente.getCantidad_personas() + ( personasTotalesReservadosVendidos != null ? personasTotalesReservadosVendidos : 0) ) < aforoEvento;
-        }else if (!CollectionUtils.isEmpty(listaOcioCliente)){
+                    && (reservadoOcioCliente.getCantidad_personas() + (personasTotalesReservadosVendidos != null ? personasTotalesReservadosVendidos : 0)) < aforoEvento;
+        } else if (!CollectionUtils.isEmpty(listaOcioCliente)) {
             return clientesApuntadosALista < invitacionesTotalesLista
                     && (listaOcioCliente.size() + clientesApuntadosALista) < invitacionesTotalesLista
                     && (listaOcioCliente.size() + clientesApuntadosALista) < aforoEvento;
@@ -94,24 +87,19 @@ public class CompraClienteOcioService {
         EntradaOcio entradaOcio = entradaOcioRepository.findByIdAndActivoIsTrue(entradaOcioALaVenta);
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-        if (evento != null && cliente != null && entradaOcio != null && !CollectionUtils.isEmpty(entradasOcioClienteLista) && evento.getFecha().after(fechaActual)){
+        if (evento != null && cliente != null && entradaOcio != null && !CollectionUtils.isEmpty(entradasOcioClienteLista) && evento.getFecha().after(fechaActual)) {
             List<EntradaOcioCliente> listaEntradasCompradas = entradaOcioClienteMapper.toEntity(entradasOcioClienteLista);
-            if (aforoNoCompleto(evento, listaEntradasCompradas, null, null)){
-                DatosCompradorDTO datosPrimerComprador = entradasOcioClienteLista.get(0).getDatosCompradorDTO();
-                if (validarPrimerComprador(datosPrimerComprador, cliente)){
-                    List<EntradaOcioCliente> entradasCompradas = new ArrayList<>();
-                    setearEntradasGenerales(listaEntradasCompradas, fechaActual, cliente, entradaOcio, entradasCompradas);
-                    if (!CollectionUtils.isEmpty(entradasCompradas) && entradasCompradas.size() == entradasOcioClienteLista.size()){
-                        entradaOcioClienteRepository.saveAll(entradasCompradas);
-                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, entradaOcioClienteMapper.toDTO(entradasCompradas));
-                    }
-                }else {
-                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_DATOS_CLIENTE);
+            if (aforoNoCompleto(evento, listaEntradasCompradas, null, null)) {
+                List<EntradaOcioCliente> entradasCompradas = new ArrayList<>();
+                setearEntradasGenerales(listaEntradasCompradas, fechaActual, cliente, entradaOcio, entradasCompradas);
+                if (!CollectionUtils.isEmpty(entradasCompradas) && entradasCompradas.size() == entradasOcioClienteLista.size()) {
+                    entradaOcioClienteRepository.saveAll(entradasCompradas);
+                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, entradaOcioClienteMapper.toDTO(entradasCompradas));
                 }
-            }else {
+            } else {
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_AFORO);
             }
-        }else {
+        } else {
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_EVENTO);
         }
         return respuestaDTO;
@@ -120,9 +108,9 @@ public class CompraClienteOcioService {
     private void setearEntradasGenerales(List<EntradaOcioCliente> listaEntradasCompradas, Timestamp fechaActual, Cliente cliente, EntradaOcio entradaOcio, List<EntradaOcioCliente> entradasCompradas) {
         listaEntradasCompradas.forEach(l -> {
             if (l.getDatosComprador() != null && l.getDatosComprador().getReservadoOcioCliente() == null) {
-                if (l.getPromocion() != null && l.getPromocion().getId() != null){
+                if (l.getPromocion() != null && l.getPromocion().getId() != null) {
                     Promocion promocion = promocionRepository.findById(l.getPromocion().getId()).orElse(null);
-                    if (promocion != null){
+                    if (promocion != null) {
                         EntradaOcioCliente entradaComprada = EntradaOcioCliente.builder()
                                 .codigo("EOC")
                                 .fechaCompra(fechaActual)
@@ -133,7 +121,7 @@ public class CompraClienteOcioService {
                                 .build();
                         entradasCompradas.add(entradaComprada);
                     }
-                }else {
+                } else {
                     EntradaOcioCliente entradaComprada = EntradaOcioCliente.builder()
                             .codigo("EOC")
                             .fechaCompra(fechaActual)
@@ -155,37 +143,36 @@ public class CompraClienteOcioService {
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         if (evento != null && cliente != null && reservadoOcio != null && reservadoOcioClienteDTO != null && evento.getFecha().after(fechaActual)) {
             ReservadoOcioCliente reservadoOcioCliente = reservadoOcioClienteMapper.toEntity(reservadoOcioClienteDTO);
-            if (reservadoOcioCliente != null && aforoNoCompleto(evento,null, reservadoOcioCliente,null)){
-                if (!CollectionUtils.isEmpty(datosCompradorDTOS) && datosCompradorDTOS.size() == reservadoOcioCliente.getCantidad_personas()){
-                    DatosCompradorDTO datosPrimerComprador = datosCompradorDTOS.get(0);
-                    if (validarPrimerComprador(datosPrimerComprador, cliente)){
-                        Set<DatosComprador> datosCompradorSet= convertirDatosSet(datosCompradorDTOS);
-                        if (!CollectionUtils.isEmpty(datosCompradorSet)  && datosCompradorSet.size() == reservadoOcioCliente.getCantidad_personas()){
-                            setearDatosReservadoOcioCliente(reservadoOcioCliente, cliente, fechaActual, reservadoOcio, reservadoOcioClienteDTO, datosCompradorSet);
-                            datosCompradorSet.forEach(d -> d.setReservadoOcioCliente(reservadoOcioCliente));
-                            datosCompradorRepository.saveAll(datosCompradorSet);
-                            reservadoOcioClienteRepository.save(reservadoOcioCliente);
-                            UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, reservadoOcioClienteMapper.toDTO(reservadoOcioCliente));
-                        }
-                    }else {
-                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_DATOS_CLIENTE);
+            if (reservadoOcioCliente != null && aforoNoCompleto(evento, null, reservadoOcioCliente, null)) {
+                if (!CollectionUtils.isEmpty(datosCompradorDTOS) && datosCompradorDTOS.size() == reservadoOcioCliente.getCantidad_personas()) {
+                    Set<DatosComprador> datosCompradorSet = convertirDatosSet(datosCompradorDTOS);
+                    if (!CollectionUtils.isEmpty(datosCompradorSet) && datosCompradorSet.size() == reservadoOcioCliente.getCantidad_personas()) {
+                        setearDatosReservadoOcioCliente(reservadoOcioCliente, cliente, fechaActual, reservadoOcio, reservadoOcioClienteDTO, datosCompradorSet);
+                        datosCompradorSet.forEach(d -> d.setReservadoOcioCliente(reservadoOcioCliente));
+                        datosCompradorRepository.saveAll(datosCompradorSet);
+                        reservadoOcioClienteRepository.save(reservadoOcioCliente);
+                        ComprarReservadoDTO comprarReservadoDTO = ComprarReservadoDTO.builder()
+                                .reservadoOcioClienteDTO(reservadoOcioClienteMapper.toDTO(reservadoOcioCliente))
+                                .datosCompradorDTOS(datosCompradorMapper.toDTO(datosCompradorSet))
+                                .build();
+                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, comprarReservadoDTO);
                     }
-                }else {
+                } else {
                     UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_DATOS);
                 }
-            }else {
+            } else {
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_AFORO);
             }
-        }else {
+        } else {
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_EVENTO);
         }
 
         return respuestaDTO;
     }
 
-    private Set<DatosComprador> convertirDatosSet(List<DatosCompradorDTO> datosCompradorDTOS){
+    private Set<DatosComprador> convertirDatosSet(List<DatosCompradorDTO> datosCompradorDTOS) {
         Set<DatosComprador> datosCompradorSet = new HashSet<>();
-        if (!CollectionUtils.isEmpty(datosCompradorDTOS)){
+        if (!CollectionUtils.isEmpty(datosCompradorDTOS)) {
             List<DatosComprador> comprador = datosCompradorMapper.toEntity(datosCompradorDTOS);
             datosCompradorSet.addAll(comprador);
             return datosCompradorSet;
@@ -198,9 +185,9 @@ public class CompraClienteOcioService {
         reservadoOcioCliente.setCliente(cliente);
         reservadoOcioCliente.setFecha_compra(fechaActual);
         reservadoOcioCliente.setReservadoOcio(reservadoOcio);
-        if (reservadoOcioClienteDTO.getPromocionDTO() != null && reservadoOcioClienteDTO.getPromocionDTO().getId() != null){
+        if (reservadoOcioClienteDTO.getPromocionDTO() != null && reservadoOcioClienteDTO.getPromocionDTO().getId() != null) {
             Promocion promocion = promocionRepository.findById(reservadoOcioClienteDTO.getPromocionDTO().getId()).orElse(null);
-            if (promocion != null){
+            if (promocion != null) {
                 reservadoOcioCliente.setPromocion(promocion);
             }
         }
@@ -213,24 +200,20 @@ public class CompraClienteOcioService {
         ListaOcio listaOcio = listaOcioRepository.findByIdAndActivoIsTrue(idListaOcio).orElse(null);
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-        if (evento != null && cliente != null && listaOcio != null && !CollectionUtils.isEmpty(listaOcioClienteDTOS) && evento.getFecha().after(fechaActual)){
+        if (evento != null && cliente != null && listaOcio != null && !CollectionUtils.isEmpty(listaOcioClienteDTOS) && evento.getFecha().after(fechaActual)) {
             List<ListaOcioCliente> listaEntradasCompradas = listaOcioClienteMapper.toEntity(listaOcioClienteDTOS);
-            if (aforoNoCompleto(evento, null, null, listaEntradasCompradas)){
-                DatosCompradorDTO datosPrimerComprador = listaOcioClienteDTOS.get(0).getDatosCompradorDTO();
-                if (validarPrimerComprador(datosPrimerComprador, cliente)){
-                    List<ListaOcioCliente> entradasListaCompradas = new ArrayList<>();
-                    setearEntradasLista(listaEntradasCompradas, fechaActual, cliente, listaOcio, entradasListaCompradas);
-                    if (!CollectionUtils.isEmpty(entradasListaCompradas) && entradasListaCompradas.size() == listaOcioClienteDTOS.size()){
-                        listaOcioClienteRepository.saveAll(entradasListaCompradas);
-                        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, listaOcioClienteMapper.toDTO(entradasListaCompradas));
-                    }
-                }else {
-                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_DATOS_CLIENTE);
+            if (aforoNoCompleto(evento, null, null, listaEntradasCompradas)) {
+                List<ListaOcioCliente> entradasListaCompradas = new ArrayList<>();
+                setearEntradasLista(listaEntradasCompradas, fechaActual, cliente, listaOcio, entradasListaCompradas);
+                if (!CollectionUtils.isEmpty(entradasListaCompradas) && entradasListaCompradas.size() == listaOcioClienteDTOS.size()) {
+                    listaOcioClienteRepository.saveAll(entradasListaCompradas);
+                    UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_ENTRADAS_COMPRADAS, listaOcioClienteMapper.toDTO(entradasListaCompradas));
                 }
-            }else {
+
+            } else {
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_AFORO);
             }
-        }else {
+        } else {
             UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_ERROR_EVENTO);
         }
         return respuestaDTO;
@@ -239,9 +222,9 @@ public class CompraClienteOcioService {
     private void setearEntradasLista(List<ListaOcioCliente> listaEntradasCompradas, Timestamp fechaActual, Cliente cliente, ListaOcio listaOcio, List<ListaOcioCliente> entradasListaCompradas) {
         listaEntradasCompradas.forEach(l -> {
             if (l.getDatosComprador() != null && l.getDatosComprador().getReservadoOcioCliente() == null) {
-                if (l.getPromocion() != null && l.getPromocion().getId() != null){
+                if (l.getPromocion() != null && l.getPromocion().getId() != null) {
                     Promocion promocion = promocionRepository.findById(l.getPromocion().getId()).orElse(null);
-                    if (promocion != null){
+                    if (promocion != null) {
                         ListaOcioCliente listaOcioCliente = ListaOcioCliente.builder()
                                 .codigo("LOC")
                                 .fecha(fechaActual)
@@ -252,7 +235,7 @@ public class CompraClienteOcioService {
                                 .build();
                         entradasListaCompradas.add(listaOcioCliente);
                     }
-                }else {
+                } else {
                     ListaOcioCliente listaOcioCliente = ListaOcioCliente.builder()
                             .codigo("LOC")
                             .fecha(fechaActual)
@@ -265,15 +248,6 @@ public class CompraClienteOcioService {
             }
         });
     }
-
-    private boolean validarPrimerComprador(DatosCompradorDTO datosCompradorDTO, Cliente cliente){
-        return datosCompradorDTO.getNombre().equals(cliente.getNombre())
-                && datosCompradorDTO.getApellidos().equals(cliente.getApellidos())
-                && datosCompradorDTO.getTelefono().equals(cliente.getTelefono())
-                && datosCompradorDTO.getFechaNacimiento().toString().substring(0,10).equals(cliente.getFechaNacimiento().toString().substring(0,10));
-    }
-
-
 
 
 }

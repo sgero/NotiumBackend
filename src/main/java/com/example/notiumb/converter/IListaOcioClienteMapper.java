@@ -14,6 +14,8 @@ public interface IListaOcioClienteMapper {
     IPromocionMapper promocionMapper = Mappers.getMapper(IPromocionMapper.class);
     IDatosCompradorMapper datosCompradorMapper = Mappers.getMapper(IDatosCompradorMapper.class);
     @Mapping(source = "listaOcioDTO", target = "listaOcio")
+    @Mapping(source = "listaOcioDTO.eventoDTO", target = "listaOcio.evento")
+    @Mapping(source = "listaOcioDTO.rppDTO", target = "listaOcio.rpp")
     @Mapping(source = "clienteDTO", target = "cliente")
     @Mapping(source = "promocionDTO", target = "promocion", qualifiedByName = "conversorPromocionDTO")
     @Mapping(source = "datosCompradorDTO", target = "datosComprador", qualifiedByName = "conversorDatosCompradorDTO")
@@ -21,6 +23,8 @@ public interface IListaOcioClienteMapper {
 
     @Mapping(source = "cliente", target = "clienteDTO")
     @Mapping(source = "listaOcio", target = "listaOcioDTO")
+    @Mapping(source = "listaOcio.evento", target = "listaOcioDTO.eventoDTO")
+    @Mapping(source = "listaOcio.rpp", target = "listaOcioDTO.rppDTO")
     @Mapping(source = "promocion", target = "promocionDTO", qualifiedByName = "conversorPromocionEntity")
     @Mapping(source = "datosComprador", target = "datosCompradorDTO", qualifiedByName = "conversorDatosCompradorEntity")
     ListaOcioClienteDTO toDTO(ListaOcioCliente entity) ;

@@ -1,5 +1,6 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.ListadoProductosDTO;
 import com.example.notiumb.dto.ProductoAuxDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.TokenDTO;
@@ -24,7 +25,22 @@ public class ProductoController {
     }
 
     @PostMapping(value = "/listar")
-    public List<ProductoDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
+    public List<ListadoProductosDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
+    }
+
+    @PutMapping(value = "/baja")
+    public String crearProducto(@RequestBody ProductoDTO productoDTO) {
+        return productoService.BajaAltaProducto(productoDTO);
+    }
+
+    @PostMapping(value = "/listardescarte")
+    public List<ListadoProductosDTO> listarProductosDescarte(@RequestBody TokenDTO tokenDTO) {
+        return productoService.listarProductoDescartado(tokenDTO);
+    }
+
+    @PostMapping(value = "/eliminarres")
+    public String eliminarProducto(@RequestBody ProductoDTO productoDTO) {
+        return productoService.eliminarProducto(productoDTO);
     }
 }

@@ -11,4 +11,8 @@ import java.util.List;
 public interface IProductoRepository extends JpaRepository<Producto, Integer> {
 
     List<Producto> findByCartaResEqualsAndActivoTrue(CartaRestaurante cartaRes);
+
+    Producto findTopById(Integer id);
+
+    List<Producto> findByCartaResEqualsAndActivoFalse(CartaRestaurante cartaRes);
 }
