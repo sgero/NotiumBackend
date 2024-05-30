@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -324,14 +325,25 @@ public class EventoService {
         LocalDateTime fin = fechaFin.toLocalDateTime();
         while (!fechaAEnviar.isAfter(fin)) {
             for (DiasARepetirCicloEventoOcio d : diasARepetirCicloEventoOcioList) {
-                if (d.name().equals(fechaAEnviar.getDayOfWeek().name())) {
+                if (traducirDia(d).toString().equals(fechaAEnviar.getDayOfWeek().name())) {
                     fechas.add(Timestamp.valueOf(fechaAEnviar));
                 }
             }
             fechaAEnviar = fechaAEnviar.plusDays(1);
         }
-
         return fechas;
+    }
+
+    public static DayOfWeek traducirDia(DiasARepetirCicloEventoOcio diaEspanol) {
+        return switch (diaEspanol) {
+            case LUNES -> DayOfWeek.MONDAY;
+            case MARTES -> DayOfWeek.TUESDAY;
+            case MIERCOLES -> DayOfWeek.WEDNESDAY;
+            case JUEVES -> DayOfWeek.THURSDAY;
+            case VIERNES -> DayOfWeek.FRIDAY;
+            case SABADO -> DayOfWeek.SATURDAY;
+            case DOMINGO -> DayOfWeek.SUNDAY;
+        };
     }
 
     private Evento crearEventoPersonalizadoCiclico(EventoDTO eventoDTO, OcioNocturno ocioNocturno, Timestamp fecha) {
@@ -343,6 +355,7 @@ public class EventoService {
         eventoACrear.setCodigoVestimentaOcio(eventoDTO.getCodigoVestimentaOcio());
         eventoACrear.setEdadMinimaOcio(eventoDTO.getEdadMinimaOcio());
         eventoACrear.setAforo(eventoDTO.getAforo());
+        eventoACrear.setCartel(eventoDTO.getCartel());
         eventoACrear.setOcioNocturno(ocioNocturno);
         if (eventoACrear.getAforo() > ocioNocturno.getAforo()) {
             eventoACrear = null;
@@ -417,6 +430,9 @@ public class EventoService {
                 Integer personasTotalesReservadosVendidos = reservadoOcioClienteRepository.cantidadPersonas(reservadoOcio.getId());
                 Integer invitacionesTotalesLista = listaOcio.stream().mapToInt(ListaOcio::getTotal_invitaciones).sum();
                 Integer clientesApuntadosALista = listaOcioClienteRepository.cantidadClientesTotales(evento.getId());
+                if (personasTotalesReservadosVendidos == null) {
+                    personasTotalesReservadosVendidos = 0;
+                }
                 CantidadesRestantesDTO cantidadesRestantesDTO = CantidadesRestantesDTO.builder()
                         .aforoEvento(aforoEvento)
                         .entradasVendidas(entradasVendidas)
