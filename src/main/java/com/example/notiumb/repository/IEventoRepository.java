@@ -34,4 +34,6 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
 
     Evento findEventoByIdAndActivoIsTrue (Integer idEvento);
 
+    List<Evento> findAllByOcioNocturnoIdAndActivoIsTrue (Integer idOcio);
+
 }

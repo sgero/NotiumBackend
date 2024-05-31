@@ -2,11 +2,10 @@ package com.example.notiumb.repository;
 
 
 import com.example.notiumb.model.User;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
-import java.util.Optional;
 
 
 
@@ -20,10 +19,13 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 //    @NotNull
     List<User> findAll();
 
+    List<User> getAllByUsernameAndPassword(String username, String password);
+
     User findTopByTokenVerificacion(String tokenVerificacion);
 
     User findTopById(Integer id);
 
     User findTopByEmail(String email);
 
+//    ScopedValue<Object> findTopByToken(String token);
 }

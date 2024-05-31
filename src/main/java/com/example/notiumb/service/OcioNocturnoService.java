@@ -2,12 +2,11 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
+import com.example.notiumb.dto.ClienteDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
-import com.example.notiumb.dto.UserClienteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
-import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import com.example.notiumb.repository.IUserRepository;
@@ -45,8 +44,8 @@ public class OcioNocturnoService {
         return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findAllByActivoIsTrue());
     }
 
-    public OcioNocturno getById(@Param("id") Integer id) {
-        return ocioNocturnoRepository.findByIdAndActivoIsTrue(id).orElse(null);
+    public OcioNocturnoDTO getById(@Param("id") Integer id) {
+        return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdAndActivoIsTrue(id).orElse(null));
     }
 
     @Transactional
@@ -121,5 +120,9 @@ public class OcioNocturnoService {
 
     public void actualizarOcioNocturno(OcioNocturno ocioNocturno) {
         ocioNocturnoRepository.save(ocioNocturno);
+    }
+
+    public OcioNocturnoDTO getByUserId(Integer id) {
+        return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdUser(id));
     }
 }

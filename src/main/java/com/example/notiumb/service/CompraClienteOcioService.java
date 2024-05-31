@@ -87,7 +87,7 @@ public class CompraClienteOcioService {
         EntradaOcio entradaOcio = entradaOcioRepository.findByIdAndActivoIsTrue(entradaOcioALaVenta);
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-        if (evento != null && cliente != null && entradaOcio != null && !CollectionUtils.isEmpty(entradasOcioClienteLista) && evento.getFecha().after(fechaActual)) {
+        if (evento != null && cliente != null && entradaOcio != null && !CollectionUtils.isEmpty(entradasOcioClienteLista)) {
             List<EntradaOcioCliente> listaEntradasCompradas = entradaOcioClienteMapper.toEntity(entradasOcioClienteLista);
             if (aforoNoCompleto(evento, listaEntradasCompradas, null, null)) {
                 List<EntradaOcioCliente> entradasCompradas = new ArrayList<>();
@@ -141,7 +141,7 @@ public class CompraClienteOcioService {
         Evento evento = eventoRepository.findEventoByIdAndActivoIsTrue(idEvento);
         ReservadoOcio reservadoOcio = reservadoOcioRepository.findByIdAndActivoIsTrue(idReservadoOcio).orElse(null);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-        if (evento != null && cliente != null && reservadoOcio != null && reservadoOcioClienteDTO != null && evento.getFecha().after(fechaActual)) {
+        if (evento != null && cliente != null && reservadoOcio != null && reservadoOcioClienteDTO != null) {
             ReservadoOcioCliente reservadoOcioCliente = reservadoOcioClienteMapper.toEntity(reservadoOcioClienteDTO);
             if (reservadoOcioCliente != null && aforoNoCompleto(evento, null, reservadoOcioCliente, null)) {
                 if (!CollectionUtils.isEmpty(datosCompradorDTOS) && datosCompradorDTOS.size() == reservadoOcioCliente.getCantidad_personas()) {
@@ -200,7 +200,7 @@ public class CompraClienteOcioService {
         ListaOcio listaOcio = listaOcioRepository.findByIdAndActivoIsTrue(idListaOcio).orElse(null);
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-        if (evento != null && cliente != null && listaOcio != null && !CollectionUtils.isEmpty(listaOcioClienteDTOS) && evento.getFecha().after(fechaActual)) {
+        if (evento != null && cliente != null && listaOcio != null && !CollectionUtils.isEmpty(listaOcioClienteDTOS)) {
             List<ListaOcioCliente> listaEntradasCompradas = listaOcioClienteMapper.toEntity(listaOcioClienteDTOS);
             if (aforoNoCompleto(evento, null, null, listaEntradasCompradas)) {
                 List<ListaOcioCliente> entradasListaCompradas = new ArrayList<>();

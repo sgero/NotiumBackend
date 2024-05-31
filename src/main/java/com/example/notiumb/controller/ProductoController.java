@@ -4,7 +4,6 @@ import com.example.notiumb.dto.ListadoProductosDTO;
 import com.example.notiumb.dto.ProductoAuxDTO;
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.TokenDTO;
-import com.example.notiumb.security.auth.AuthenticationResponseDTO;
 import com.example.notiumb.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class CartaOcioDTO {
 
     private Integer id;
-    private Boolean activo;
+    private Boolean activo = true;
     @Valid
     private OcioNocturnoDTO ocioNocturnoDTO;
 }

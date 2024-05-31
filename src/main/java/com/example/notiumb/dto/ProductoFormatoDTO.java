@@ -1,13 +1,8 @@
 package com.example.notiumb.dto;
 
-import com.example.notiumb.model.Formato;
-import com.example.notiumb.model.Producto;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

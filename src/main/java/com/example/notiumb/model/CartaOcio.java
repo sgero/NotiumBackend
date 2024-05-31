@@ -3,6 +3,8 @@ package com.example.notiumb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name="carta_ocio", schema = "notium", catalog = "postgres")
 @Getter
@@ -22,4 +24,5 @@ public class CartaOcio {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ocio_nocturno", nullable = false)
     private OcioNocturno ocioNocturno;
+
 }

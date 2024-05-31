@@ -1,7 +1,8 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.*;
-import com.example.notiumb.model.CartaOcio;
+import com.example.notiumb.dto.ClienteDTO;
+import com.example.notiumb.dto.OcioNocturnoDTO;
+import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.service.OcioNocturnoService;
 import jakarta.mail.MessagingException;
@@ -20,7 +21,7 @@ public class OcioNocturnoController {
     @GetMapping("/listar")
     public List<OcioNocturnoDTO> listarOcio(){ return ocioNocturnoService.getAll();}
     @GetMapping("/{id}")
-    public OcioNocturno cartaId(@PathVariable Integer id){
+    public OcioNocturnoDTO ocioId(@PathVariable Integer id){
         return ocioNocturnoService.getById(id);
     }
 
@@ -30,5 +31,10 @@ public class OcioNocturnoController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarCarta(@PathVariable Integer id){ ocioNocturnoService.delete(id); }
+    public void eliminarOcio(@PathVariable Integer id){ ocioNocturnoService.delete(id); }
+
+    @GetMapping("/usuario/{id}")
+    public OcioNocturnoDTO getByUserId(@PathVariable Integer id){
+        return ocioNocturnoService.getByUserId(id);
+    }
 }
