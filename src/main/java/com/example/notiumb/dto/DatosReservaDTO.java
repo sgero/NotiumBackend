@@ -20,5 +20,7 @@ public class DatosReservaDTO {
 
     private UserDTO usuarioDTO ;
 
+    private String codigoReserva;
+
 
 }

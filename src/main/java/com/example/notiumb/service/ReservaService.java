@@ -125,7 +125,6 @@ public class ReservaService {
 
     public ReservaDTO crearReserva(DatosReservaDTO reservaDTO) {
         // Comprueba la disponibilidad de mesas
-
         Cliente clienteact = clienteRepository.findByIdUser(reservaDTO.getUsuarioDTO().getId());
 
         ReservaDTO reservaDTO1 = new ReservaDTO();
@@ -135,9 +134,7 @@ public class ReservaService {
         reservaDTO1.setTurnoDTO(reservaDTO.getTurnoDTO());
         reservaDTO1.setClienteDTO(clienteMapper.toDTO(clienteact));
 
-
         List<MesaDTO> mesasDisponibles = comprobarTurno(reservaDTO1);
-
 
         if (mesasDisponibles.isEmpty()) {
             throw new RuntimeException("No hay suficientes mesas disponibles para acomodar a " + reservaDTO.getNumPersonas() + " personas.");
@@ -160,7 +157,6 @@ public class ReservaService {
             nuevaReserva.setTurno(turnoMapper.toEntity(reservaDTO.getTurnoDTO()));
             nuevaReserva.setActivo(true); // Inicializar activo
 
-
             reservaRepository.save(nuevaReserva);
 
             // Actualizar el estado de la mesa a reservada
@@ -169,8 +165,10 @@ public class ReservaService {
             mesaRepository.save(mesa);
         }
 
-        // Retornar la primera reserva creada como ejemplo, o modificar para retornar un DTO que contenga todas las reservas
-        return reservaMapper.toDTO(mesasDisponibles.get(0));
+        // Añadir el código de reserva al DTO
+        reservaDTO1.setCodigoReserva(codigoReserva);
+
+        return reservaDTO1;
     }
 
 
