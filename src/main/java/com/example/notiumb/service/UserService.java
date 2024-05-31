@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User obtenerUsuarioPorToken(String tokenVerificacion) {
-        return (User) userRepository.findTopByTokenVerificacion(tokenVerificacion).orElse(null);
+        return userRepository.findTopByTokenVerificacion(tokenVerificacion);
     }
 
 

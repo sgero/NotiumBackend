@@ -46,8 +46,7 @@ public class UserOcioNocturnoDTO {
 
     @NotBlank
     private String imagenMarca;
-    @Valid
-    private UserDTO userDTO;
+
     @Valid
     private DireccionDTO direccionDTO;
 
