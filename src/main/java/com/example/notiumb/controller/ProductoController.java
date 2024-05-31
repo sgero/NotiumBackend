@@ -39,4 +39,11 @@ public class ProductoController {
     public List<ProductoDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
     }
+
+    @PostMapping(value = "/listarTodos")
+    public List<ProductoDTO> listarProductos(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        User user = userService.getUsuarioFromToken(token);
+        return productoService.listarByProducto(user);
+    }
 }

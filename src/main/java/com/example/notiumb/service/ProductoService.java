@@ -72,21 +72,21 @@ public class ProductoService {
 //        String token = productoAuxDTO.getUsername();
         //String username = jwtService.extractUsername(productoDTO.getUsername());
 //        User user = userRepository.findTopByUsernameAndActivoTrue(token);
-        ProductoDTO productoDTO = new ProductoDTO();
+        Producto producto = new Producto();
         if (user.getRol()== Rol.OCIONOCTURNO){
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
             CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
-            productoDTO.setNombre(productoAuxDTO.getNombre());
-            productoDTO.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
-            productoDTO.setCartaOcio(cartaOcioMapper.toDTO(cartaOcio));
+            producto.setNombre(productoAuxDTO.getNombre());
+            producto.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
+            producto.setCartaOcio(cartaOcio);
         }else if (user.getRol()== Rol.RESTAURANTE){
             Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
             CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
-            productoDTO.setNombre(productoAuxDTO.getNombre());
-            productoDTO.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
-            productoDTO.setCartaRes(cartaRestauranteMapper.toDTO(cartaRestaurante));
+            producto.setNombre(productoAuxDTO.getNombre());
+            producto.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
+            producto.setCartaRes(cartaRestaurante);
         }
-        return productoMapper.toDTO(productoRepository.save(productoMapper.toEntity(productoDTO)));
+        return productoMapper.toDTO(productoRepository.save(producto));
 
     }
 
@@ -98,7 +98,25 @@ public class ProductoService {
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
 
         return productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(carta));
+    }
 
+    public List<ProductoDTO> listarByProducto(User user) {
+
+        List<ProductoDTO> productos = new ArrayList<>();
+
+        if (user.getRol()== Rol.OCIONOCTURNO){
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
+            CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
+
+            productos =  productoMapper.toDTO(productoRepository.findByCartaOcioEqualsAndActivoTrue(cartaOcio));
+
+        }else if (user.getRol()== Rol.RESTAURANTE) {
+            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+
+            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
+        }
+        return productos;
     }
 
 }
