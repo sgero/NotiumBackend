@@ -48,9 +48,6 @@ public class UserRestauranteDTO {
     private String imagen_marca;
 
     @Valid
-    private UserDTO userDTO;
-
-    @Valid
     private DireccionDTO direccionDTO;
 
 }

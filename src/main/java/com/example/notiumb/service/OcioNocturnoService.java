@@ -6,8 +6,10 @@ import com.example.notiumb.dto.ClienteDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;
+import com.example.notiumb.model.Direccion;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IDireccionRepository;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthController;
@@ -40,6 +42,9 @@ public class OcioNocturnoService {
     @Autowired
     private EmailServiceImpl emailService;
 
+    @Autowired
+    private IDireccionRepository direccionRepository;
+
     public List<OcioNocturnoDTO> getAll() {
         return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findAllByActivoIsTrue());
     }
@@ -49,28 +54,40 @@ public class OcioNocturnoService {
     }
 
     @Transactional
-    public OcioNocturnoDTO crearYModificarOcioNocturno(UserOcioNocturnoDTO UserOcioNocturnoDTO) throws MessagingException {
+    public OcioNocturnoDTO crearYModificarOcioNocturno(UserOcioNocturnoDTO userOcioNocturnoDTO) throws MessagingException {
 
-        if (UserOcioNocturnoDTO.getId()==null){
+        if (userOcioNocturnoDTO.getId()==null){
             UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(UserOcioNocturnoDTO.getUsername());
-            userDTO.setEmail(UserOcioNocturnoDTO.getEmail());
-            userDTO.setPassword(UserOcioNocturnoDTO.getPassword());
-            userDTO.setRol(UserOcioNocturnoDTO.getRol());
+            userDTO.setUsername(userOcioNocturnoDTO.getUsername());
+            userDTO.setEmail(userOcioNocturnoDTO.getEmail());
+            userDTO.setPassword(userOcioNocturnoDTO.getPassword());
+            userDTO.setRol(userOcioNocturnoDTO.getRol());
 
             authController.register(userDTO);
             User usuario = userRepository.findTopByUsernameAndActivoTrue(userDTO.getUsername());
 
+            Direccion direccionNueva = new Direccion();
+            direccionNueva.setCalle(userOcioNocturnoDTO.getDireccionDTO().getCalle());
+            direccionNueva.setNumero(userOcioNocturnoDTO.getDireccionDTO().getNumero());
+            direccionNueva.setPuerta(userOcioNocturnoDTO.getDireccionDTO().getPuerta());
+            direccionNueva.setCodigoPostal(userOcioNocturnoDTO.getDireccionDTO().getCodigoPostal());
+            direccionNueva.setCiudad(userOcioNocturnoDTO.getDireccionDTO().getCiudad());
+            direccionNueva.setProvincia(userOcioNocturnoDTO.getDireccionDTO().getProvincia());
+            direccionNueva.setPais(userOcioNocturnoDTO.getDireccionDTO().getPais());
+            direccionRepository.save(direccionNueva);
+
+            Direccion direccion = direccionRepository.findTopByCalleOrderByIdDesc(userOcioNocturnoDTO.getDireccionDTO().getCalle());
+
             OcioNocturno ocioNuevo = new OcioNocturno();
 
-            ocioNuevo.setNombre(UserOcioNocturnoDTO.getNombre());
-            ocioNuevo.setCif(UserOcioNocturnoDTO.getCif());
-            ocioNuevo.setHoraApertura(UserOcioNocturnoDTO.getHoraApertura());
-            ocioNuevo.setHoraCierre(UserOcioNocturnoDTO.getHoraCierre());
-            ocioNuevo.setAforo(UserOcioNocturnoDTO.getAforo());
+            ocioNuevo.setNombre(userOcioNocturnoDTO.getNombre());
+            ocioNuevo.setCif(userOcioNocturnoDTO.getCif());
+            ocioNuevo.setHoraApertura(userOcioNocturnoDTO.getHoraApertura());
+            ocioNuevo.setHoraCierre(userOcioNocturnoDTO.getHoraCierre());
+            ocioNuevo.setAforo(userOcioNocturnoDTO.getAforo());
             ocioNuevo.setUser(usuario);
-            ocioNuevo.setImagenMarca(UserOcioNocturnoDTO.getImagenMarca());
-            ocioNuevo.setDireccion(direccionMapper.toEntity(UserOcioNocturnoDTO.getDireccionDTO()));
+            ocioNuevo.setImagenMarca(userOcioNocturnoDTO.getImagenMarca());
+            ocioNuevo.setDireccion(direccion);
 
             //envio de email de verificacion
             emailService.enviarEmailVerificacionOcioNocturno(ocioNocturnoMapper.toDTO(ocioNuevo));
@@ -80,7 +97,7 @@ public class OcioNocturnoService {
 
         }else{
 
-            OcioNocturno ocioModificar = ocioNocturnoRepository.findById(UserOcioNocturnoDTO.getId()).orElse(null);
+            OcioNocturno ocioModificar = ocioNocturnoRepository.findById(userOcioNocturnoDTO.getId()).orElse(null);
 
             if (ocioModificar==null){
 
@@ -88,13 +105,25 @@ public class OcioNocturnoService {
 
             }else{
 
-                ocioModificar.setNombre(UserOcioNocturnoDTO.getNombre());
-                ocioModificar.setCif(UserOcioNocturnoDTO.getCif());
-                ocioModificar.setHoraApertura(UserOcioNocturnoDTO.getHoraApertura());
-                ocioModificar.setHoraCierre(UserOcioNocturnoDTO.getHoraCierre());
-                ocioModificar.setAforo(UserOcioNocturnoDTO.getAforo());
-                ocioModificar.setImagenMarca(UserOcioNocturnoDTO.getImagenMarca());
-                ocioModificar.setDireccion(direccionMapper.toEntity(UserOcioNocturnoDTO.getDireccionDTO()));
+                Direccion direccionModificada = ocioModificar.getDireccion();
+
+                direccionModificada.setCalle(userOcioNocturnoDTO.getDireccionDTO().getCalle());
+                direccionModificada.setNumero(userOcioNocturnoDTO.getDireccionDTO().getNumero());
+                direccionModificada.setPuerta(userOcioNocturnoDTO.getDireccionDTO().getPuerta());
+                direccionModificada.setCodigoPostal(userOcioNocturnoDTO.getDireccionDTO().getCodigoPostal());
+                direccionModificada.setCiudad(userOcioNocturnoDTO.getDireccionDTO().getCiudad());
+                direccionModificada.setProvincia(userOcioNocturnoDTO.getDireccionDTO().getProvincia());
+                direccionModificada.setPais(userOcioNocturnoDTO.getDireccionDTO().getPais());
+
+                direccionRepository.save(direccionModificada);
+
+                ocioModificar.setNombre(userOcioNocturnoDTO.getNombre());
+                ocioModificar.setCif(userOcioNocturnoDTO.getCif());
+                ocioModificar.setHoraApertura(userOcioNocturnoDTO.getHoraApertura());
+                ocioModificar.setHoraCierre(userOcioNocturnoDTO.getHoraCierre());
+                ocioModificar.setAforo(userOcioNocturnoDTO.getAforo());
+                ocioModificar.setImagenMarca(userOcioNocturnoDTO.getImagenMarca());
+                ocioModificar.setDireccion(direccionModificada);
 
 
                 ocioNocturnoRepository.save(ocioModificar);

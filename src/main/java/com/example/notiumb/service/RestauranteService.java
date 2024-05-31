@@ -6,13 +6,16 @@ import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserRestauranteDTO;
 import com.example.notiumb.model.Cliente;
+import com.example.notiumb.model.Direccion;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IDireccionRepository;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthController;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,9 @@ public class RestauranteService {
     private IUserRepository userRepository;
 
     @Autowired
+    private IDireccionRepository direccionRepository;
+
+    @Autowired
     private IDireccionMapper direccionMapper;
 
 
@@ -49,6 +55,7 @@ public class RestauranteService {
     }
 
     /*Crear restaurante*/
+    @Transactional
     public RestauranteDTO crearYModificarRestaurante(UserRestauranteDTO userRestauranteDTO) throws MessagingException {
 
         if (userRestauranteDTO.getId() == null) {
@@ -61,6 +68,18 @@ public class RestauranteService {
             authController.register(userDTO);
             User usuario = userRepository.findTopByUsernameAndActivoTrue(userDTO.getUsername());
 
+            Direccion direccionNueva = new Direccion();
+            direccionNueva.setCalle(userRestauranteDTO.getDireccionDTO().getCalle());
+            direccionNueva.setNumero(userRestauranteDTO.getDireccionDTO().getNumero());
+            direccionNueva.setPuerta(userRestauranteDTO.getDireccionDTO().getPuerta());
+            direccionNueva.setCodigoPostal(userRestauranteDTO.getDireccionDTO().getCodigoPostal());
+            direccionNueva.setCiudad(userRestauranteDTO.getDireccionDTO().getCiudad());
+            direccionNueva.setProvincia(userRestauranteDTO.getDireccionDTO().getProvincia());
+            direccionNueva.setPais(userRestauranteDTO.getDireccionDTO().getPais());
+            direccionRepository.save(direccionNueva);
+
+            Direccion direccion = direccionRepository.findTopByCalleOrderByIdDesc(userRestauranteDTO.getDireccionDTO().getCalle());
+
             Restaurante restaurante = new Restaurante();
 
             restaurante.setNombre(userRestauranteDTO.getNombre());
@@ -71,7 +90,7 @@ public class RestauranteService {
             restaurante.setDisponible(userRestauranteDTO.getDisponible());
             restaurante.setUser(usuario);
             restaurante.setImagen_marca(userRestauranteDTO.getImagen_marca());
-            restaurante.setDireccion(direccionMapper.toEntity(userRestauranteDTO.getDireccionDTO()));
+            restaurante.setDireccion(direccion);
 
             //envio de email de verificacion
             emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
@@ -88,6 +107,18 @@ public class RestauranteService {
 
             } else {
 
+                Direccion direccionModificada = restauranteModificar.getDireccion();
+
+                direccionModificada.setCalle(userRestauranteDTO.getDireccionDTO().getCalle());
+                direccionModificada.setNumero(userRestauranteDTO.getDireccionDTO().getNumero());
+                direccionModificada.setPuerta(userRestauranteDTO.getDireccionDTO().getPuerta());
+                direccionModificada.setCodigoPostal(userRestauranteDTO.getDireccionDTO().getCodigoPostal());
+                direccionModificada.setCiudad(userRestauranteDTO.getDireccionDTO().getCiudad());
+                direccionModificada.setProvincia(userRestauranteDTO.getDireccionDTO().getProvincia());
+                direccionModificada.setPais(userRestauranteDTO.getDireccionDTO().getPais());
+
+                direccionRepository.save(direccionModificada);
+
                 restauranteModificar.setNombre(userRestauranteDTO.getNombre());
                 restauranteModificar.setCif(userRestauranteDTO.getCif());
                 restauranteModificar.setTelefono(userRestauranteDTO.getTelefono());
@@ -95,7 +126,7 @@ public class RestauranteService {
                 restauranteModificar.setHora_cierre(userRestauranteDTO.getHora_cierre());
                 restauranteModificar.setDisponible(userRestauranteDTO.getDisponible());
                 restauranteModificar.setImagen_marca(userRestauranteDTO.getImagen_marca());
-                restauranteModificar.setDireccion(direccionMapper.toEntity(userRestauranteDTO.getDireccionDTO()));
+                restauranteModificar.setDireccion(direccionModificada);
 
                 restauranteRepository.save(restauranteModificar);
                 return restauranteMapper.toDTO(restauranteModificar);
