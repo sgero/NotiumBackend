@@ -43,9 +43,9 @@ public class CartaRestauranteService {
             return "";
         } else {
             // Lógica si la carta no existe
-            CartaRestauranteDTO cartanueva = new CartaRestauranteDTO();
-            cartanueva.setRestauranteDTO(restauranteMapper.toDTO(restaurante));
-            cartaRestauranteRespository.save(cartaRestauranteMapper.toEntity(cartanueva));
+            CartaRestaurante cartanueva = new CartaRestaurante();
+            cartanueva.setRestaurante(restaurante);
+            cartaRestauranteRespository.save(cartanueva);
         }
 
 
