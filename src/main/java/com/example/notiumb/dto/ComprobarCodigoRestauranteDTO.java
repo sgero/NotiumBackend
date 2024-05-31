@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ComprobarCodigoDTO {
+public class ComprobarCodigoRestauranteDTO {
 
     private String codigoReserva;
 

@@ -16,4 +16,6 @@ public interface IOcioNocturnoRepository extends JpaRepository<OcioNocturno, Int
 
     OcioNocturno findByCif(String cif);
 
+    OcioNocturno findTopByIdAndActivoIsTrue(Integer id);
+
 }

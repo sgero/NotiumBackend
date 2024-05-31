@@ -33,4 +33,14 @@ public class ProductoController {
     public String crearProducto(@RequestBody ProductoDTO productoDTO) {
         return productoService.BajaAltaProducto(productoDTO);
     }
+
+    @PostMapping(value = "/listardescarte")
+    public List<ListadoProductosDTO> listarProductosDescarte(@RequestBody TokenDTO tokenDTO) {
+        return productoService.listarProductoDescartado(tokenDTO);
+    }
+
+    @PostMapping(value = "/eliminarres")
+    public String eliminarProducto(@RequestBody ProductoDTO productoDTO) {
+        return productoService.eliminarProducto(productoDTO);
+    }
 }

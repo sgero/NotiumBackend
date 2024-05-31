@@ -1,6 +1,5 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.ComprobarCodigoDTO;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserRestauranteDTO;
 import com.example.notiumb.model.Restaurante;
@@ -44,5 +43,6 @@ public class RestauranteController {
     public Double notaMedia(@RequestParam Integer id) {
         return comentarioService.valoracionMedia(id);
     }
+
 }
 

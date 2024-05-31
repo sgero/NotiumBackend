@@ -1,9 +1,7 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.ComentarioDTO;
-import com.example.notiumb.dto.ComprobarCodigoDTO;
-import com.example.notiumb.dto.RestauranteDTO;
-import com.example.notiumb.model.OcioNocturno;
+import com.example.notiumb.dto.*;
+
 import com.example.notiumb.repository.IComentarioRepository;
 import com.example.notiumb.service.ComentarioService;
 import com.example.notiumb.utilidades.RespuestaDTO;
@@ -23,24 +21,29 @@ public class ComentarioController {
     @Autowired
     private IComentarioRepository comentarioRepository;
 
-    @PostMapping(value="/comprobarCodigo")
-    public Integer comprobarCodigo(@RequestBody ComprobarCodigoDTO info) {
-        return comentarioService.comprobarValoracion(info);
-    }
-
-    @PostMapping(value="/crear")
-    public RespuestaDTO crearValoracion(@RequestBody ComentarioDTO comentarioDTO){
-        return comentarioService.crearValoracion(comentarioDTO);
+    @PostMapping(value="/comprobarCodigoRestaurante")
+    public Integer comprobarCodigoRestaurante(@RequestBody ComprobarCodigoRestauranteDTO info) {
+        return comentarioService.comprobarValoracionRestaurante(info);
     }
 
     @GetMapping(value="/rankingRestaurante")
     public List<Integer> rankingRestaurante(){
-        return comentarioRepository.rankingRestaurantes();
+        return comentarioService.rankingRestaurante();
+    }
+
+    @PostMapping(value="/comprobarCodigoOcioNocturno")
+    public Integer comprobarCodigoOcioNocturno(@RequestBody ComprobarCodigoOcioDTO info) {
+        return comentarioService.comprobarValoracionOcioNocturno(info);
+    }
+
+    @PostMapping(value="/crearOcioNocturno")
+    public RespuestaDTO crearValoracionOcioNocturno(@RequestBody ComentarioDTO comentarioDTO){
+        return comentarioService.crearValoracionOcioNocturno(comentarioDTO);
     }
 
     @GetMapping(value="/rankingOcioNocturno")
     public List<Integer> rankingOcioNocturno(){
-        return comentarioRepository.rankingOcioNocturno();
+        return comentarioService.rankingOcioNocturno();
     }
 
 

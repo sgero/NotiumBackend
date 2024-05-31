@@ -45,6 +45,7 @@ public class MesaService {
                 if(mesaDTO.getNumPlazas()!=0 && (numeroPlazasCubierta + mesaDTO.getNumPlazas()) < 100/*Aqui iría variable aforo*/) {
                     nuevaMesa.setNumPlazas(mesaDTO.getNumPlazas());
                     nuevaMesa.setReservada(mesaDTO.getReservada());
+                    nuevaMesa.setActivo(true);
                     Restaurante restaurantesMesa = iRestauranteRepository.findTopById(mesaDTO.getRestauranteDTO().getId());
                     nuevaMesa.setRestaurante(restaurantesMesa);
 
