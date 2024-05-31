@@ -38,8 +38,11 @@ public class UserClienteDTO {
     @NotBlank
     private String dni;
 
+    @NotBlank
+    private String telefono;
+
     @Past
-    private Date fechaNacimiento;
+    private Date fecha_nacimiento;
 
     private String token_verificacion;
 

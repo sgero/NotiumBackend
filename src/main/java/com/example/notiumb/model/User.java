@@ -87,9 +87,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setVerificado(boolean b) {
-    }
-
     public Object orElse(Object o) {
         return null;
     }
