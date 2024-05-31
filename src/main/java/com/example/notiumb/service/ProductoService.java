@@ -69,6 +69,9 @@ public class ProductoService {
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
         List<Producto> productos = productoRepository.findByCartaResEqualsAndActivoTrue(carta);
         List<ListadoProductosDTO> listafinal = new ArrayList<>();
+        if (carta == null){
+            return listafinal;
+        }
         for (Producto p : productos){
             List<ProductoFormatoDTO> formatos = productoFormatoMapper.toDTO(productoFormatoRepository.findByProductoEquals(p));
             ListadoProductosDTO nuevo = new ListadoProductosDTO();
