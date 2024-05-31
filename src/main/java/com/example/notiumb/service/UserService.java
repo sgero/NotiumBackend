@@ -6,6 +6,7 @@ import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.User;
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.repository.IUserRepository;
+import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private JWTService jwtService;
 
     public List<UserDTO> listarUsers() {
 
@@ -123,6 +126,10 @@ public class UserService implements UserDetailsService {
 
 
 
+    public User getUsuarioFromToken(String token) {
+        String username = jwtService.extractUsername(token); // Extrae el nombre de usuario del token
+        return userRepository.findTopByUsernameAndActivoTrue(username);
+    }
 
 
 }

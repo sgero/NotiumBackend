@@ -67,11 +67,11 @@ public class ProductoService {
     }
 
 
-    public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO) {
+    public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO, User user) {
 
-        String token = productoAuxDTO.getUsername();
+//        String token = productoAuxDTO.getUsername();
         //String username = jwtService.extractUsername(productoDTO.getUsername());
-        User user = userRepository.findTopByUsernameAndActivoTrue(token);
+//        User user = userRepository.findTopByUsernameAndActivoTrue(token);
         ProductoDTO productoDTO = new ProductoDTO();
         if (user.getRol()== Rol.OCIONOCTURNO){
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
