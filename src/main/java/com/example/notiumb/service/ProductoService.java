@@ -1,24 +1,12 @@
 package com.example.notiumb.service;
 
-import com.example.notiumb.converter.ICartaOcioMapper;
-import com.example.notiumb.converter.ICartaRestauranteMapper;
-import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.converter.IProductoFormatoMapper;
 import com.example.notiumb.converter.IProductoMapper;
 import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
-import com.example.notiumb.model.enums.TipoCategoria;
-import com.example.notiumb.repository.*;
-import com.example.notiumb.dto.CartaRestauranteDTO;
-import com.example.notiumb.dto.ProductoAuxDTO;
-import com.example.notiumb.dto.ProductoDTO;
-import com.example.notiumb.dto.TokenDTO;
-import com.example.notiumb.model.*;
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.model.enums.TipoCategoria;
 import com.example.notiumb.repository.*;
-
-import com.example.notiumb.security.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +23,6 @@ public class ProductoService {
     @Autowired
     private IProductoMapper productoMapper;
 
-
     @Autowired
     private IUserRepository userRepository;
 
@@ -47,6 +34,11 @@ public class ProductoService {
 
     @Autowired
     private IProductoFormatoRepository productoFormatoRepository;
+
+    @Autowired
+    private IOcioNocturnoRepository ocioNocturnoRepository;
+    @Autowired
+    private ICartaOcioRepository cartaOcioRepository;
 
     @Autowired
     private IProductoFormatoMapper productoFormatoMapper;
@@ -95,9 +87,6 @@ public class ProductoService {
 
     public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO, User user) {
 
-//        String token = productoAuxDTO.getUsername();
-        //String username = jwtService.extractUsername(productoDTO.getUsername());
-//        User user = userRepository.findTopByUsernameAndActivoTrue(token);
         Producto producto = new Producto();
         if (user.getRol() == Rol.OCIONOCTURNO) {
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
