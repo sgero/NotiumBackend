@@ -47,7 +47,9 @@ public class CartaOcioService {
             return converter.toDTO(cartaNueva);
         }
         else {
-            return null;
+            cartaExistente.setActivo(true);
+            repository.save(cartaExistente);
+            return converter.toDTO(cartaExistente);
         }
     }
 
