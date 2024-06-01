@@ -24,6 +24,10 @@ public class OcioNocturnoController {
     public OcioNocturnoDTO ocioId(@PathVariable Integer id){
         return ocioNocturnoService.getById(id);
     }
+    @GetMapping("/{id}/evento")
+    public OcioNocturnoDTO ocioIdEvento(@PathVariable Integer id){
+        return ocioNocturnoService.getByEventoId(id);
+    }
 
     @PostMapping("/crear")
     public OcioNocturnoDTO crearYModificarOcioNocturno(@RequestBody UserOcioNocturnoDTO userOcioNocturnoDTO) throws MessagingException {
