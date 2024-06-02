@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWTService{
+public class JWTService {
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
 
-    public String extractUsername(String token){
+    public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -30,23 +30,23 @@ public class JWTService{
                 .getBody().getSubject();
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
 
-    public String generateToken(User user){
-        return generateToken(new HashMap<>(),user);
+    public String generateToken(User user) {
+        return generateToken(new HashMap<>(), user);
     }
 
-    public boolean isTokenValid(String token, User usuario){
+    public boolean isTokenValid(String token, User usuario) {
         final String username = extractUsername(token);
         return (username.equals(usuario.getUsername())) && !isTokenExpired(token);
 
     }
 
-    public String generateToken(Map<String, Object> extraClaims, User usuario){
+    public String generateToken(Map<String, Object> extraClaims, User usuario) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -57,7 +57,7 @@ public class JWTService{
                 .compact();
     }
 
-    private Claims extractAllClaims(String token){
+    private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -66,17 +66,26 @@ public class JWTService{
                 .getBody();
     }
 
-    private Key getSignInKey(){
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+//    private Key getSignInKey() {
+//        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
+
+    private Key getSignInKey() {
+        // Decodifica la clave hexadecimal
+        byte[] keyBytes = new byte[secretKey.length() / 2];
+        for (int i = 0; i < keyBytes.length; i++) {
+            keyBytes[i] = (byte) Integer.parseInt(secretKey.substring(2 * i, 2 * i + 2), 16);
+        }
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
 
-    private boolean isTokenExpired(String token){
+    private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token){
+    private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
