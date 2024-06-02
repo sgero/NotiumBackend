@@ -30,6 +30,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+//    @Override
+//    protected void doFilterInternal(@NonNull HttpServletRequest request,
+//                                    @NonNull HttpServletResponse response,
+//                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+//
+//        final String authHeader = request.getHeader("Authorization");
+//        final String jwt;
+//        final String username;
+//
+//        if (request.getServletPath().contains("/auth/")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        if(authHeader== null || !authHeader.startsWith("Bearer")){
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
+//
+//        jwt = authHeader.substring(7);
+//        username = jwtService.extractUsername(jwt);
+//
+//        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//            User user = userService.loadUserByUsername(username);
+//
+//            if (jwtService.isTokenValid(jwt, user)) {
+//                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+//                        user.getUsername(),
+//                        user.getPassword(),
+//                        List.of(new SimpleGrantedAuthority(user.getRol().name())));
+//                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                SecurityContextHolder.getContext().setAuthentication(authToken);
+//            }
+//        }
+//
+//        filterChain.doFilter(request, response);
+//    }
+
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -44,12 +83,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(authHeader== null || !authHeader.startsWith("Bearer")){
-            filterChain.doFilter(request,response);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("Authorization header is missing or does not start with Bearer");
+            filterChain.doFilter(request, response);
             return;
         }
 
         jwt = authHeader.substring(7);
+        System.out.println("Received JWT: " + jwt);
         username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -67,4 +108,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
+
 }
