@@ -1,5 +1,6 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.IdreceptorDTO;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserRestauranteDTO;
 import com.example.notiumb.model.Restaurante;
@@ -42,6 +43,12 @@ public class RestauranteController {
     @GetMapping(value="/notaMedia")
     public Double notaMedia(@RequestParam Integer id) {
         return comentarioService.valoracionMedia(id);
+    }
+
+    @PostMapping(value = "/listaCategoria")
+    public List<RestauranteDTO> listarResCategoria(@RequestBody IdreceptorDTO idClase){
+        Integer id = idClase.getId();
+        return restauranteService.listarRestaurantesCategoria(id);
     }
 
 }

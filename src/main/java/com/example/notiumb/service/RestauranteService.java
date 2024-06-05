@@ -146,4 +146,9 @@ public class RestauranteService {
     public void actualizarRestaurante(Restaurante restaurante) {
         restauranteRepository.save(restaurante);
     }
+
+    public List<RestauranteDTO> listarRestaurantesCategoria(Integer id){
+
+        return restauranteMapper.toDTO(restauranteRepository.findPorClase(id));
+    }
 }
