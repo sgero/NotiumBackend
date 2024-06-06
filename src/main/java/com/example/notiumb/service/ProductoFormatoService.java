@@ -11,6 +11,7 @@ import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.model.enums.TipoCategoria;
 import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class ProductoFormatoService {
         List<ProductoFormato> productoFormatos = new ArrayList<>();
 
         List<ProductoFormato> formatos = null;
+
         if (user.getRol() == Rol.OCIONOCTURNO) {
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
             CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
@@ -83,5 +85,7 @@ public class ProductoFormatoService {
         }
         return iProductoFormatoMapper.toDTO(productoFormatos);
     }
+
+
 
 }
