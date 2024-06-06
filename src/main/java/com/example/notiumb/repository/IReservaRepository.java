@@ -38,5 +38,8 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query(value = "select rr.* from notium.reserva_restaurante rr where rr.codigo_reserva = %:codigoReserva%", nativeQuery = true)
     Reserva buscarValoracion(String codigoReserva);
 
+    List<Reserva> findAllByRestauranteIdAndActivoIsTrue(Integer id);
+
+
 
 }

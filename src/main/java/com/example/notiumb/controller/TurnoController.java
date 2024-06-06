@@ -50,6 +50,11 @@ public class TurnoController {
         );
     }
 
+    @GetMapping("/disponibilidadTurnos")
+    public List<TurnoDTO> turnosDisponibles(@RequestParam Integer id){
+        return turnoService.turnosRestaurante(id);
+    }
+
 
 
 }

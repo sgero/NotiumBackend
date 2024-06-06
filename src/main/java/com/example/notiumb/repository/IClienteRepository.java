@@ -17,7 +17,10 @@ public interface IClienteRepository extends JpaRepository<Cliente, Integer> {
     @Query(nativeQuery = true, value = "select c.* from notium.cliente c " +
             "join notium.usuario u on c.id_usuario = u.id " +
             "where u.id = :id and u.activo = true and c.activo = true; ")
+
     Cliente findByIdUser(Integer id);
+
+    Cliente findTopById (Integer id);
 
 
 }

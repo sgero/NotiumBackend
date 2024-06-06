@@ -15,8 +15,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
-
 public class ReservaService {
 
     @Autowired
@@ -55,10 +53,13 @@ public class ReservaService {
     }
 
     public Reserva getReservaById(@Param("id") Integer id) {
-
         return reservaRepository.findByIdAndActivoIsTrue(id);
     }
 
+    public List<ReservaDTO> getReservaPorRestaurante(Integer id){
+        List<Reserva> listadoReservas = reservaRepository.findAllByRestauranteIdAndActivoIsTrue(id);
+        return reservaMapper.toDTO(listadoReservas);
+    }
 
 
     public List<MesaDTO> comprobarTurno(ReservaDTO reservaDTO) {

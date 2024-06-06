@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Data
 public class DatosReservaDTO {
 
-
     private LocalDate fecha;
 
     private Integer numPersonas;

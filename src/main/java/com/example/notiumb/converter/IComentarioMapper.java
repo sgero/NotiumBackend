@@ -26,12 +26,12 @@ public interface IComentarioMapper {
 
     @Mapping(source = "restaurante", target = "restauranteDTO", qualifiedByName = "transformarRestaurante")
     @Mapping(source = "ocio", target = "ocioDTO", qualifiedByName = "transformarOcio")
-//    @Mapping(source = "cliente", target = "clienteDTO", qualifiedByName = "transformarCliente")
+    @Mapping(source = "cliente", target = "clienteDTO", qualifiedByName = "transformarCliente")
     ComentarioDTO toDTO(Comentario entity);
 
     @Mapping(source = "restauranteDTO", target = "restaurante", qualifiedByName = "transformarRestauranteDTO")
     @Mapping(source = "ocioDTO", target = "ocio", qualifiedByName = "transformarOcioDTO")
-//    @Mapping(source = "clienteDTO", target = "cliente", qualifiedByName = "transformarClienteDTO")
+    @Mapping(source = "clienteDTO", target = "cliente", qualifiedByName = "transformarClienteDTO")
     Comentario toEntity(ComentarioDTO dto);
 
     List<Comentario> toEntity(List<ComentarioDTO> dtos);
@@ -50,4 +50,11 @@ public interface IComentarioMapper {
 
     @Named("transformarOcioDTO")
     default OcioNocturno transformarOcio(OcioNocturnoDTO dto) { return  iocioNocturnoMapper.toEntity(dto);}
+
+    @Named("transformarCliente")
+    default ClienteDTO transformarCliente(Cliente entity) { return iclienteMapper.toDTO(entity);}
+
+    @Named("transformarClienteDTO")
+    default Cliente transformarCliente(ClienteDTO dto) { return  iclienteMapper.toEntity(dto);}
 }
+
