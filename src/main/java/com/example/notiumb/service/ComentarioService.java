@@ -114,7 +114,7 @@ public class ComentarioService {
                 nuevaValoracion.setCodigoReserva(valoracion.getCodigoReserva());
                 nuevaValoracion.setFecha_comentario(new Timestamp(System.currentTimeMillis()));
                 nuevaValoracion.setActivo(true);
-                Cliente clienteValoracion = clienteRepository.findTopById(valoracion.getClienteDTO().getId());
+                Cliente clienteValoracion = clienteRepository.findByIdUser(valoracion.getClienteDTO().getId());
                 nuevaValoracion.setCliente(clienteValoracion);
 
                 Restaurante restauranteValoracion = iRestauranteRepository.findTopById(valoracion.getRestauranteDTO().getId());

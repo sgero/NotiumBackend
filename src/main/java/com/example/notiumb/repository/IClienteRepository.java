@@ -22,5 +22,7 @@ public interface IClienteRepository extends JpaRepository<Cliente, Integer> {
 
     Cliente findTopById (Integer id);
 
+    Cliente findByUserId(Integer id);
+
 
 }
