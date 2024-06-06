@@ -62,19 +62,60 @@ public class EmailServiceImpl implements IEmailService {
 
 
 
+    //   public void enviarEmailVerificacion(String email, String rol) {
+    //     // Lógica para enviar email de verificación con un enlace único
+    //     User user = usuarioRepository.findTopByEmail(email);
+
+    //     SimpleMailMessage mensaje = new SimpleMailMessage();
+    //     mensaje.setTo(email);
+    //    mensaje.setSubject("Verifica tu cuenta");
+    //   if (rol.equals("CLIENTE")) {
+    //       String tokenverificacion = generarToken();
+    //       mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + tokenverificacion);
+    //       user.setTokenVerificacion(tokenverificacion);
+    //       javaMailSender.send(mensaje);
+    //   }
+    //  }
+
     public void enviarEmailVerificacion(String email, String rol) {
-        // Lógica para enviar email de verificación con un enlace único
+        if (!"CLIENTE".equals(rol)) {
+            return;  // No enviar email si el rol no es CLIENTE
+        }
+
         User user = usuarioRepository.findTopByEmail(email);
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo(email);
-        mensaje.setSubject("Verifica tu cuenta");
-        if (rol.equals("CLIENTE")) {
-            String tokenverificacion = generarToken();
-            mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + tokenverificacion);
-            user.setTokenVerificacion(tokenverificacion);
-            javaMailSender.send(mensaje);
+        if (user == null) {
+            throw new RuntimeException("User not found for email: " + email);
+        }
+
+        String tokenVerificacion = generarToken();
+        String verificationLink = "http://localhost:8080/verificar/cliente?token=" + tokenVerificacion;
+
+        user.setTokenVerificacion(tokenVerificacion);
+        usuarioRepository.save(user);  // Asegúrate de guardar el usuario con el nuevo token
+
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setTo(email);
+        emailDTO.setSubject("Verifica tu cuenta");
+
+        Context context = new Context();
+        context.setVariable("verificationMessage", "Por favor haz clic en el siguiente enlace para verificar tu cuenta: " + verificationLink);
+        String contentHTML = templateEngine.process("verificado", context);
+
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(email);
+            helper.setSubject("Verifica tu cuenta");
+            helper.setText(contentHTML, true);
+
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending email: " + e.getMessage(), e);
         }
     }
+
+
 
     public void enviarEmailContinuidadRegistro(String email, String rol) {
         // Lógica para enviar email para habilitar la continuidad del registro

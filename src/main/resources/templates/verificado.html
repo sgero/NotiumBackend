@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Notium</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
+<div style="max-width: 800px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <!-- Optional logo can go here -->
+    </div>
+    <div style="padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+        <img src="https://img.freepik.com/vector-gratis/diseno-banner-violeta-sobre-fondo-blanco_1308-93566.jpg" alt="Banner" style="max-width: 5%; height: auto;">
+        <h1 style="color: #2f00ff;">Notium Events:</h1>
+        <p style="color: #4400ff;" th:text="${verificationMessage}">Enhorabuena, tu email se ha verificado correctamente.</p>
+    </div>
+    <div style="margin-top: 30px; text-align: center; color: #777;">
+        <p>Este es un correo electrónico de Notium. Por favor, no responda a este correo.</p>
+    </div>
+</div>
+</body>
+</html>
+
