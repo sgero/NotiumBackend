@@ -1,14 +1,12 @@
 package com.example.notiumb.service;
 
-
 import com.example.notiumb.converter.IProductoFormatoMapper;
 import com.example.notiumb.converter.IProductoMapper;
 import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
+import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.model.enums.TipoCategoria;
 import com.example.notiumb.repository.*;
-
-import com.example.notiumb.security.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,6 @@ public class ProductoService {
     @Autowired
     private IProductoMapper productoMapper;
 
-
     @Autowired
     private IUserRepository userRepository;
 
@@ -37,6 +34,11 @@ public class ProductoService {
 
     @Autowired
     private IProductoFormatoRepository productoFormatoRepository;
+
+    @Autowired
+    private IOcioNocturnoRepository ocioNocturnoRepository;
+    @Autowired
+    private ICartaOcioRepository cartaOcioRepository;
 
     @Autowired
     private IProductoFormatoMapper productoFormatoMapper;
@@ -69,18 +71,38 @@ public class ProductoService {
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
         List<Producto> productos = productoRepository.findByCartaResEqualsAndActivoTrue(carta);
         List<ListadoProductosDTO> listafinal = new ArrayList<>();
-        if (carta == null){
+        if (carta == null) {
             return listafinal;
         }
-        for (Producto p : productos){
-            List<ProductoFormatoDTO> formatos = productoFormatoMapper.toDTO(productoFormatoRepository.findByProductoEquals(p));
-            ListadoProductosDTO nuevo = new ListadoProductosDTO();
-            nuevo.setProducto(productoMapper.toDTO(p));
-            nuevo.setFormatos(formatos);
-            listafinal.add(nuevo);
-        }
-        return listafinal;
+            for (Producto p : productos){
+                List<ProductoFormatoDTO> formatos = productoFormatoMapper.toDTO(productoFormatoRepository.findByProductoEquals(p));
+                ListadoProductosDTO nuevo = new ListadoProductosDTO();
+                nuevo.setProducto(productoMapper.toDTO(p));
+                nuevo.setFormatos(formatos);
+                listafinal.add(nuevo);
+            }
+            return listafinal;
 
+        }
+
+    public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO, User user) {
+
+        Producto producto = new Producto();
+        if (user.getRol() == Rol.OCIONOCTURNO) {
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
+            CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
+            producto.setNombre(productoAuxDTO.getNombre());
+            producto.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
+            producto.setCartaOcio(cartaOcio);
+        } else if (user.getRol() == Rol.RESTAURANTE) {
+            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+            producto.setNombre(productoAuxDTO.getNombre());
+            producto.setTipoCategoria(TipoCategoria.valueOf(productoAuxDTO.getTipoCategoria()));
+            producto.setCartaRes(cartaRestaurante);
+        }
+
+        return productoMapper.toDTO(productoRepository.save(producto));
     }
 
     public String BajaAltaProducto(ProductoDTO productoDTO){
@@ -102,7 +124,7 @@ public class ProductoService {
         CartaRestaurante carta = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
         List<Producto> productos = productoRepository.findByCartaResEqualsAndActivoFalse(carta);
         List<ListadoProductosDTO> listafinal = new ArrayList<>();
-        for (Producto p : productos){
+        for (Producto p : productos) {
             List<ProductoFormatoDTO> formatos = productoFormatoMapper.toDTO(productoFormatoRepository.findByProductoEquals(p));
             ListadoProductosDTO nuevo = new ListadoProductosDTO();
             nuevo.setProducto(productoMapper.toDTO(p));
@@ -110,7 +132,26 @@ public class ProductoService {
             listafinal.add(nuevo);
         }
         return listafinal;
+    }
 
+
+    public List<ProductoDTO> listarByProducto(User user) {
+
+        List<ProductoDTO> productos = new ArrayList<>();
+
+        if (user.getRol()== Rol.OCIONOCTURNO){
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
+            CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
+
+            productos =  productoMapper.toDTO(productoRepository.findByCartaOcioEqualsAndActivoTrue(cartaOcio));
+
+        }else if (user.getRol()== Rol.RESTAURANTE) {
+            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+
+            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
+        }
+        return productos;
     }
 
     public String eliminarProducto(ProductoDTO productoDTO){

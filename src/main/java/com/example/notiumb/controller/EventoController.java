@@ -71,4 +71,9 @@ public class EventoController {
         return eventoService.getCantidadRestanteEvento(id);
     }
 
+    @GetMapping(value = "/info/{id}")
+    public CrearEventoDTO informacionEvento(@PathVariable Integer id){
+        return eventoService.getInformacionEvento(id);
+    }
+
 }

@@ -52,7 +52,9 @@ public class OcioNocturnoService {
     public OcioNocturnoDTO getById(@Param("id") Integer id) {
         return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdAndActivoIsTrue(id).orElse(null));
     }
-
+    public OcioNocturnoDTO getByEventoId(Integer id) {
+        return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdEvento(id));
+    }
     @Transactional
     public OcioNocturnoDTO crearYModificarOcioNocturno(UserOcioNocturnoDTO userOcioNocturnoDTO) throws MessagingException {
 
@@ -154,4 +156,6 @@ public class OcioNocturnoService {
     public OcioNocturnoDTO getByUserId(Integer id) {
         return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdUser(id));
     }
+
+
 }

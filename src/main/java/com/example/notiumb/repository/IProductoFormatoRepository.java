@@ -5,6 +5,7 @@ import com.example.notiumb.model.Producto;
 import com.example.notiumb.model.ProductoFormato;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +16,6 @@ public interface IProductoFormatoRepository extends JpaRepository<ProductoFormat
     List<ProductoFormato> findByProductoEquals(Producto producto);
 
     List<ProductoFormato> findByProductoEqualsAndFormatoEquals(Producto producto, Formato formato);
+
 
 }
