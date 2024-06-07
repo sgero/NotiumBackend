@@ -16,10 +16,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.UUID;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
@@ -61,29 +59,46 @@ public class EmailServiceImpl implements IEmailService {
     }
 
 
-
     public void enviarEmailVerificacion(String email, String rol) {
-        // Lógica para enviar email de verificación con un enlace único
-        User user = usuarioRepository.findTopByEmail(email);
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo(email);
-        mensaje.setSubject("Verifica tu cuenta");
-        if (rol.equals("CLIENTE")) {
-            String tokenverificacion = generarToken();
-            mensaje.setText("Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + tokenverificacion);
-            user.setTokenVerificacion(tokenverificacion);
-            javaMailSender.send(mensaje);
+        try {
+            User user = usuarioRepository.findTopByEmail(email);
+
+            MimeMessage message = javaMailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("VERIFICA TU CUENTA");
+
+            if (rol.equals("CLIENTE")) {
+
+                String tokenverificacion = generarToken();
+
+                Context context = new Context();
+                String texto = "Por favor haz clic en el siguiente enlace para verificar tu cuenta: http://localhost:8080/verificar/cliente?token=" + tokenverificacion;
+                context.setVariable("message", texto);
+                String contentHTML = templateEngine.process("email", context);
+                helper.setText(contentHTML, true);
+
+                user.setTokenVerificacion(tokenverificacion);
+                usuarioRepository.save(user);
+
+                javaMailSender.send(message);
+
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error sending email" + e.getMessage(), e);
         }
+
     }
 
     public void enviarEmailContinuidadRegistro(String email, String rol) {
-        // Lógica para enviar email para habilitar la continuidad del registro
+
         User user = usuarioRepository.findTopByEmail(email);
         SimpleMailMessage mensaje = new SimpleMailMessage();
         mensaje.setTo(email);
         mensaje.setSubject("Valida tu email y continúa tu registro");
 
-        // Mensaje personalizado dependiendo del rol del usuario
         String mensajeTexto = "";
         if (rol.equals("RESTAURANTE")) {
             String tokenverificacion = generarToken();
@@ -105,27 +120,45 @@ public class EmailServiceImpl implements IEmailService {
 
 
     public void enviarEmailVerificacionRestaurante(RestauranteDTO restauranteDTO) throws MessagingException {
-        // Lógica para enviar el email de verificación a la dirección de correo especificada
-        String enlaceVerificacion = "http://localhost:8080/verificar/verificarRestaurante?idEmpresa=" + restauranteDTO.getCif(); // URL con parámetro idEmpresa
+
+        String enlaceVerificacion = "http://localhost:8080/verificar/verificarRestaurante?idEmpresa=" + restauranteDTO.getCif();
         String mensajeTexto = "Se ha registrado un nuevo restaurante. Por favor, como ADMINISTRADOR verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
 
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo("notiumevents@gmail.com");
-        mensaje.setSubject("Verificación de registro de restaurante");
-        mensaje.setText("Nombre del restaurante: " + restauranteDTO.getNombre() + "\nCIF: " + restauranteDTO.getCif() + "\nTeléfono: " + restauranteDTO.getTelefono() + "\n\n" + mensajeTexto);
-        javaMailSender.send(mensaje); // Utiliza el bean JavaMailSender para enviar el mensaje
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo("notiumevents@gmail.com");
+        helper.setSubject("VERIFICACIÓN DE REGISTRO DE RESTAURANTE");
+
+        String texto = "Nombre del restaurante: " + restauranteDTO.getNombre() + "\nCIF: " + restauranteDTO.getCif() + "\nTeléfono: " + restauranteDTO.getTelefono() + "\n\n" + mensajeTexto;
+
+        Context context = new Context();
+        context.setVariable("message", texto);
+        String contentHTML = templateEngine.process("email", context);
+        helper.setText(contentHTML, true);
+
+        javaMailSender.send(message);
     }
 
     public void enviarEmailVerificacionOcioNocturno(OcioNocturnoDTO ocioNocturnoDTO) throws MessagingException {
-        // Lógica para enviar el email de verificación a la dirección de correo especificada
-        String enlaceVerificacion = "http://localhost:8080/verificar/verificarOcioNocturno?idEmpresa=" + ocioNocturnoDTO.getCif(); // URL con parámetro idEmpresa
-        String mensajeTexto = "Se ha registrado un nuevo establecimiento de ocio nocturno. Por favor, como ADMINISTRADOR verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
 
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setTo("notiumevents@gmail.com");
-        mensaje.setSubject("Verificación de registro de establecimiento de ocio nocturno");
-        mensaje.setText("Nombre del establecimiento: " + ocioNocturnoDTO.getNombre() + "\nCIF: " + ocioNocturnoDTO.getCif() + "\nTeléfono: " + ocioNocturnoDTO.getTelefono() + "\n\n" + mensajeTexto);
-        javaMailSender.send(mensaje); // Utiliza el bean JavaMailSender para enviar el mensaje
+        String enlaceVerificacion = "http://localhost:8080/verificar/verificarOcioNocturno?idEmpresa=" + ocioNocturnoDTO.getCif();
+        String mensajeTexto = "Se ha registrado un nuevo restaurante. Por favor, como ADMINISTRADOR verifique esta solicitud haciendo clic en el siguiente enlace:\n" + enlaceVerificacion;
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo("notiumevents@gmail.com");
+        helper.setSubject("VERIFICACIÓN DE REGISTRO DE OCIO NOCTURNO");
+
+        String texto = "Nombre del establecimiento: " + ocioNocturnoDTO.getNombre() + "\nCIF: " + ocioNocturnoDTO.getCif() + "\nTeléfono: " + ocioNocturnoDTO.getTelefono() + "\n\n" + mensajeTexto;
+
+        Context context = new Context();
+        context.setVariable("message", texto);
+        String contentHTML = templateEngine.process("email", context);
+        helper.setText(contentHTML, true);
+
+        javaMailSender.send(message);
     }
 
 
@@ -155,8 +188,5 @@ public class EmailServiceImpl implements IEmailService {
         }
         return token;
     }
-
-
-
 
 }

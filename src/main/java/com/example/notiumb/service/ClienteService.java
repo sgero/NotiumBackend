@@ -8,7 +8,6 @@ import com.example.notiumb.dto.UserClienteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.Cliente;
 import com.example.notiumb.model.Direccion;
-import com.example.notiumb.model.Rpp;
 import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IClienteRepository;
 import com.example.notiumb.repository.IDireccionRepository;
@@ -127,5 +126,18 @@ public class ClienteService {
 
     public ClienteDTO getByUserId(Integer id) {
         return converter.toDTO(repository.findByIdUser(id));
+    }
+
+    public ClienteDTO deleteCliente(Integer id) {
+
+        Cliente cliente = repository.findByIdUser(id);
+
+        cliente.setActivo(false);
+        cliente.getUser().setActivo(false);
+
+        repository.save(cliente);
+
+        return converter.toDTO(cliente);
+
     }
 }

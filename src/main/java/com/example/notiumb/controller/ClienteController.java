@@ -25,4 +25,9 @@ public class ClienteController {
         return clienteService.getByUserId(id);
     }
 
+    @GetMapping("delete/{id}")
+    public ClienteDTO deleteCliente(@PathVariable Integer id){
+        return clienteService.deleteCliente(id);
+    }
+
 }

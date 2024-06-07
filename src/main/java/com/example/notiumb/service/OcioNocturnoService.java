@@ -2,7 +2,6 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
-import com.example.notiumb.dto.ClienteDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;

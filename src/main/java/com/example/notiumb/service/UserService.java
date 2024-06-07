@@ -5,7 +5,7 @@ import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.User;
 import com.example.notiumb.model.enums.Rol;
-import com.example.notiumb.repository.IUserRepository;
+import com.example.notiumb.repository.*;
 import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.event.IIOReadProgressListener;
 import java.util.List;
 
 
@@ -24,6 +25,18 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private IClienteRepository clienteRepository;
+
+    @Autowired
+    private IRestauranteRepository restauranteRepository;
+
+    @Autowired
+    private IOcioNocturnoRepository ocioNocturnoRepository;
+
+    @Autowired
+    private IRppRepository rppRepository;
 
     @Autowired
     private IUserMapper iUserMapper;
@@ -85,7 +98,28 @@ public class UserService implements UserDetailsService {
         userRepository.save(usuario);
     }
 
+    public Object traerPerfilVinculadoUsuario(User user) {
+        if (user.getRol() == Rol.CLIENTE){
 
+            return clienteRepository.findByIdUser(user.getId());
+
+        } else if (user.getRol() == Rol.RESTAURANTE) {
+
+            return restauranteRepository.findByIdUser(user.getId());
+
+        }else if (user.getRol() == Rol.OCIONOCTURNO) {
+
+            return ocioNocturnoRepository.findByIdUser(user.getId());
+
+        }else if (user.getRol() == Rol.RPP) {
+
+            return rppRepository.findByIdUserAndActivoTrue(user.getId());
+
+        }
+
+        return user;
+
+    }
 
 
     public void registrarUsuario(User usuario) throws MessagingException {
@@ -131,5 +165,20 @@ public class UserService implements UserDetailsService {
         return userRepository.findTopByUsernameAndActivoTrue(username);
     }
 
+    public Boolean validaUsernameEmailExistentes(User user) {
+        Boolean existeEmail = userRepository.existsByEmail(user.getEmail());
+        Boolean existeUsername = userRepository.existsByUsername(user.getUsername());
+
+        if (existeEmail || existeUsername){
+
+            return true;
+
+        }else {
+
+            return false;
+
+        }
+
+    }
 
 }

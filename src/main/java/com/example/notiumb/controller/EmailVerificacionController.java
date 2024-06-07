@@ -8,10 +8,8 @@ import com.example.notiumb.service.RestauranteService;
 import com.example.notiumb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/verificar")
@@ -28,18 +26,25 @@ private RestauranteService restauranteService;
 private OcioNocturnoService ocioNocturnoService;
 
     @GetMapping("/cliente")
+    @ResponseBody
     public String verificarEmailCliente(@RequestParam("token") String tokenVerificacion) {
-        // Obtener el usuario asociado al token
+
         User usuario = userService.obtenerUsuarioPorToken(tokenVerificacion);
 
         if (usuario != null) {
-            // Marcar el usuario como verificado
+
             usuario.setVerificado(true);
             userService.actualizarUsuario(usuario);
-            return "¡Email verificado correctamente!";
+
+//            model.addAttribute("mensajeTitulo", "¡Email verificado correctamente!");
+//            model.addAttribute("mensajeCuerpo", "Tu email ha sido verificado exitosamente.");
+
         } else {
-            return "Token de verificación inválido o expirado.";
+//            model.addAttribute("mensajeTitulo", "Error de Verificación");
+//            model.addAttribute("mensajeCuerpo", "Token de verificación inválido o expirado. Por favor, verifica el link de verificación o solicita uno nuevo.");
         }
+
+        return "verificacion-email";
     }
 
 
