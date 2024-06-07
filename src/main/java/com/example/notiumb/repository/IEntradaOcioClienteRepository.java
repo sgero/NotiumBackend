@@ -1,5 +1,6 @@
 package com.example.notiumb.repository;
 
+import com.example.notiumb.dto.EntradaOcioClienteDTO;
 import com.example.notiumb.model.EntradaOcioCliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +25,7 @@ public interface IEntradaOcioClienteRepository extends JpaRepository<EntradaOcio
     @Query(value = "select e.id_ocio_nocturno from notium.reservado_ocio_cliente roc join notium.reservado_ocio ro on roc.id_reservado_ocio = ro.id join notium.evento e on e.id = ro.id_evento where roc.codigo = %:codigo%", nativeQuery = true)
     Integer idOcioEntrada(String codigo);
 
+    List<EntradaOcioCliente> findAllByCliente_IdAndFechaCompraBefore (Integer id, Timestamp fecha);
+    List<EntradaOcioCliente> findAllByCliente_IdAndFechaCompraAfter (Integer id, Timestamp fecha);
 
 }
