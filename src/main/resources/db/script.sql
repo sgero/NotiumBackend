@@ -413,4 +413,3 @@ INSERT INTO formato (formato) VALUES
                                   ('PINTA'),
                                   ('MACETA');
 
-

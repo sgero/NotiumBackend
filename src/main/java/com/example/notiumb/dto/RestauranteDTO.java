@@ -12,9 +12,7 @@ public class RestauranteDTO {
 
     private Integer id;
 
-
     private String nombre;
-
 
     private String telefono;
 
@@ -23,21 +21,17 @@ public class RestauranteDTO {
 
     private String hora_apertura;
 
-
     private String hora_cierre;
-
 
     private Boolean valoracion;
 
-
     private Boolean disponible;
-
 
     private String imagen_marca;
 
-
     private Boolean activo;
 
+    private Integer aforo;
 
     @Valid
     private UserDTO userDTO;

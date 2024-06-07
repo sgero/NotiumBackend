@@ -172,8 +172,6 @@ public class ComentarioService {
 
 
 
-
-
     //OCIO NOCTURNO
 
     public Integer comprobarValoracionOcioNocturno(ComprobarCodigoOcioDTO info) {
@@ -240,6 +238,9 @@ public class ComentarioService {
             nuevaValoracion.setCodigoReserva(valoracion.getCodigoReserva());
             nuevaValoracion.setFecha_comentario(new Timestamp(System.currentTimeMillis()));
             nuevaValoracion.setActivo(true);
+
+            Cliente clienteValoracion = clienteRepository.findByIdUser(valoracion.getClienteDTO().getId());
+            nuevaValoracion.setCliente(clienteValoracion);
 
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findTopByIdAndActivoIsTrue(valoracion.getOcioDTO().getId());
             nuevaValoracion.setOcio(ocioNocturno);
