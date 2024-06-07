@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
 
         } else if (user.getRol() == Rol.RESTAURANTE) {
 
-            return restauranteRepository.findByIdUser(user.getId());
+            return null; //restauranteRepository.findByIdUser(user.getId());
 
         }else if (user.getRol() == Rol.OCIONOCTURNO) {
 
@@ -113,7 +113,7 @@ public class UserService implements UserDetailsService {
 
         }else if (user.getRol() == Rol.RPP) {
 
-            return rppRepository.findByIdUserAndActivoTrue(user.getId());
+            return null; //rppRepository.findByIdUserAndActivoTrue(user.getId());
 
         }
 
