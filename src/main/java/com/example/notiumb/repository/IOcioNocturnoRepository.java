@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface IOcioNocturnoRepository extends JpaRepository<OcioNocturno, Integer> {
@@ -32,4 +33,11 @@ public interface IOcioNocturnoRepository extends JpaRepository<OcioNocturno, Int
             "join notium.evento e on o.id = e.id_ocio_nocturno " +
             "where e.id = :id and e.activo = true and o.activo = true;")
     OcioNocturno findByIdEvento(Integer id);
+
+    @Query(nativeQuery = true, value = "select o.* from notium.chat_cliente cc " +
+            "join notium.cliente c on cc.id_cliente = c.id " +
+            "join notium.ocio_nocturno o on cc.id_chat = o.id " +
+            "where c.id = :id ")
+    Set<OcioNocturno> getChatsCliente(Integer id);
+
 }

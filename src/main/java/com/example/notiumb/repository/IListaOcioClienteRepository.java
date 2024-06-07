@@ -30,6 +30,8 @@ public interface IListaOcioClienteRepository extends JpaRepository<ListaOcioClie
     @Query(value = "select e.id_ocio_nocturno from notium.lista_ocio_cliente loc join notium.lista_ocio lo on loc.id_lista_ocio = lo.id join notium.evento e on e.id = lo.id_evento where roc.codigo = %:codigo%", nativeQuery = true)
     Integer idOcioLista(String codigo);
 
+    List<ListaOcioCliente> findAllByCliente_IdAndFechaIsBefore(Integer idCliente, Timestamp fechaEvento);
+    List<ListaOcioCliente> findAllByCliente_IdAndFechaIsAfter(Integer idCliente, Timestamp fechaEvento);
 
 }
 

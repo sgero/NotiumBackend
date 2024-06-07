@@ -17,10 +17,8 @@ import org.springframework.util.CollectionUtils;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -54,6 +52,12 @@ public class EventoService {
     private IReservadoOcioClienteRepository reservadoOcioClienteRepository;
     @Autowired
     private IListaOcioClienteRepository listaOcioClienteRepository;
+    @Autowired
+    private IEntradaOcioClienteMapper entradaOcioClienteMapper;
+    @Autowired
+    private IReservadoOcioClienteMapper reservadoOcioClienteMapper;
+    @Autowired
+    private IListaOcioClienteMapper listaOcioClienteMapper;
 
     public RespuestaDTO getAll() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
@@ -380,6 +384,7 @@ public class EventoService {
                 ListaOcio lista = listaOcioMapper.toEntity(listaOcioService.getActivaByEventoId(eventoAEliminar.getId()));
                 if (lista != null) {
                     lista.setActivo(false);
+                    listaOcioRepository.save(lista);
                 }
                 eventoAEliminar.setActivo(false);
                 if (entradaOcio != null && reservadoOcio != null) {
@@ -389,7 +394,6 @@ public class EventoService {
                     reservadoOcioRepository.save(reservadoOcio);
                 }
                 eventoRepository.save(eventoAEliminar);
-                listaOcioRepository.save(lista);
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_ELIMINADO);
             }
         } catch (Exception e) {
@@ -469,4 +473,50 @@ public class EventoService {
         }
         return null;
     }
+
+    public ClienteEntradasCompradasDTO getEntradasByCliente(Integer id) {
+        if (id != null){
+            List<EntradaOcioClienteDTO> entradasGeneralesCompradasPasadas = entradaOcioClienteMapper.toDTO(entradaOcioClienteRepository.findAllByCliente_IdAndFechaCompraBefore(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<EntradaOcioClienteDTO> entradasGeneralesCompradasFuturas = entradaOcioClienteMapper.toDTO(entradaOcioClienteRepository.findAllByCliente_IdAndFechaCompraAfter(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<ReservadoOcioClienteDTO> reservadosCompradosPasados = reservadoOcioClienteMapper.toDTO(reservadoOcioClienteRepository.finByClienteIdAndFechaIsBefore(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<ReservadoOcioClienteDTO> reservadosCompradosFuturos = reservadoOcioClienteMapper.toDTO(reservadoOcioClienteRepository.finByClienteIdAndFechaIsAfter(id,  Timestamp.valueOf(LocalDateTime.now())));
+            List<ListaOcioClienteDTO> listasCompradasPasadas = listaOcioClienteMapper.toDTO(listaOcioClienteRepository.findAllByCliente_IdAndFechaIsBefore(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<ListaOcioClienteDTO> listasCompradasFuturas = listaOcioClienteMapper.toDTO(listaOcioClienteRepository.findAllByCliente_IdAndFechaIsAfter(id, Timestamp.valueOf(LocalDateTime.now())));
+
+            return ClienteEntradasCompradasDTO.builder()
+                    .entradasGeneralesCompradasPasadas(entradasGeneralesCompradasPasadas)
+                    .entradasGeneralesCompradasFuturas(entradasGeneralesCompradasFuturas)
+                    .reservadosCompradosPasados(reservadosCompradosPasados)
+                    .reservadosCompradosFuturos(reservadosCompradosFuturos)
+                    .listasCompradasPasadas(listasCompradasPasadas)
+                    .listasCompradasFuturas(listasCompradasFuturas)
+                    .build();
+        }
+        return null;
+    }
+
+
+    public List<EventoDTO> eventosPopulares(){
+        List<Evento> evento = eventoRepository.findAllByActivoIsTrueAndFechaIsBetween(Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusDays(7)));
+        if (!CollectionUtils.isEmpty(evento)){
+            Map<Evento, Integer> map = new HashMap<>();
+            evento.forEach(e -> {
+                if (e != null && e.getId() != null){
+                    RespuestaDTO clienteEntradasCompradasDTO = getCantidadRestanteEvento(e.getId());
+                    CantidadesRestantesDTO cantidadesRestantesDTO = (CantidadesRestantesDTO) clienteEntradasCompradasDTO.getObject();
+                    Integer restante = cantidadesRestantesDTO.getAforoEvento() - cantidadesRestantesDTO.getTotalAsistentes();
+                    map.put(e, restante);
+                }
+            });
+            Map<Evento, Integer> resultMap = map.entrySet().stream()
+                    .sorted(Comparator.comparingInt(Map.Entry::getValue))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (a,b)->b, LinkedHashMap::new));
+            List<Evento> list = resultMap.keySet().stream().toList();
+            list = list.subList(0, 5);
+            return new ArrayList<>(eventoMapper.toDTO(list));
+        }
+        return null;
+    }
+
 }

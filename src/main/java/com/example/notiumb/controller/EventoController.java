@@ -1,14 +1,17 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.ClienteEntradasCompradasDTO;
 import com.example.notiumb.dto.CrearEventoCiclicoDTO;
 import com.example.notiumb.dto.CrearEventoDTO;
 import com.example.notiumb.dto.EventoDTO;
+import com.example.notiumb.model.Evento;
 import com.example.notiumb.service.EventoService;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/eventos")
@@ -61,8 +64,8 @@ public class EventoController {
                 crearEventoDTO.getDiasARepetirCicloEventoOcioList());
     }
 
-    @PostMapping(value = "/eliminar")
-    public RespuestaDTO eliminarEvento(@RequestParam Integer id){
+    @DeleteMapping(value = "/eliminar/{id}")
+    public RespuestaDTO eliminarEvento(@PathVariable Integer id){
         return eventoService.eliminarEvento(id);
     }
 
@@ -75,5 +78,16 @@ public class EventoController {
     public CrearEventoDTO informacionEvento(@PathVariable Integer id){
         return eventoService.getInformacionEvento(id);
     }
+
+    @GetMapping(value = "/compradas/{id}")
+    public ClienteEntradasCompradasDTO entradasCompradasByIdCliente(@PathVariable Integer id){
+        return eventoService.getEntradasByCliente(id);
+    }
+
+    @GetMapping(value = "/populares")
+    public List<EventoDTO> getPopulares(){
+        return eventoService.eventosPopulares();
+    }
+
 
 }

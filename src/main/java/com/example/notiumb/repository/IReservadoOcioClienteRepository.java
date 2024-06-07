@@ -1,5 +1,6 @@
 package com.example.notiumb.repository;
 
+import com.example.notiumb.dto.EntradaOcioClienteDTO;
 import com.example.notiumb.model.ReservadoOcioCliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,5 +30,14 @@ public interface IReservadoOcioClienteRepository extends JpaRepository <Reservad
     @Query(value = "select e.id_ocio_nocturno from notium.reservado_ocio_cliente roc join notium.reservado_ocio ro on roc.id_reservado_ocio = ro.id join notium.evento e on e.id = ro.id_evento where roc.codigo = %:codigo%", nativeQuery = true)
     Integer idOcioReservado(String codigo);
 
+    @Query(value = "select roc.* from notium.reservado_ocio_cliente roc " +
+            "join notium.cliente c on roc.id_cliente = c.id " +
+            "where c.id = :id and roc.fecha_compra <= :fecha", nativeQuery = true)
+    List<ReservadoOcioCliente> finByClienteIdAndFechaIsBefore (Integer id, Timestamp fecha);
+
+    @Query(value = "select roc.* from notium.reservado_ocio_cliente roc " +
+            "join notium.cliente c on roc.id_cliente = c.id " +
+            "where c.id = :id and roc.fecha_compra >= :fecha", nativeQuery = true)
+    List<ReservadoOcioCliente> finByClienteIdAndFechaIsAfter (Integer id, Timestamp fecha);
 
 }

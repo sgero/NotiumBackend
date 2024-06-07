@@ -37,4 +37,6 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
 
     List<Evento> findAllByOcioNocturnoIdAndActivoIsTrueAndFechaIsAfterOrderByFechaAsc (Integer idOcio, Timestamp fechaActual);
 
+    List<Evento> findAllByActivoIsTrueAndFechaIsBetween (Timestamp fechaInicial, Timestamp fechaFinal);
+
 }
