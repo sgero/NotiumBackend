@@ -14,6 +14,8 @@ public interface IRppRepository extends JpaRepository <Rpp, Integer> {
 
     Optional<Rpp> findByIdAndActivoIsTrue(Integer id);
 
+    Rpp findByIdUserAndActivoTrue(Integer id);
+
     List<Rpp> findAllByOcioNocturnoIdAndActivoIsTrue (Integer idOcio);
 
 }
