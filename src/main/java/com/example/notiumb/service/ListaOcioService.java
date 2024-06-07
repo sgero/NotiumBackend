@@ -24,7 +24,7 @@ public class ListaOcioService {
 
     public List<ListaOcioDTO> getAll(){ return converter.toDTO(repository.findAllByActivoIsTrue()); }
 
-    public List<ListaOcioDTO> getAllByRpp(@Param("id") Integer idRpp){return converter.toDTO(repository.findAllByRppIdAndActivoIsTrue(idRpp));}
+    public List<ListaOcioDTO> getAllByRpp(@Param("id") Integer idRpp){return converter.toDTO(repository.listasActivas(idRpp));}
 
 
     public ListaOcioDTO getById(@Param("id") Integer id) {

@@ -2,6 +2,7 @@ package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.ProductoDTO;
 import com.example.notiumb.dto.ProductoFormatoDTO;
+import com.example.notiumb.dto.TokenDTO;
 import com.example.notiumb.model.User;
 import com.example.notiumb.service.ProductoFormatoService;
 import com.example.notiumb.service.UserService;
@@ -31,6 +32,11 @@ public class ProductoFormatoController {
         System.out.println("Token recibido: " + token);
         User user = userService.getUsuarioFromToken(token);
         return productoFormatoService.listarByFormato(user);
+    }
+
+    @PostMapping(value = "/listarTodosCliente")
+    public List<ProductoFormatoDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
+        return productoFormatoService.listarByFormatoCliente(tokenDTO);
     }
 
 }

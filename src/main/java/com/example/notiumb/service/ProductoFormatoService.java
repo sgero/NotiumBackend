@@ -2,10 +2,7 @@ package com.example.notiumb.service;
 
 
 import com.example.notiumb.converter.IProductoFormatoMapper;
-import com.example.notiumb.dto.CartaRestauranteDTO;
-import com.example.notiumb.dto.ProductoAuxDTO;
-import com.example.notiumb.dto.ProductoDTO;
-import com.example.notiumb.dto.ProductoFormatoDTO;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.model.*;
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.model.enums.TipoCategoria;
@@ -37,6 +34,8 @@ public class ProductoFormatoService {
     private IOcioNocturnoRepository ocioNocturnoRepository;
     @Autowired
     private ICartaOcioRepository cartaOcioRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
     public ProductoFormatoDTO crearProductoFormato(ProductoFormatoDTO productoFormatoDTO) {
 
@@ -64,6 +63,33 @@ public class ProductoFormatoService {
         List<ProductoFormato> productoFormatos = new ArrayList<>();
 
         List<ProductoFormato> formatos = null;
+
+        if (user.getRol() == Rol.OCIONOCTURNO) {
+            OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
+            CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
+
+            List<Producto> listaProductos = iProductoRepository.findByCartaOcioEqualsAndActivoTrue(cartaOcio);
+            for (Producto producto : listaProductos) {
+                formatos = iProductoFormatoRepository.findByProductoEquals(producto);
+                productoFormatos.addAll(formatos);
+            }
+
+//        }else if (user.getRol()== Rol.RESTAURANTE) {
+//            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+//            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+//
+//            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
+//        }
+
+        }
+        return iProductoFormatoMapper.toDTO(productoFormatos);
+    }
+
+    public List<ProductoFormatoDTO> listarByFormatoCliente(TokenDTO tokenDTO) {
+
+        List<ProductoFormato> productoFormatos = new ArrayList<>();
+        List<ProductoFormato> formatos = null;
+        User user = userRepository.findTopByUsernameAndActivoTrue(tokenDTO.getToken());
 
         if (user.getRol() == Rol.OCIONOCTURNO) {
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
