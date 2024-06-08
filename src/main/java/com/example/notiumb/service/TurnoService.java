@@ -86,4 +86,8 @@ public class TurnoService {
         }
         return respuestaDTO;
     }
+
+    public List<TurnoDTO> turnosRestaurante(Integer id){
+        return turnoMapper.toDTO(iTurnoRepository.findAllByRestauranteIdAndActivoIsTrue(id));
+    }
 }

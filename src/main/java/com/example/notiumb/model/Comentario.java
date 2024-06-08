@@ -38,4 +38,8 @@ public class Comentario {
     @JoinColumn(name = "id_ocio_nocturno")
     private OcioNocturno ocio;
 
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
 }

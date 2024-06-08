@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -58,5 +59,12 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Reserva> reservas;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(schema = "notium",
+            name = "chat_cliente",
+            joinColumns = {@JoinColumn(name = "id_cliente", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "id_chat_evento", nullable = false)})
+    private Set<Evento> chatsCliente;
 
 }

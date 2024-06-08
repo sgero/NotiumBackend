@@ -32,5 +32,8 @@ public class ComentarioDTO {
     @Valid
     private OcioNocturnoDTO ocioDTO;
 
+    @Valid
+    private ClienteDTO clienteDTO;
+
 }
 

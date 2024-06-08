@@ -16,11 +16,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -54,6 +54,16 @@ public class EventoService {
     private IReservadoOcioClienteRepository reservadoOcioClienteRepository;
     @Autowired
     private IListaOcioClienteRepository listaOcioClienteRepository;
+    @Autowired
+    private IEntradaOcioClienteMapper entradaOcioClienteMapper;
+    @Autowired
+    private IReservadoOcioClienteMapper reservadoOcioClienteMapper;
+    @Autowired
+    private IListaOcioClienteMapper listaOcioClienteMapper;
+    @Autowired
+    private IDatosCompradorMapper datosCompradorMapper;
+    @Autowired
+    private IDatosCompradorRepository datosCompradorRepository;
 
     public RespuestaDTO getAll() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
@@ -63,9 +73,8 @@ public class EventoService {
 
     public RespuestaDTO getAllByOcio(Integer idOcio) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
-        LocalDateTime fecha = LocalDateTime.now();
-        Timestamp fechaActual = Timestamp.valueOf(fecha);
-        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR, eventoMapper.toDTO(eventoRepository.findAllByOcioNocturnoIdAndActivoIsTrueAndFechaIsAfterOrderByFechaAsc(idOcio, fechaActual)));
+        UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_LISTAR,
+                eventoMapper.toDTO(eventoRepository.getEventosDiaActualByOcioId(idOcio, LocalDateTime.now().toLocalDate(), LocalDateTime.now().plusDays(1).toLocalDate())));
         return respuestaDTO;
     }
 
@@ -380,6 +389,7 @@ public class EventoService {
                 ListaOcio lista = listaOcioMapper.toEntity(listaOcioService.getActivaByEventoId(eventoAEliminar.getId()));
                 if (lista != null) {
                     lista.setActivo(false);
+                    listaOcioRepository.save(lista);
                 }
                 eventoAEliminar.setActivo(false);
                 if (entradaOcio != null && reservadoOcio != null) {
@@ -389,7 +399,6 @@ public class EventoService {
                     reservadoOcioRepository.save(reservadoOcio);
                 }
                 eventoRepository.save(eventoAEliminar);
-                listaOcioRepository.save(lista);
                 UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_EVENTO_ELIMINADO);
             }
         } catch (Exception e) {
@@ -469,4 +478,82 @@ public class EventoService {
         }
         return null;
     }
+
+    public ClienteEntradasCompradasDTO getEntradasByCliente(Integer id) {
+        if (id != null){
+            List<EntradaOcioClienteDTO> entradasGeneralesCompradasPasadas = entradaOcioClienteMapper.toDTO(entradaOcioClienteRepository.getPasadas(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<EntradaOcioClienteDTO> entradasGeneralesCompradasFuturas = entradaOcioClienteMapper.toDTO(entradaOcioClienteRepository.getFuturas(id, Timestamp.valueOf(LocalDateTime.now())));
+
+            List<ReservadoOcioClienteDTO> reservadoOcioClienteDTOSPasados = reservadoOcioClienteMapper.toDTO(reservadoOcioClienteRepository.getPasados(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<ComprarReservadoDTO> reservadosCompradosPasados = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(reservadoOcioClienteDTOSPasados)){
+                reservadoOcioClienteDTOSPasados.forEach(rp -> {
+                    List<DatosComprador> datosCompradoresReservadosPasados = datosCompradorRepository.findAllByReservadoOcioCliente_Id(rp.getId());
+                    ComprarReservadoDTO comprarReservadoDTO = ComprarReservadoDTO.builder()
+                            .reservadoOcioClienteDTO(rp)
+                            .datosCompradorDTOS(datosCompradorMapper.toDTO(datosCompradoresReservadosPasados))
+                            .build();
+                    reservadosCompradosPasados.add(comprarReservadoDTO);
+                });
+            }
+
+            List<ReservadoOcioClienteDTO> reservadoOcioClienteDTOSFuturos = reservadoOcioClienteMapper.toDTO(reservadoOcioClienteRepository.getFuturos(id,  Timestamp.valueOf(LocalDateTime.now())));
+            List<ComprarReservadoDTO> reservadosCompradosFuturos = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(reservadoOcioClienteDTOSFuturos)){
+                reservadoOcioClienteDTOSFuturos.forEach(rf -> {
+                    List<DatosComprador> datosCompradoresReservadosFuturos = datosCompradorRepository.findAllByReservadoOcioCliente_Id(rf.getId());
+                    ComprarReservadoDTO comprarReservadoDTO = ComprarReservadoDTO.builder()
+                            .reservadoOcioClienteDTO(rf)
+                            .datosCompradorDTOS(datosCompradorMapper.toDTO(datosCompradoresReservadosFuturos))
+                            .build();
+                    reservadosCompradosFuturos.add(comprarReservadoDTO);
+                });
+            }
+
+            List<ListaOcioClienteDTO> listasCompradasPasadas = listaOcioClienteMapper.toDTO(listaOcioClienteRepository.getPasadas(id, Timestamp.valueOf(LocalDateTime.now())));
+            List<ListaOcioClienteDTO> listasCompradasFuturas = listaOcioClienteMapper.toDTO(listaOcioClienteRepository.getFuturas(id, Timestamp.valueOf(LocalDateTime.now())));
+
+            return ClienteEntradasCompradasDTO.builder()
+                    .entradasGeneralesCompradasPasadas(entradasGeneralesCompradasPasadas)
+                    .entradasGeneralesCompradasFuturas(entradasGeneralesCompradasFuturas)
+                    .reservadosCompradosPasados(reservadosCompradosPasados)
+                    .reservadosCompradosFuturos(reservadosCompradosFuturos)
+                    .listasCompradasPasadas(listasCompradasPasadas)
+                    .listasCompradasFuturas(listasCompradasFuturas)
+                    .build();
+        }
+        return null;
+    }
+
+
+    public List<EventoDTO> eventosPopulares(){
+        List<Evento> evento = eventoRepository.findAllByActivoIsTrueAndFechaIsBetween(Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now().plusDays(7)));
+        if (!CollectionUtils.isEmpty(evento)){
+            Map<Evento, Integer> map = new HashMap<>();
+            evento.forEach(e -> {
+                if (e != null && e.getId() != null){
+                    RespuestaDTO clienteEntradasCompradasDTO = getCantidadRestanteEvento(e.getId());
+                    CantidadesRestantesDTO cantidadesRestantesDTO = (CantidadesRestantesDTO) clienteEntradasCompradasDTO.getObject();
+                    Integer restante = cantidadesRestantesDTO.getAforoEvento() - cantidadesRestantesDTO.getTotalAsistentes();
+                    map.put(e, restante);
+                }
+            });
+            Map<Evento, Integer> resultMap = map.entrySet().stream()
+                    .sorted(Comparator.comparingInt(Map.Entry::getValue))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (a,b)->b, LinkedHashMap::new));
+            List<Evento> list = resultMap.keySet().stream().toList();
+            Set<Integer> uniqueOcioNocturnoIds = new HashSet<>();
+            list = list.stream()
+                    .filter(l -> uniqueOcioNocturnoIds.add(l.getOcioNocturno().getId()))
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            list = list.size() > 5 ? list.subList(0, 5) : list;
+
+            return new ArrayList<>(eventoMapper.toDTO(list));
+        }
+        return null;
+    }
+
 }

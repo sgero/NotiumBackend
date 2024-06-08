@@ -53,6 +53,9 @@ public class Restaurante {
     @Column(name = "activo")
     private Boolean activo;
 
+    @Column(name = "aforo")
+    private Integer aforo;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

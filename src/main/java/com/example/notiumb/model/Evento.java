@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -64,4 +65,9 @@ public class Evento {
     @JoinColumn(name = "id_reservado_ocio", nullable = false)
     private ReservadoOcio reservadoOcio;
 
+    @ManyToMany(mappedBy = "chatsCliente")
+    private Set<Cliente> clientes = new HashSet<>();
+
+    @OneToMany(mappedBy = "chatEvento", fetch = FetchType.LAZY)
+    private Set<ChatMensaje> chatMensajeSet;
 }

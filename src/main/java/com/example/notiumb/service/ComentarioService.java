@@ -1,10 +1,13 @@
 package com.example.notiumb.service;
 
+import com.example.notiumb.converter.IClienteMapper;
 import com.example.notiumb.converter.IComentarioMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.*;
 import com.example.notiumb.model.Comentario;
+import com.example.notiumb.model.Cliente;
+
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.Reserva;
 import com.example.notiumb.model.Restaurante;
@@ -44,6 +47,10 @@ public class ComentarioService {
     private IListaOcioClienteRepository listaOcioClienteRepository;
     @Autowired
     private IReservadoOcioClienteRepository reservadoOcioClienteRepository;
+    @Autowired
+    private IClienteRepository clienteRepository;
+    @Autowired
+    private IClienteMapper clienteMapper;
 
    /* public List<ComentarioDTO> listarValoraciones(){
 
@@ -107,6 +114,8 @@ public class ComentarioService {
                 nuevaValoracion.setCodigoReserva(valoracion.getCodigoReserva());
                 nuevaValoracion.setFecha_comentario(new Timestamp(System.currentTimeMillis()));
                 nuevaValoracion.setActivo(true);
+                Cliente clienteValoracion = clienteRepository.findByIdUser(valoracion.getClienteDTO().getId());
+                nuevaValoracion.setCliente(clienteValoracion);
 
                 Restaurante restauranteValoracion = iRestauranteRepository.findTopById(valoracion.getRestauranteDTO().getId());
                 nuevaValoracion.setRestaurante(restauranteValoracion);
@@ -136,6 +145,31 @@ public class ComentarioService {
     public List<Integer> rankingRestaurante(){
         return icomentarioRepository.rankingRestaurantes();
     }
+
+    public List<ComentarioDTO> valoracionPorRestaurante(Integer id){
+        return iComentarioMapper.toDTO(icomentarioRepository.findAllByRestauranteIdAndActivoIsTrue(id));
+    }
+
+    public List<ClienteDTO> clienteValorciones(Integer id_restaurante){
+
+        List<String> codigosRestaurante = icomentarioRepository.codigoRestaurante(id_restaurante);
+        List<Integer> idClientes = new ArrayList<>();
+        List<Cliente> listadoClientes = new ArrayList<>();
+
+        for(String codigo : codigosRestaurante){
+            Integer IdCliente = icomentarioRepository.IdClienteReserva(codigo);
+            idClientes.add(IdCliente);
+        }
+
+        for(Integer id : idClientes){
+            Cliente cliente =  clienteRepository.findByIdAndActivoIsTrue(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado o no activo"));;
+            listadoClientes.add(cliente);
+        }
+
+        return clienteMapper.toDTO(listadoClientes);
+    }
+
+
 
 
     //OCIO NOCTURNO
@@ -204,6 +238,9 @@ public class ComentarioService {
             nuevaValoracion.setCodigoReserva(valoracion.getCodigoReserva());
             nuevaValoracion.setFecha_comentario(new Timestamp(System.currentTimeMillis()));
             nuevaValoracion.setActivo(true);
+
+            Cliente clienteValoracion = clienteRepository.findByIdUser(valoracion.getClienteDTO().getId());
+            nuevaValoracion.setCliente(clienteValoracion);
 
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findTopByIdAndActivoIsTrue(valoracion.getOcioDTO().getId());
             nuevaValoracion.setOcio(ocioNocturno);

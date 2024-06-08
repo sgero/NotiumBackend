@@ -26,9 +26,24 @@ public class ComentarioController {
         return comentarioService.comprobarValoracionRestaurante(info);
     }
 
+    @PostMapping(value="/crearRestaurante")
+    public RespuestaDTO crearValoracionRestaurante(@RequestBody ComentarioDTO info) {
+        return comentarioService.crearValoracion(info);
+    }
+
     @GetMapping(value="/rankingRestaurante")
     public List<Integer> rankingRestaurante(){
         return comentarioService.rankingRestaurante();
+    }
+
+    @GetMapping(value="/comentarioPorRestaurante")
+    public List<ComentarioDTO> comentarioRestaurante(@RequestParam Integer id){
+        return comentarioService.valoracionPorRestaurante(id);
+    }
+
+    @GetMapping(value="/clientesPorComentario")
+    public List<ClienteDTO> clientesComentario(@RequestParam Integer id){
+        return comentarioService.clienteValorciones(id);
     }
 
     @PostMapping(value="/comprobarCodigoOcioNocturno")
@@ -45,6 +60,7 @@ public class ComentarioController {
     public List<Integer> rankingOcioNocturno(){
         return comentarioService.rankingOcioNocturno();
     }
+
 
 
 

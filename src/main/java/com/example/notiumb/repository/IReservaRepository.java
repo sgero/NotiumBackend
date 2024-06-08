@@ -6,11 +6,9 @@ import com.example.notiumb.model.Turno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
@@ -37,6 +35,9 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
     List<Reserva> findByFecha(LocalDate fecha);
     @Query(value = "select rr.* from notium.reserva_restaurante rr where rr.codigo_reserva = %:codigoReserva%", nativeQuery = true)
     Reserva buscarValoracion(String codigoReserva);
+
+    List<Reserva> findAllByRestauranteIdAndActivoIsTrue(Integer id);
+
 
 
 }

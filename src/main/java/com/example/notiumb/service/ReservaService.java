@@ -7,16 +7,12 @@ import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
-
 public class ReservaService {
 
     @Autowired
@@ -55,10 +51,13 @@ public class ReservaService {
     }
 
     public Reserva getReservaById(@Param("id") Integer id) {
-
         return reservaRepository.findByIdAndActivoIsTrue(id);
     }
 
+    public List<ReservaDTO> getReservaPorRestaurante(Integer id){
+        List<Reserva> listadoReservas = reservaRepository.findAllByRestauranteIdAndActivoIsTrue(id);
+        return reservaMapper.toDTO(listadoReservas);
+    }
 
 
     public List<MesaDTO> comprobarTurno(ReservaDTO reservaDTO) {

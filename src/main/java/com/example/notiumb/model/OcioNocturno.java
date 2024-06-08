@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -59,5 +60,7 @@ public class OcioNocturno {
     @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
     private Set<Rpp> rppSet;
 
+    @OneToMany(mappedBy = "ocioNocturno", fetch = FetchType.LAZY)
+    private Set<ChatMensaje> chatMensajeSet;
 
 }
