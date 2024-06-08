@@ -10,6 +10,7 @@ import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -110,6 +111,10 @@ public class ProductoFormatoService {
 
         }
         return iProductoFormatoMapper.toDTO(productoFormatos);
+    }
+
+    public ProductoFormatoDTO getById(@Param("id") Integer id) {
+        return iProductoFormatoMapper.toDTO(iProductoFormatoRepository.findById(id).orElse(null));
     }
 
 

@@ -144,18 +144,18 @@ public class ProductoService {
 
         List<ProductoDTO> productos = new ArrayList<>();
 
-//        if (user.getRol()== Rol.OCIONOCTURNO){
+        if (user.getRol()== Rol.OCIONOCTURNO){
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
             CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
 
             productos =  productoMapper.toDTO(productoRepository.findByCartaOcioEqualsAndActivoTrue(cartaOcio));
 
-//        }else if (user.getRol()== Rol.RESTAURANTE) {
-//            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
-//            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
-//
-//            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
-//        }
+        }else if (user.getRol()== Rol.RESTAURANTE) {
+            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
+            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
+
+            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
+        }
         return productos;
     }
 
@@ -167,26 +167,6 @@ public class ProductoService {
         return "Producto eliminado";
     }
 
-    public List<ProductoDTO> listarByProductos(User user) {
-
-//        User user = userRepository.findTopByUsernameAndActivoTrue(username);
-        List<ProductoDTO> productos = new ArrayList<>();
-
-
-//        if (user.getRol()== Rol.OCIONOCTURNO){
-        OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
-        CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
-
-        productos =  productoMapper.toDTO(productoRepository.findByCartaOcioEqualsAndActivoTrue(cartaOcio));
-
-//        }else if (user.getRol()== Rol.RESTAURANTE) {
-//            Restaurante restaurante = restauranteRepository.findTopByUserEquals(user);
-//            CartaRestaurante cartaRestaurante = cartaRestauranteRespository.findTopByRestauranteEquals(restaurante);
-//
-//            productos = productoMapper.toDTO(productoRepository.findByCartaResEqualsAndActivoTrue(cartaRestaurante));
-//        }
-        return productos;
-    }
 
     public void deleteProductoFormato(@Param("id") Integer id){
         ProductoFormato productoFormato = productoFormatoRepository.findById(id).orElse(null);

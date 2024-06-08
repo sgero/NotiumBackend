@@ -26,6 +26,11 @@ public class ProductoFormatoController {
         return productoFormatoService.crearProductoFormato(productoFormatoDTO);
     }
 
+    @GetMapping(value = "/{id}")
+    public ProductoFormatoDTO productoFormatoId(@PathVariable Integer id) {
+        return productoFormatoService.getById(id);
+    }
+
     @PostMapping(value = "/listarTodos")
     public List<ProductoFormatoDTO> listarProductos(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
