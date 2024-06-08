@@ -9,9 +9,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IChatMensajeConverter {
-    @Mapping(source = "chat", target = "chatDTO")
+    @Mapping(source = "chatEvento", target = "chatEventoDTO")
+    @Mapping(source = "ocioNocturno", target = "ocioNocturnoDTO")
     ChatMensajeDTO toDTO(ChatMensaje entity) ;
-    @Mapping(source = "chatDTO", target = "chat")
+
+    @Mapping(source = "chatEventoDTO", target = "chatEvento")
+    @Mapping(source = "ocioNocturnoDTO", target = "ocioNocturno")
     ChatMensaje toEntity(ChatMensajeDTO dto);
 
     List<ChatMensajeDTO> toDTO(List<ChatMensaje> listEntity);

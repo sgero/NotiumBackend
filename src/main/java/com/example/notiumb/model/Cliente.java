@@ -64,7 +64,7 @@ public class Cliente {
     @JoinTable(schema = "notium",
             name = "chat_cliente",
             joinColumns = {@JoinColumn(name = "id_cliente", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "id_chat", nullable = false)})
-    private Set<OcioNocturno> chatsCliente;
+            inverseJoinColumns = {@JoinColumn(name = "id_chat_evento", nullable = false)})
+    private Set<Evento> chatsCliente;
 
 }

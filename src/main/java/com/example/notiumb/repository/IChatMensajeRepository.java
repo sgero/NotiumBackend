@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IChatMensajeRepository extends JpaRepository<ChatMensaje, Long> {
-    List<ChatMensaje> findAllByChat_IdOrderByFechaDesc (Integer id);
+    List<ChatMensaje> findAllByChatEvento_IdOrderByFechaDesc (Integer id);
 }

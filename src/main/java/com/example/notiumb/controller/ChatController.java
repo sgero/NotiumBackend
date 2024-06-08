@@ -15,13 +15,8 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/mensajes/{id}")
-    public List<ChatMensajeDTO> listarMensajesByOcio(@PathVariable(value = "id") Integer idOcio){
-        return chatService.getAll(idOcio);
-    }
-
-    @GetMapping("/{idCliente}/{idChat}")
-    public boolean verificarClienteEnChat(@PathVariable(value = "idCliente") Integer idCliente, @PathVariable(value = "idChat") Integer idChat){
-        return chatService.verificarClienteEnChat(idCliente, idChat);
+    public List<ChatMensajeDTO> listarMensajesByEvento(@PathVariable(value = "id") Integer idEvento){
+        return chatService.getAll(idEvento);
     }
 
     @PostMapping("/guardar")
@@ -32,11 +27,6 @@ public class ChatController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id){
         return chatService.delete(id);
-    }
-
-    @PostMapping("/actualizar/{idCliente}/{idChat}")
-    public  ResponseEntity<Void> actualizar(@PathVariable Integer idCliente, @PathVariable Integer idChat){
-        return chatService.actualizar(idCliente, idChat);
     }
 
 }

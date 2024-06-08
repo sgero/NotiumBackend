@@ -1,6 +1,7 @@
 package com.example.notiumb.repository;
 
 import com.example.notiumb.model.Evento;
+import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.model.User;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -35,8 +38,13 @@ public interface IEventoRepository extends JpaRepository<Evento, Integer> {
 
     Evento findEventoByIdAndActivoIsTrue (Integer idEvento);
 
-    List<Evento> findAllByOcioNocturnoIdAndActivoIsTrueAndFechaIsAfterOrderByFechaAsc (Integer idOcio, Timestamp fechaActual);
-
     List<Evento> findAllByActivoIsTrueAndFechaIsBetween (Timestamp fechaInicial, Timestamp fechaFinal);
+
+    @Query(value = "select  e.* from notium.evento e " +
+            "join notium.ocio_nocturno o on e.id_ocio_nocturno = o.id " +
+            "where o.id = :idOcio and e.activo = true and o.activo = true and e.fecha between :fechaInicial and :fechaFinal",
+            nativeQuery = true)
+    List<Evento> getEventosDiaActualByOcioId (Integer idOcio, LocalDate fechaInicial, LocalDate fechaFinal) ;
+    Evento findTopByIdAndActivoIsTrue(Integer id);
 
 }

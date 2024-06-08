@@ -31,13 +31,17 @@ public interface IReservadoOcioClienteRepository extends JpaRepository <Reservad
     Integer idOcioReservado(String codigo);
 
     @Query(value = "select roc.* from notium.reservado_ocio_cliente roc " +
+            "join notium.reservado_ocio ro on roc.id_reservado_ocio = ro.id " +
             "join notium.cliente c on roc.id_cliente = c.id " +
-            "where c.id = :id and roc.fecha_compra <= :fecha", nativeQuery = true)
-    List<ReservadoOcioCliente> finByClienteIdAndFechaIsBefore (Integer id, Timestamp fecha);
+            "join notium.evento e on ro.id_evento = e.id " +
+            "where c.id = :id and c.activo = true and e.fecha < :fecha order by e.fecha desc;", nativeQuery = true)
+    List<ReservadoOcioCliente> getPasados (Integer id, Timestamp fecha);
 
     @Query(value = "select roc.* from notium.reservado_ocio_cliente roc " +
+            "join notium.reservado_ocio ro on roc.id_reservado_ocio = ro.id " +
             "join notium.cliente c on roc.id_cliente = c.id " +
-            "where c.id = :id and roc.fecha_compra >= :fecha", nativeQuery = true)
-    List<ReservadoOcioCliente> finByClienteIdAndFechaIsAfter (Integer id, Timestamp fecha);
+            "join notium.evento e on ro.id_evento = e.id " +
+            "where c.id = :id and c.activo = true and e.fecha > :fecha order by e.fecha desc;", nativeQuery = true)
+    List<ReservadoOcioCliente> getFuturos (Integer id, Timestamp fecha);
 
 }

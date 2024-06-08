@@ -10,8 +10,8 @@ import java.util.List;
 public class ClienteEntradasCompradasDTO {
     private List<EntradaOcioClienteDTO> entradasGeneralesCompradasPasadas;
     private List<EntradaOcioClienteDTO> entradasGeneralesCompradasFuturas;
-    private List<ReservadoOcioClienteDTO> reservadosCompradosPasados;
-    private List<ReservadoOcioClienteDTO> reservadosCompradosFuturos;
+    private List<ComprarReservadoDTO> reservadosCompradosPasados;
+    private List<ComprarReservadoDTO> reservadosCompradosFuturos;
     private List<ListaOcioClienteDTO> listasCompradasPasadas;
     private List<ListaOcioClienteDTO> listasCompradasFuturas;
 }

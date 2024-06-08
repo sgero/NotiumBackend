@@ -11,6 +11,7 @@ public class ChatMensajeDTO {
     private Integer id;
     private String texto;
     private Timestamp fecha;
-    private OcioNocturnoDTO chatDTO;
+    private OcioNocturnoDTO ocioNocturnoDTO;
+    private EventoDTO chatEventoDTO;
     private Boolean editado;
 }

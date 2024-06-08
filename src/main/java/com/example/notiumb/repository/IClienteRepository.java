@@ -26,12 +26,4 @@ public interface IClienteRepository extends JpaRepository<Cliente, Integer> {
     Cliente findTopById (Integer id);
 
     Cliente findByUserId(Integer id);
-
-
-    @Query(nativeQuery = true, value = "select count(cc.id_cliente) from notium.chat_cliente cc " +
-            "join notium.cliente c on cc.id_cliente = c.id " +
-            "join notium.ocio_nocturno o on cc.id_chat = o.id " +
-            "join notium.usuario u on c.id_usuario = u.id " +
-            "where u.id = :idCliente and  o.id = :idChat and c.activo = true and o.activo = true;")
-    Integer countClienteEnChat(Integer idCliente, Integer idChat);
 }

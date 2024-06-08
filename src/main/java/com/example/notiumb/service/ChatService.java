@@ -5,9 +5,11 @@ import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.ChatMensajeDTO;
 import com.example.notiumb.model.ChatMensaje;
 import com.example.notiumb.model.Cliente;
+import com.example.notiumb.model.Evento;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.repository.IChatMensajeRepository;
 import com.example.notiumb.repository.IClienteRepository;
+import com.example.notiumb.repository.IEventoRepository;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,23 +37,25 @@ public class ChatService {
     private IChatMensajeConverter converter;
     @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
+    @Autowired
+    private IEventoRepository eventoRepository;
 
 
-    public List<ChatMensajeDTO> getAll(Integer idOcio) {
-        List<ChatMensaje> chatMensajes = chatMensajeRepository.findAllByChat_IdOrderByFechaDesc(idOcio);
+    public List<ChatMensajeDTO> getAll(Integer idEvento) {
+        List<ChatMensaje> chatMensajes = chatMensajeRepository.findAllByChatEvento_IdOrderByFechaDesc(idEvento);
         return converter.toDTO(chatMensajes);
     }
 
     @Transactional
     public ChatMensajeDTO guardarMensaje(ChatMensajeDTO dto) {
-        if (dto != null && dto.getChatDTO() != null && dto.getChatDTO().getId() != null && !StringUtils.isEmpty(dto.getTexto())) {
+        if (dto != null && dto.getChatEventoDTO() != null && dto.getChatEventoDTO().getId() != null && !StringUtils.isEmpty(dto.getTexto())) {
             dto.setFecha(Timestamp.valueOf(LocalDateTime.now()));
             //Verificamos si es editar o crear
             dto.setEditado(dto.getId() != null);
             ChatMensaje chatMensajeGuardar = converter.toEntity(dto);
-            OcioNocturno ocioNocturno = ocioNocturnoRepository.findTopByIdAndActivoIsTrue(dto.getChatDTO().getId());
-            if (ocioNocturno != null) {
-                chatMensajeGuardar.setChat(ocioNocturno);
+            Evento evento = eventoRepository.findTopByIdAndActivoIsTrue(dto.getChatEventoDTO().getId());
+            if (evento != null) {
+                chatMensajeGuardar.setChatEvento(evento);
             }
             chatMensajeRepository.save(chatMensajeGuardar);
             return converter.toDTO(chatMensajeGuardar);
@@ -66,38 +70,6 @@ public class ChatService {
             chatMensajeDelete.ifPresent(chatMensaje -> chatMensajeRepository.delete(chatMensaje));
         }
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Transactional
-    public ResponseEntity<Void> actualizar(Integer idCliente, Integer idChat) {
-        if (idChat != null && idChat > 0 && idCliente != null && idCliente > 0) {
-            Cliente cliente = clienteRepository.findByIdAndActivoIsTrue(idCliente).orElse(null);
-            OcioNocturno chat = ocioNocturnoRepository.findByIdAndActivoIsTrue(idChat).orElse(null);
-            if (cliente != null && chat != null && cliente.getId() != null) {
-                Set<OcioNocturno> chatsCliente = ocioNocturnoRepository.getChatsCliente(cliente.getId());
-                if (!CollectionUtils.isEmpty(chatsCliente)) {
-                    if (chatsCliente.contains(chat)) {
-                        chatsCliente.remove(chat);
-                        cliente.setChatsCliente(chatsCliente);
-                    } else {
-                        chatsCliente.add(chat);
-                        cliente.setChatsCliente(chatsCliente);
-                    }
-                } else {
-                    chatsCliente.add(chat);
-                    cliente.setChatsCliente(chatsCliente);
-                }
-                clienteRepository.save(cliente);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    public boolean verificarClienteEnChat(Integer idCliente, Integer idChat) {
-        Integer result = clienteRepository.countClienteEnChat(idCliente, idChat);
-        return result != 0;
     }
 
 }
