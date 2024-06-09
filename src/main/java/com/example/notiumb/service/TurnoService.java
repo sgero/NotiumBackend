@@ -2,8 +2,10 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.ITurnoMapper;
 import com.example.notiumb.dto.TurnoDTO;
+import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.Turno;
+import com.example.notiumb.model.TurnosDiasSemana;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.ITurnoRepository;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
@@ -24,6 +26,29 @@ public class TurnoService {
 
     @Autowired
     private IRestauranteRepository iRestauranteRepository;
+
+
+    public RespuestaDTO crearTurnoCompleto(TurnoDTO turnoDTO, Integer diaSemana){
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+
+        try{
+
+            crearTurno(turnoDTO);
+
+            TurnosDiasSemana turnoSemana = new TurnosDiasSemana();
+          //  turnoSemana.setDias(diaSemana); captar turno semana
+
+            Turno turno = iTurnoRepository.turnoCreado(turnoDTO.getId(), turnoDTO.getHora_inicio(), turnoDTO.getHora_fin());
+            turnoSemana.setTurno(turno);
+
+           // iTurnoRepository.save(turnoSemana);
+
+
+        }catch (Exception e) {UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_400_TURNO_NO_CREADO);}
+
+
+        return respuestaDTO;
+    }
 
 
     public RespuestaDTO crearTurno(TurnoDTO turnoDTO) {

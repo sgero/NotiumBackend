@@ -22,10 +22,10 @@ public class Turno {
     private Integer id;
 
     @Column(name = "hora_inicio" , nullable = false)
-    private String hora_inicio;
+    private Time hora_inicio;
 
     @Column(name = "hora_fin" , nullable = false)
-    private String hora_fin;
+    private Time hora_fin;
 
     @Column(name = "activo" , nullable = false)
     private Boolean activo;

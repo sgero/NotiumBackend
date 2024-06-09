@@ -14,16 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/verificar")
 public class EmailVerificacionController {
+
     @Autowired
-    private UserService usuarioService;
-
-
-@Autowired
-private UserService userService;
-@Autowired
-private RestauranteService restauranteService;
-@Autowired
-private OcioNocturnoService ocioNocturnoService;
+    private UserService userService;
+    @Autowired
+    private RestauranteService restauranteService;
+    @Autowired
+    private OcioNocturnoService ocioNocturnoService;
 
     @GetMapping("/cliente")
     @ResponseBody
