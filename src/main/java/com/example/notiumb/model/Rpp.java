@@ -36,7 +36,7 @@ public class Rpp {
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_direccion", nullable = false)
     private Direccion direccion;
 

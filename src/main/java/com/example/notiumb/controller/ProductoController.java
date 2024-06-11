@@ -36,6 +36,11 @@ public class ProductoController {
         return productoService.guardarProducto(productoAuxDTO, user);
     }
 
+    @GetMapping(value = "/{id}")
+    public ProductoDTO productoId(@PathVariable Integer id) {
+        return productoService.getById(id);
+    }
+
     @PostMapping(value = "/listar")
     public List<ListadoProductosDTO> listarProductos(@RequestBody TokenDTO tokenDTO) {
         return productoService.listarProducto(tokenDTO);
@@ -62,4 +67,10 @@ public class ProductoController {
     public String eliminarProducto(@RequestBody ProductoDTO productoDTO) {
         return productoService.eliminarProducto(productoDTO);
     }
+
+    @DeleteMapping(value = "/eliminar/{id}")
+    public void eliminarProducto(@PathVariable Integer id) {
+        productoService.deleteProductoFormato(id);
+    }
+
 }

@@ -8,6 +8,7 @@ import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.model.enums.TipoCategoria;
 import com.example.notiumb.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -85,9 +86,10 @@ public class ProductoService {
 
         }
 
-    public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO, User user) {
+    public ProductoDTO guardarProducto(ProductoAuxDTO productoAuxDTO,  User user) {
 
         Producto producto = new Producto();
+
         if (user.getRol() == Rol.OCIONOCTURNO) {
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findByUserEqualsAndActivoIsTrue(user);
             CartaOcio cartaOcio = cartaOcioRepository.findTopByOcioNocturnoEqualsAndActivoIsTrue(ocioNocturno);
@@ -104,6 +106,9 @@ public class ProductoService {
 
         return productoMapper.toDTO(productoRepository.save(producto));
     }
+
+
+    public ProductoDTO getById(@Param("id") Integer id) { return productoMapper.toDTO(productoRepository.findTopById(id)); }
 
     public String BajaAltaProducto(ProductoDTO productoDTO){
         Producto producto = productoRepository.findTopById(productoDTO.getId());
@@ -160,6 +165,20 @@ public class ProductoService {
         productoFormatoRepository.deleteAll(formatos);
         productoRepository.delete(producto);
         return "Producto eliminado";
+    }
+
+
+    public void deleteProductoFormato(@Param("id") Integer id){
+        ProductoFormato productoFormato = productoFormatoRepository.findById(id).orElse(null);
+        if (productoFormato != null) {
+            Producto producto = productoFormato.getProducto();
+            List<ProductoFormato> formatos = productoFormatoRepository.findByProductoEquals(producto);
+            if (formatos.size() == 1) {
+                productoRepository.delete(producto);
+            } else {
+                productoFormatoRepository.delete(productoFormato);
+            }
+        }
     }
 
 }
