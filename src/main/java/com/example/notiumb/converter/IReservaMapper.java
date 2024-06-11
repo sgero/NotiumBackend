@@ -32,8 +32,11 @@ public interface IReservaMapper {
     Reserva toEntity(ReservaDTO dto);
 
     List<ReservaDTO> toDTO(List<Reserva> listEntity);
+    List<List<ReservaDTO>> toDTOList(List<List<Reserva>> listEntity);
+
 
     List<Reserva> toEntity(List<ReservaDTO> listDTOs);
+
 
     @Named("transformarClienteToEntity")
     default Cliente transformarCliente(ClienteDTO dto){ return clienteMapper.toEntity(dto);}

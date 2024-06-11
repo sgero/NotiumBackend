@@ -259,6 +259,10 @@ public class ComentarioService {
         return icomentarioRepository.rankingOcioNocturno();
     }
 
+    public List<ComentarioDTO> valoracionesOcio(Integer id){
+        return iComentarioMapper.toDTO(icomentarioRepository.findAllByOcioIdAndActivoIsTrue(id));
+    }
+
 }
 
 

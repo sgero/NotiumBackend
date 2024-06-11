@@ -266,8 +266,33 @@ public class ReservaService {
                 turnosDisponibles.add(turnoMapper.toDTO(turno));
             }
         }
-
         return turnosDisponibles;
+    }
+
+
+
+    public List<ReservaDTO> reservasPorUsuario(ReservaTiempoDTO infoReserva){
+        List<Reserva> reservasPasadas = new ArrayList<>();
+        List<Reserva> reservasFuturas = new ArrayList<>();
+        List<List<Reserva>> allReservas = new ArrayList<>();
+        List<Reserva> todasLasRervas = reservaRepository.reservasPorUsuario(infoReserva.getId_usuario());
+
+        for (Reserva r : todasLasRervas) {
+            if (r.getFecha().isAfter(LocalDate.now())) {
+                reservasFuturas.add(r);
+            }else if (r.getFecha().isBefore(LocalDate.now())) {
+                reservasPasadas.add(r);
+            }
+        }
+
+        if(infoReserva.getTipoReserva().equals("futuras")){
+            return reservaMapper.toDTO(reservasFuturas);
+        } else if (infoReserva.getTipoReserva().equals("pasadas")) {
+            return reservaMapper.toDTO(reservasPasadas);
+        }
+
+        return null;
+
     }
 }
 

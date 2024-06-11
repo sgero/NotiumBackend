@@ -36,5 +36,7 @@ public interface IComentarioRepository extends JpaRepository<Comentario, Long> {
     @Query(value="select rr.id_cliente from notium.reserva_restaurante rr where rr.codigo_reserva = :cr",nativeQuery = true)
     Integer IdClienteReserva(String cr);
 
+    List<Comentario> findAllByOcioIdAndActivoIsTrue (Integer id);
+
 
 }

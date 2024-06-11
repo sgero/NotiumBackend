@@ -61,6 +61,11 @@ public class ComentarioController {
         return comentarioService.rankingOcioNocturno();
     }
 
+    @GetMapping(value="/listarValoracionesPorOcio")
+    public List<ComentarioDTO> valoracionesPorOcio(@RequestParam Integer id){
+        return comentarioService.valoracionesOcio(id);
+    }
+
 
 
 

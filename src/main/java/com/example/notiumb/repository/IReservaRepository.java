@@ -38,6 +38,9 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
 
     List<Reserva> findAllByRestauranteIdAndActivoIsTrue(Integer id);
 
+    @Query(value = "select rr.* from notium.reserva_restaurante rr join notium.cliente on rr.id_cliente = cliente.id join notium.usuario u on cliente.id_usuario = u.id where u.id = :id_usuario", nativeQuery = true)
+    List<Reserva> reservasPorUsuario(Integer id_usuario);
+
 
 
 }
