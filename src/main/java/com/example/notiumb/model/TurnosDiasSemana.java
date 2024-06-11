@@ -22,7 +22,7 @@ public class TurnosDiasSemana {
     @Enumerated(EnumType.ORDINAL)
     private DiasARepetirCicloEventoOcio dias;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_turno_restaurante", nullable = false)
     private Turno turno;
 

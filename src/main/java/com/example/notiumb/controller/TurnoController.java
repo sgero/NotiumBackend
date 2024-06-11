@@ -2,8 +2,10 @@ package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.DisponibilidadTurnoDTO;
 import com.example.notiumb.dto.TurnoDTO;
+import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Reserva;
 import com.example.notiumb.model.Turno;
+import com.example.notiumb.model.enums.DiasARepetirCicloEventoOcio;
 import com.example.notiumb.service.ReservaService;
 import com.example.notiumb.service.TurnoService;
 import com.example.notiumb.utilidades.RespuestaDTO;
@@ -26,8 +28,8 @@ public class TurnoController {
     private ReservaService reservaService;
 
     @PostMapping(value="/crear")
-    public RespuestaDTO crearTurno(@RequestBody TurnoDTO turnoDTO) {
-        return turnoService.crearTurno(turnoDTO);
+    public RespuestaDTO crearTurno(@RequestBody TurnoSemanaDTO turnoNuevo) {
+        return turnoService.crearTurnoCompleto(turnoNuevo.getTurnoDTO(), turnoNuevo.getDiaSemana());
     }
 
     @PostMapping(value="/eliminar")

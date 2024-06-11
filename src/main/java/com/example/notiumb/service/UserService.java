@@ -45,10 +45,16 @@ public class UserService implements UserDetailsService {
     private IRestauranteMapper restauranteMapper;
 
     @Autowired
+    private IRestauranteRepository restauranteRepository;
+
+    @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
 
     @Autowired
     private IRppMapper rppMapper;
+
+    @Autowired
+    private IRppRepository rppRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

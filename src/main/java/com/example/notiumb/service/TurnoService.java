@@ -6,8 +6,10 @@ import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.Turno;
 import com.example.notiumb.model.TurnosDiasSemana;
+import com.example.notiumb.model.enums.DiasARepetirCicloEventoOcio;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.ITurnoRepository;
+import com.example.notiumb.repository.ITurnoSemanaRepository;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import com.example.notiumb.utilidades.UtilidadesAPI;
@@ -27,25 +29,31 @@ public class TurnoService {
     @Autowired
     private IRestauranteRepository iRestauranteRepository;
 
+    @Autowired
+    private ITurnoSemanaRepository turnoSemanaRepository;
 
-    public RespuestaDTO crearTurnoCompleto(TurnoDTO turnoDTO, Integer diaSemana){
+
+    public RespuestaDTO crearTurnoCompleto(TurnoDTO turnoDTO, List<DiasARepetirCicloEventoOcio> diasTurno){
         RespuestaDTO respuestaDTO = new RespuestaDTO();
 
         try{
 
-            crearTurno(turnoDTO);
+            Turno nuevoTurno = new Turno();
+            nuevoTurno.setHora_inicio(turnoDTO.getHora_inicio());
+            nuevoTurno.setHora_fin(turnoDTO.getHora_fin());
+            nuevoTurno.setActivo(true);
 
-            TurnosDiasSemana turnoSemana = new TurnosDiasSemana();
-          //  turnoSemana.setDias(diaSemana); captar turno semana
+            Restaurante restauranteTurno = iRestauranteRepository.findTopById(turnoDTO.getRestauranteDTO().getId());
+            nuevoTurno.setRestaurante(restauranteTurno);
 
-            Turno turno = iTurnoRepository.turnoCreado(turnoDTO.getId(), turnoDTO.getHora_inicio(), turnoDTO.getHora_fin());
-            turnoSemana.setTurno(turno);
-
-           // iTurnoRepository.save(turnoSemana);
-
+            diasTurno.forEach(d->{
+                TurnosDiasSemana turnoSemana = new TurnosDiasSemana();
+                turnoSemana.setDias(d);
+                turnoSemana.setTurno(turnoMapper.toEntity(turnoDTO));
+                turnoSemanaRepository.save(turnoSemana);
+            });
 
         }catch (Exception e) {UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_400_TURNO_NO_CREADO);}
-
 
         return respuestaDTO;
     }
