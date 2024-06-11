@@ -100,14 +100,13 @@ public class RppService {
         Rpp deleteRpp = repository.findByIdAndActivoIsTrue(id).orElse(null);
         List<ListaOcio> listasRpp = listaOcioRepository.findAllByRppIdAndActivoIsTrue(id);
 
-        if (deleteRpp!=null){
+        if (deleteRpp!=null && listasRpp.size()==0){
             deleteRpp.setActivo(false);
             repository.save(deleteRpp);
-            if (listasRpp!=null){
-                listasRpp.stream().forEach(l->l.setActivo(false));
-                listaOcioRepository.saveAll(listasRpp);
-            }
-
+//            if (listasRpp!=null){
+//                listasRpp.stream().forEach(l->l.setActivo(false));
+//                listaOcioRepository.saveAll(listasRpp);
+//            }
         }
     }
 }
