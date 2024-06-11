@@ -3,9 +3,12 @@ package com.example.notiumb.security.service;
 import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.LoginDTO;
 import com.example.notiumb.dto.UserDTO;
+import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthenticationResponseDTO;
 import com.example.notiumb.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +32,9 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
+    private IUserRepository userRepository;
+
 
     public AuthenticationResponseDTO register(UserDTO userDTO){
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -41,7 +47,28 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponseDTO login(LoginDTO loginDTO){
-        UserDTO user = userService.getByUsername(loginDTO.getUsername());
+        User user = userRepository.findTopByUsername(loginDTO.getUsername());
+
+        if (!user.getActivo()){
+
+            return AuthenticationResponseDTO
+                    .builder()
+                    .token("")
+                    .message("Su cuenta se ha dado de baja.")
+                    .build();
+
+        }
+
+        if (!user.getVerificado()){
+
+            return AuthenticationResponseDTO
+                    .builder()
+                    .token("")
+                    .message("Tienes que verificar tu cuenta, mira el correo.")
+                    .build();
+
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsername(),
@@ -49,7 +76,8 @@ public class AuthenticationService {
                         List.of(new SimpleGrantedAuthority(user.getRol().name()))
                 )
         );
-        String token = jwtService.generateToken(userMapper.toEntity(user));
+
+        String token = jwtService.generateToken(user);
         return  AuthenticationResponseDTO
                 .builder()
                 .token(token)
@@ -61,27 +89,5 @@ public class AuthenticationService {
         return userService.existByCredentials(loginDTO.getUsername(),loginDTO.getPassword());
 
     }
-
-//    public String authenticateUser(String username, String password) {
-//        // Implementar la lógica de autenticación y retornar el rol
-//        // Integrate database access here
-//        String role = null;
-//        // Execute query to retrieve role based on username and password
-//        // Validate retrieved role
-//        if ("ADMIN".equals(username) && "password".equals(password)) {
-//            role = "ADMIN";
-//        } else if ("CLIENTE".equals(username) && "password".equals(password)) {
-//            role = "CLIENTE";
-//        } else if ("RESTAURANTE".equals(username) && "password".equals(password)) {
-//            role = "RESTAURANTE";
-//        } else if ("OCIONOCTURNO".equals(username) && "password".equals(password)) {
-//            role = "OCIONOCTURNO";
-//        } else if ("RPP".equals(username) && "password".equals(password)) {
-//            role = "RPP";
-//        }
-//        // Return the retrieved role or null if not found
-//        return role;
-//    }
-
 
 }

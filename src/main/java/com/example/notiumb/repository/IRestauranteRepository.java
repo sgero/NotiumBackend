@@ -18,7 +18,11 @@ public interface IRestauranteRepository extends JpaRepository<Restaurante , Inte
 
     Restaurante findByCif(String cif);
 
-    //Restaurante findByIdUser(Integer id);
+    @Query(nativeQuery = true, value = "SELECT r.* FROM notium.restaurante r\n" +
+            "WHERE r.id_usuario = :id and activo = true;")
+    Restaurante findByIdUser(Integer id);
+
+    Restaurante findByUserId(Integer id);
 
     Restaurante findByIdAndActivoIsTrue(Integer id);
 

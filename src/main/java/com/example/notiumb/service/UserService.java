@@ -1,13 +1,14 @@
 package com.example.notiumb.service;
 
 
-import com.example.notiumb.converter.IUserMapper;
+import com.example.notiumb.converter.*;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.model.User;
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.event.IIOReadProgressListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -34,6 +37,18 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private IUserMapper iUserMapper;
+
+    @Autowired
+    private IClienteMapper clienteMapper;
+
+    @Autowired
+    private IRestauranteMapper restauranteMapper;
+
+    @Autowired
+    private IOcioNocturnoMapper ocioNocturnoMapper;
+
+    @Autowired
+    private IRppMapper rppMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -79,8 +94,22 @@ public class UserService implements UserDetailsService {
     }
 
     public String deleteUser(User user) {
-        user.setActivo(false);
-        return "Usuario eliminado";
+
+        User usuario = userRepository.findTopByUsername(user.getUsername());
+
+        usuario.setActivo(false);
+        userRepository.save(usuario);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario eliminado");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"message\":\"Error al procesar la solicitud\"}";
+        }
     }
 
     public User obtenerUsuarioPorToken(String tokenVerificacion) {
@@ -96,19 +125,23 @@ public class UserService implements UserDetailsService {
     public Object traerPerfilVinculadoUsuario(User user) {
         if (user.getRol() == Rol.CLIENTE){
 
-            return clienteRepository.findByIdUser(user.getId());
+            return clienteMapper.toDTO(clienteRepository.findByUserId(user.getId()));
 
         } else if (user.getRol() == Rol.RESTAURANTE) {
 
-            return null; //restauranteRepository.findByIdUser(user.getId());
+            return restauranteMapper.toDTO(restauranteRepository.findByUserId(user.getId()));
 
         }else if (user.getRol() == Rol.OCIONOCTURNO) {
 
-            return ocioNocturnoRepository.findByIdUser(user.getId());
+            return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findByIdUser(user.getId()));
 
         }else if (user.getRol() == Rol.RPP) {
 
-            return null; //rppRepository.findByIdUserAndActivoTrue(user.getId());
+            return rppMapper.toDTO(rppRepository.findByIdUser(user.getId()));
+
+        }else if (user.getRol() == Rol.ADMIN) {
+
+            return user;
 
         }
 
@@ -163,17 +196,7 @@ public class UserService implements UserDetailsService {
     public Boolean validaUsernameEmailExistentes(User user) {
         Boolean existeEmail = userRepository.existsByEmail(user.getEmail());
         Boolean existeUsername = userRepository.existsByUsername(user.getUsername());
-
-        if (existeEmail || existeUsername){
-
-            return true;
-
-        }else {
-
-            return false;
-
-        }
-
+        return existeEmail || existeUsername;
     }
 
 }

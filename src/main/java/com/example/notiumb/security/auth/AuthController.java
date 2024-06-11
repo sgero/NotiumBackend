@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthenticationResponseDTO register(@RequestBody LoginDTO loginDTO){
+    public AuthenticationResponseDTO login(@RequestBody LoginDTO loginDTO){
         if(authenticationService.verifyPassword(loginDTO)){
             return authenticationService.login(loginDTO);
         }else{
