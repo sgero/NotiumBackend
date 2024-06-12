@@ -22,7 +22,7 @@ public interface IComentarioRepository extends JpaRepository<Comentario, Long> {
     List<Integer> valorcionesRestaurante(Integer id_restaurante);
 
     @Query(value="select r.* from notium.comentario c join notium.restaurante r on c.id_restaurante = r.id where c.activo = TRUE group by r.id order by avg(c.valoracion) DESC limit 3",nativeQuery = true)
-    List<Integer> rankingRestaurantes();
+    List<Integer> rankingRestaurantesTop3();
 
     @Query(value="select c.id_ocio_nocturno from notium.comentario c where c.activo = TRUE group by c.id_ocio_nocturno order by avg(c.valoracion) DESC limit 3",nativeQuery = true)
     List<Integer> rankingOcioNocturno();

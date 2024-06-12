@@ -1,6 +1,7 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.ITurnoMapper;
+import com.example.notiumb.dto.ReservaTurnosDTO;
 import com.example.notiumb.dto.TurnoDTO;
 import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Restaurante;
@@ -49,7 +50,7 @@ public class TurnoService {
             diasTurno.forEach(d->{
                 TurnosDiasSemana turnoSemana = new TurnosDiasSemana();
                 turnoSemana.setDias(d);
-                turnoSemana.setTurno(turnoMapper.toEntity(turnoDTO));
+                turnoSemana.setTurno(nuevoTurno);
                 turnoSemanaRepository.save(turnoSemana);
             });
 
@@ -123,4 +124,10 @@ public class TurnoService {
     public List<TurnoDTO> turnosRestaurante(Integer id){
         return turnoMapper.toDTO(iTurnoRepository.findAllByRestauranteIdAndActivoIsTrue(id));
     }
+
+    public List<TurnoDTO> turnosPorReservaFecha(ReservaTurnosDTO info){
+        List<Turno> listadoTurnosReserva = iTurnoRepository.turnosReservasFecha(info.getId_restaurante(),info.getFecha());
+        return turnoMapper.toDTO(listadoTurnosReserva);
+    }
+
 }

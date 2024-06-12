@@ -269,12 +269,10 @@ public class ReservaService {
         return turnosDisponibles;
     }
 
-
-
     public List<ReservaDTO> reservasPorUsuario(ReservaTiempoDTO infoReserva){
         List<Reserva> reservasPasadas = new ArrayList<>();
         List<Reserva> reservasFuturas = new ArrayList<>();
-        List<List<Reserva>> allReservas = new ArrayList<>();
+        List<ReservaDTO> reservasAEnviar = new ArrayList<>();
         List<Reserva> todasLasRervas = reservaRepository.reservasPorUsuario(infoReserva.getId_usuario());
 
         for (Reserva r : todasLasRervas) {
@@ -286,14 +284,23 @@ public class ReservaService {
         }
 
         if(infoReserva.getTipoReserva().equals("futuras")){
-            return reservaMapper.toDTO(reservasFuturas);
+            reservasAEnviar = reservaMapper.toDTO(reservasFuturas);
         } else if (infoReserva.getTipoReserva().equals("pasadas")) {
-            return reservaMapper.toDTO(reservasPasadas);
+            reservasAEnviar = reservaMapper.toDTO(reservasPasadas);
         }
 
-        return null;
+        return reservasAEnviar;
 
     }
+
+    public List<ReservaDTO> reservasFechaTurno(ReservaMesasDTO info){
+
+        List<Reserva> reservaList = reservaRepository.reservaFechaTurno(info.getRestauranteDTO().getId(), info.getTurnoDTO().getId(), info.getFecha());
+
+        return reservaMapper.toDTO(reservaList);
+    }
+
+
 }
 
 

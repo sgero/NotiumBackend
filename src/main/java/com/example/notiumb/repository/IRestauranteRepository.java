@@ -31,4 +31,10 @@ public interface IRestauranteRepository extends JpaRepository<Restaurante , Inte
             "WHERE rc.id_clase = :id and activo = true;")
     List<Restaurante> findPorClase(Integer id);
 
+    @Query(value="select r.* from notium.comentario c join notium.restaurante r on c.id_restaurante = r.id where c.activo = TRUE group by r.id order by avg(c.valoracion) DESC",nativeQuery = true)
+    List<Restaurante> rankingRestaurantes();
+
+    @Query(value="select r.* from notium.comentario c join notium.restaurante r on c.id_restaurante = r.id where c.activo = TRUE group by r.id order by count(c.valoracion) DESC",nativeQuery = true)
+    List<Restaurante> restaurantesMasValorados();
+
 }

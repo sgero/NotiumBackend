@@ -151,4 +151,14 @@ public class RestauranteService {
 
         return restauranteMapper.toDTO(restauranteRepository.findPorClase(id));
     }
+
+    public List<RestauranteDTO> rankingRestaurante(){
+        List<Restaurante> listaRestaurantes = restauranteRepository.rankingRestaurantes();
+        return restauranteMapper.toDTO(listaRestaurantes);
+    }
+
+    public List<RestauranteDTO> restaurantesMasValorados(){
+        List<Restaurante> listaRestaurantes = restauranteRepository.restaurantesMasValorados();
+        return restauranteMapper.toDTO(listaRestaurantes);
+    }
 }

@@ -29,6 +29,9 @@ public interface ITurnoRepository extends JpaRepository<Turno, Integer> {
 
     Turno findTopById(Integer id);
 
-
     Turno[] findByRestauranteAndActivo(Restaurante restaurante, boolean b);
+
+    @Query(value="select tr.* from notium.reserva_restaurante rr join notium.turno_restaurante tr on tr.id = rr.id_turno_restaurante where rr.id_restaurante = :id_restaurante  and rr.fecha = %:fecha%", nativeQuery = true)
+    List<Turno> turnosReservasFecha(Integer id_restaurante, LocalDate fecha);
+
 }

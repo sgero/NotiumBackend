@@ -1,6 +1,7 @@
 package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.MesaDTO;
+import com.example.notiumb.dto.ReservaMesasDTO;
 import com.example.notiumb.model.Mesa;
 import com.example.notiumb.service.MesaService;
 import com.example.notiumb.utilidades.RespuestaDTO;
@@ -31,4 +32,5 @@ public class MesaController {
     public List<MesaDTO> listarMesas(){
         return mesaService.listadoMesas();
     }
+
 }

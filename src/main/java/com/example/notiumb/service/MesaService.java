@@ -1,6 +1,7 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.IMesaMapper;
+import com.example.notiumb.dto.ReservaMesasDTO;
 import com.example.notiumb.model.Mesa;
 import com.example.notiumb.dto.MesaDTO;
 import com.example.notiumb.model.Restaurante;
@@ -12,6 +13,7 @@ import com.example.notiumb.utilidades.UtilidadesAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 
 @Service
@@ -79,10 +81,4 @@ public class MesaService {
 
         return respuestaDTO;
     }
-
-
-
-
-
-
 }

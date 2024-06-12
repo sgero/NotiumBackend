@@ -1,6 +1,7 @@
 package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.DisponibilidadTurnoDTO;
+import com.example.notiumb.dto.ReservaTurnosDTO;
 import com.example.notiumb.dto.TurnoDTO;
 import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Reserva;
@@ -57,6 +58,10 @@ public class TurnoController {
         return turnoService.turnosRestaurante(id);
     }
 
+    @PostMapping(value="/turnosReservaFecha")
+    public List<TurnoDTO> turnosReservaFecha(@RequestBody ReservaTurnosDTO info) {
+        return turnoService.turnosPorReservaFecha(info);
+    }
 
 
 }
