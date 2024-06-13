@@ -51,5 +51,16 @@ public class RestauranteController {
         return restauranteService.listarRestaurantesCategoria(id);
     }
 
+    @GetMapping(value="/rankingRestaurante")
+    public List<RestauranteDTO> rankingRestaurante(){
+        return restauranteService.rankingRestaurante();
+    }
+
+    @GetMapping(value="/restauranteMasValorados")
+    public List<RestauranteDTO> restauranteMasValorados(){
+        return restauranteService.restaurantesMasValorados();
+    }
+
+
 }
 

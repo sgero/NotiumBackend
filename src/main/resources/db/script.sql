@@ -1,4 +1,5 @@
 drop table if exists chat_mensaje;
+drop table if exists turno_dias_semana;
 drop table if exists datos_comprador;
 drop table if exists promocion;
 drop table if exists producto_formato;
@@ -307,7 +308,6 @@ create table comentario (
                             activo boolean default true not null ,
                             id_restaurante integer ,
                             id_ocio_nocturno integer ,
-                            id_cliente integer not null ,
                             primary key (id),
                             constraint id_comentario_restaurante_fk foreign key (id_restaurante) references restaurante (id),
                             constraint id_ocomentario_ocio_nocturno_fk foreign key (id_ocio_nocturno) references ocio_nocturno (id)
@@ -392,17 +392,6 @@ create table datos_comprador (
     constraint fk_datos_comprador_reservado_ocio_cliente foreign key (reservado_ocio_cliente) references reservado_ocio_cliente(id)
 );
 
-create table chat_mensaje (
-    id serial not null ,
-    id_ocio_nocturno integer not null ,
-    id_chat_evento integer not null ,
-    texto varchar(400) not null ,
-    fecha timestamp(6) not null ,
-    editado boolean default false,
-    primary key (id),
-    constraint fk_chat_mensaje_ocio_nocturno foreign key (id_ocio_nocturno) references ocio_nocturno(id),
-    constraint fk_chat_mensaje_chat_evento foreign key (id_chat_evento) references evento(id)
-);
 
 INSERT INTO clase (clase) VALUES
                                   ('CHINO'),

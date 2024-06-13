@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -23,9 +24,14 @@ public interface ITurnoRepository extends JpaRepository<Turno, Integer> {
 
     List<Turno> findByRestauranteEquals(Restaurante restaurante);
 
+    @Query(value = "select tr.* from notium.turno_restaurante tr where tr.id_restaurante = :id_restaurante and tr.hora_inicio = %:hora_incio% and tr.hora_fin = %:hora_fin%", nativeQuery = true)
+    Turno turnoCreado(Integer id_restaurante, Time hora_incio, Time hora_fin);
 
     Turno findTopById(Integer id);
 
-
     Turno[] findByRestauranteAndActivo(Restaurante restaurante, boolean b);
+
+    @Query(value="select tr.* from notium.reserva_restaurante rr join notium.turno_restaurante tr on tr.id = rr.id_turno_restaurante where rr.id_restaurante = :id_restaurante  and rr.fecha = %:fecha%", nativeQuery = true)
+    List<Turno> turnosReservasFecha(Integer id_restaurante, LocalDate fecha);
+
 }

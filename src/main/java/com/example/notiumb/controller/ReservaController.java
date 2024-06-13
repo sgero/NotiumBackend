@@ -1,9 +1,10 @@
 package com.example.notiumb.controller;
 
-import com.example.notiumb.dto.DatosReservaDTO;
-import com.example.notiumb.dto.ReservaDTO;
+import com.example.notiumb.dto.*;
 import com.example.notiumb.model.Reserva;
+import com.example.notiumb.model.Turno;
 import com.example.notiumb.service.ReservaService;
+import com.example.notiumb.utilidades.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ public class ReservaController {
 
     @Autowired
     private ReservaService service;
+    @Autowired
+    private ReservaService reservaService;
 
     @PostMapping(value = "/crear")
     public ReservaDTO crearReserva(@RequestBody DatosReservaDTO reservaDTO) {
@@ -38,12 +41,19 @@ public class ReservaController {
     }
 
     @PostMapping("/eliminar/{id}")
-
     public void eliminarReserva(@PathVariable Integer id){ service.eliminarReserva(id); }
 
-
     @PostMapping("/comprobar")
-
     public void comprobarTurno(@RequestBody ReservaDTO reservaDTO){ service.comprobarTurno(reservaDTO); }
+
+    @PostMapping(value="/reservasUsuariosTiempo")
+    public List<ReservaDTO> reservasUsuariosTiempo(@RequestBody ReservaTiempoDTO infoReserva) {
+        return service.reservasPorUsuario(infoReserva);
+    }
+
+    @PostMapping(value="/ReservaFechaTurno")
+    public List<ReservaDTO> turnosReservaFecha(@RequestBody ReservaMesasDTO info) {
+        return reservaService.reservasFechaTurno(info);
+    }
 
 }

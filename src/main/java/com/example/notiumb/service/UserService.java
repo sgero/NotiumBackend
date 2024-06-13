@@ -33,13 +33,7 @@ public class UserService implements UserDetailsService {
     private IClienteRepository clienteRepository;
 
     @Autowired
-    private IRestauranteRepository restauranteRepository;
-
-    @Autowired
     private IOcioNocturnoRepository ocioNocturnoRepository;
-
-    @Autowired
-    private IRppRepository rppRepository;
 
     @Autowired
     private IUserMapper iUserMapper;
@@ -51,10 +45,16 @@ public class UserService implements UserDetailsService {
     private IRestauranteMapper restauranteMapper;
 
     @Autowired
+    private IRestauranteRepository restauranteRepository;
+
+    @Autowired
     private IOcioNocturnoMapper ocioNocturnoMapper;
 
     @Autowired
     private IRppMapper rppMapper;
+
+    @Autowired
+    private IRppRepository rppRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,6 +64,7 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
     @Autowired
     private JWTService jwtService;
 

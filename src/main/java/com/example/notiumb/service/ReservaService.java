@@ -266,9 +266,41 @@ public class ReservaService {
                 turnosDisponibles.add(turnoMapper.toDTO(turno));
             }
         }
-
         return turnosDisponibles;
     }
+
+    public List<ReservaDTO> reservasPorUsuario(ReservaTiempoDTO infoReserva){
+        List<Reserva> reservasPasadas = new ArrayList<>();
+        List<Reserva> reservasFuturas = new ArrayList<>();
+        List<ReservaDTO> reservasAEnviar = new ArrayList<>();
+        List<Reserva> todasLasRervas = reservaRepository.reservasPorUsuario(infoReserva.getId_usuario());
+
+        for (Reserva r : todasLasRervas) {
+            if (r.getFecha().isAfter(LocalDate.now())) {
+                reservasFuturas.add(r);
+            }else if (r.getFecha().isBefore(LocalDate.now())) {
+                reservasPasadas.add(r);
+            }
+        }
+
+        if(infoReserva.getTipoReserva().equals("futuras")){
+            reservasAEnviar = reservaMapper.toDTO(reservasFuturas);
+        } else if (infoReserva.getTipoReserva().equals("pasadas")) {
+            reservasAEnviar = reservaMapper.toDTO(reservasPasadas);
+        }
+
+        return reservasAEnviar;
+
+    }
+
+    public List<ReservaDTO> reservasFechaTurno(ReservaMesasDTO info){
+
+        List<Reserva> reservaList = reservaRepository.reservaFechaTurno(info.getRestauranteDTO().getId(), info.getTurnoDTO().getId(), info.getFecha());
+
+        return reservaMapper.toDTO(reservaList);
+    }
+
+
 }
 
 

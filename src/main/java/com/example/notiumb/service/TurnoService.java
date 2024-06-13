@@ -1,11 +1,16 @@
 package com.example.notiumb.service;
 
 import com.example.notiumb.converter.ITurnoMapper;
+import com.example.notiumb.dto.ReservaTurnosDTO;
 import com.example.notiumb.dto.TurnoDTO;
+import com.example.notiumb.dto.TurnoSemanaDTO;
 import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.Turno;
+import com.example.notiumb.model.TurnosDiasSemana;
+import com.example.notiumb.model.enums.DiasARepetirCicloEventoOcio;
 import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.ITurnoRepository;
+import com.example.notiumb.repository.ITurnoSemanaRepository;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
 import com.example.notiumb.utilidades.UtilidadesAPI;
@@ -24,6 +29,35 @@ public class TurnoService {
 
     @Autowired
     private IRestauranteRepository iRestauranteRepository;
+
+    @Autowired
+    private ITurnoSemanaRepository turnoSemanaRepository;
+
+
+    public RespuestaDTO crearTurnoCompleto(TurnoDTO turnoDTO, List<DiasARepetirCicloEventoOcio> diasTurno){
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+
+        try{
+
+            Turno nuevoTurno = new Turno();
+            nuevoTurno.setHora_inicio(turnoDTO.getHora_inicio());
+            nuevoTurno.setHora_fin(turnoDTO.getHora_fin());
+            nuevoTurno.setActivo(true);
+
+            Restaurante restauranteTurno = iRestauranteRepository.findTopById(turnoDTO.getRestauranteDTO().getId());
+            nuevoTurno.setRestaurante(restauranteTurno);
+
+            diasTurno.forEach(d->{
+                TurnosDiasSemana turnoSemana = new TurnosDiasSemana();
+                turnoSemana.setDias(d);
+                turnoSemana.setTurno(nuevoTurno);
+                turnoSemanaRepository.save(turnoSemana);
+            });
+
+        }catch (Exception e) {UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_400_TURNO_NO_CREADO);}
+
+        return respuestaDTO;
+    }
 
 
     public RespuestaDTO crearTurno(TurnoDTO turnoDTO) {
@@ -90,4 +124,10 @@ public class TurnoService {
     public List<TurnoDTO> turnosRestaurante(Integer id){
         return turnoMapper.toDTO(iTurnoRepository.findAllByRestauranteIdAndActivoIsTrue(id));
     }
+
+    public List<TurnoDTO> turnosPorReservaFecha(ReservaTurnosDTO info){
+        List<Turno> listadoTurnosReserva = iTurnoRepository.turnosReservasFecha(info.getId_restaurante(),info.getFecha());
+        return turnoMapper.toDTO(listadoTurnosReserva);
+    }
+
 }

@@ -76,9 +76,6 @@ public class ComentarioService {
         //Este código no existe
         if (infoValoracion == null){ return 1; }
 
-        // Este código no pertenece al restaurante
-        if (infoValoracion.getRestaurante().getId() != info.getId_restaurante()){ return 2; }
-
         //Valorar si hay más de una reserva
         for (String cr : codigosReserva) {
             if (cr.equals(info.getCodigoReserva())) {
@@ -143,7 +140,7 @@ public class ComentarioService {
     }
 
     public List<Integer> rankingRestaurante(){
-        return icomentarioRepository.rankingRestaurantes();
+        return icomentarioRepository.rankingRestaurantesTop3();
     }
 
     public List<ComentarioDTO> valoracionPorRestaurante(Integer id){
@@ -257,6 +254,10 @@ public class ComentarioService {
 
     public List<Integer> rankingOcioNocturno(){
         return icomentarioRepository.rankingOcioNocturno();
+    }
+
+    public List<ComentarioDTO> valoracionesOcio(Integer id){
+        return iComentarioMapper.toDTO(icomentarioRepository.findAllByOcioIdAndActivoIsTrue(id));
     }
 
 }
