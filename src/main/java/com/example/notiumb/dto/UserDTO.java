@@ -18,5 +18,7 @@ public class UserDTO {
 
     private boolean activo;
 
+    private boolean verificado;
+
     private Rol rol;
 }

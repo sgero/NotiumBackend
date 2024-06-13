@@ -12,7 +12,7 @@ public class ClaseDTO {
 
     private Integer id;
     @NotBlank
-    private Integer clase;
+    private String clase;
 
 
 

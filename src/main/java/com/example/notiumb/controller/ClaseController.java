@@ -1,11 +1,23 @@
 package com.example.notiumb.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.notiumb.dto.ClaseDTO;
+import com.example.notiumb.service.ClaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/mesa")
+@RequestMapping("/clase")
 public class ClaseController {
+
+    @Autowired
+    private ClaseService claseService;
+
+    @GetMapping("/getAll")
+    public List<ClaseDTO> getAll(){
+        return claseService.getAll();
+    }
+
 }

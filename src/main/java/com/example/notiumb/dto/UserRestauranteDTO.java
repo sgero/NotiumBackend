@@ -45,6 +45,10 @@ public class UserRestauranteDTO {
 
     private Boolean disponible;
 
+    private Integer id_clase;
+
+    private Integer aforo;
+
     private String imagen_marca;
 
     @Valid

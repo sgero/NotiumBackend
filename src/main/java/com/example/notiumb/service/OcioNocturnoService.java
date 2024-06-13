@@ -106,6 +106,12 @@ public class OcioNocturnoService {
 
             }else{
 
+                User usuario = ocioModificar.getUser();
+                usuario.setUsername(userOcioNocturnoDTO.getUsername());
+                usuario.setEmail(userOcioNocturnoDTO.getEmail());
+
+                userRepository.save(usuario);
+
                 Direccion direccionModificada = ocioModificar.getDireccion();
 
                 direccionModificada.setCalle(userOcioNocturnoDTO.getDireccionDTO().getCalle());

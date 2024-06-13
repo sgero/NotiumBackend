@@ -5,13 +5,8 @@ import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserRestauranteDTO;
-import com.example.notiumb.model.Cliente;
-import com.example.notiumb.model.Direccion;
-import com.example.notiumb.model.Restaurante;
-import com.example.notiumb.model.User;
-import com.example.notiumb.repository.IDireccionRepository;
-import com.example.notiumb.repository.IRestauranteRepository;
-import com.example.notiumb.repository.IUserRepository;
+import com.example.notiumb.model.*;
+import com.example.notiumb.repository.*;
 import com.example.notiumb.security.auth.AuthController;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import jakarta.mail.MessagingException;
@@ -41,6 +36,12 @@ public class RestauranteService {
 
     @Autowired
     private IDireccionRepository direccionRepository;
+
+    @Autowired
+    private IClaseRepository claseRepository;
+
+    @Autowired
+    private IRestauranteClaseRepository restauranteClaseRepository;
 
     @Autowired
     private IDireccionMapper direccionMapper;
@@ -88,6 +89,7 @@ public class RestauranteService {
             restaurante.setHora_apertura(userRestauranteDTO.getHora_apertura());
             restaurante.setHora_cierre(userRestauranteDTO.getHora_cierre());
             restaurante.setDisponible(userRestauranteDTO.getDisponible());
+            restaurante.setAforo(userRestauranteDTO.getAforo());
             restaurante.setUser(usuario);
             restaurante.setImagen_marca(userRestauranteDTO.getImagen_marca());
             restaurante.setDireccion(direccion);
@@ -95,7 +97,17 @@ public class RestauranteService {
             //envio de email de verificacion
             emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
 
-            return restauranteMapper.toDTO(restauranteRepository.save(restaurante));
+            RestauranteDTO restauranteDTO = restauranteMapper.toDTO(restauranteRepository.save(restaurante));
+
+            Restaurante restauranteSave = restauranteRepository.findByCif(restaurante.getCif());
+
+            RestauranteClase restauranteClase = new RestauranteClase();
+            Clase clase = claseRepository.findTopById(userRestauranteDTO.getId_clase());
+            restauranteClase.setClase(clase);
+            restauranteClase.setRestaurante(restauranteSave);
+            restauranteClaseRepository.save(restauranteClase);
+
+            return restauranteDTO;
 
         }else {
 
@@ -106,6 +118,12 @@ public class RestauranteService {
                 return null;
 
             } else {
+
+                User usuario = restauranteModificar.getUser();
+                usuario.setUsername(userRestauranteDTO.getUsername());
+                usuario.setEmail(userRestauranteDTO.getEmail());
+
+                userRepository.save(usuario);
 
                 Direccion direccionModificada = restauranteModificar.getDireccion();
 
@@ -126,6 +144,7 @@ public class RestauranteService {
                 restauranteModificar.setHora_cierre(userRestauranteDTO.getHora_cierre());
                 restauranteModificar.setDisponible(userRestauranteDTO.getDisponible());
                 restauranteModificar.setImagen_marca(userRestauranteDTO.getImagen_marca());
+                restauranteModificar.setAforo(userRestauranteDTO.getAforo());
                 restauranteModificar.setDireccion(direccionModificada);
 
                 restauranteRepository.save(restauranteModificar);

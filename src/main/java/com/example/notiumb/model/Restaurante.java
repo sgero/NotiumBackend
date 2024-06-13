@@ -75,5 +75,7 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Mesa> mesasSet;
 
+    @OneToMany(mappedBy = "restaurante")
+    private Set<RestauranteClase> restauranteClasesSet;
 
 }

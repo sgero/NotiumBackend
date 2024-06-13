@@ -42,6 +42,7 @@ public class AuthController {
     @PostMapping("/registro")
     public AuthenticationResponseDTO register(@RequestBody UserDTO userDTO){
         userDTO.setActivo(true);
+        userDTO.setVerificado(false);
         return  authenticationService.register(userDTO);
     }
 

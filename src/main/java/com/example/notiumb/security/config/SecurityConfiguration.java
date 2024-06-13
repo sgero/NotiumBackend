@@ -92,6 +92,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/reserva/**").permitAll()
                         .requestMatchers("/cliente/**").permitAll()
                         .requestMatchers("/producto/**").permitAll()
+                        .requestMatchers("/clase/**").permitAll()
                         .requestMatchers("/productoFormato/**").permitAll()
                         .requestMatchers("/reserva/**").permitAll()
                         .requestMatchers("/comprar/**").permitAll()

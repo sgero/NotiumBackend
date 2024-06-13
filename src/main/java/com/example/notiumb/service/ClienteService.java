@@ -96,6 +96,12 @@ public class ClienteService {
 
             } else {
 
+                User usuario = clienteModificar.getUser();
+                usuario.setUsername(userClienteDTO.getUsername());
+                usuario.setEmail(userClienteDTO.getEmail());
+
+                userRepository.save(usuario);
+
                 Direccion direccionModificada = clienteModificar.getDireccion();
 
                 direccionModificada.setCalle(userClienteDTO.getDireccionDTO().getCalle());

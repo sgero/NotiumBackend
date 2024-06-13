@@ -6,24 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Entity
-@Table(name = "clase", schema = "notium", catalog = "postgres")
+@Table(name = "restaurante_clase", schema = "notium", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Clase {
+public class RestauranteClase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "clase" , nullable = false)
-    private String clase;
+    @ManyToOne
+    @JoinColumn(name = "id_restaurante", nullable = false)
+    private Restaurante restaurante;
 
-    @OneToMany(mappedBy = "clase")
-    private Set<RestauranteClase> restauranteClasesSet;
+    @ManyToOne
+    @JoinColumn(name = "id_clase", nullable = false)
+    private Clase clase;
 
 }
