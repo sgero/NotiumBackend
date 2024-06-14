@@ -5,12 +5,8 @@ import com.example.notiumb.converter.IComentarioMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.converter.IRestauranteMapper;
 import com.example.notiumb.dto.*;
-import com.example.notiumb.model.Comentario;
-import com.example.notiumb.model.Cliente;
+import com.example.notiumb.model.*;
 
-import com.example.notiumb.model.OcioNocturno;
-import com.example.notiumb.model.Reserva;
-import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.utilidades.MapaCodigoRespuestaAPI;
 import com.example.notiumb.utilidades.RespuestaDTO;
@@ -51,6 +47,8 @@ public class ComentarioService {
     private IClienteRepository clienteRepository;
     @Autowired
     private IClienteMapper clienteMapper;
+    @Autowired
+    private IEventoRepository eventoRepository;
 
    /* public List<ComentarioDTO> listarValoraciones(){
 
@@ -178,28 +176,23 @@ public class ComentarioService {
         Integer respuesta = 0;
         Integer conteo1 = 1;
         List<String> codigosReserva = new ArrayList<>();
-        Timestamp fechaEvento = null;
-        Integer idOcioCodigo = 0;
 
         //Llamadas a repository
         List<Date> listadoFechas = iReservaRepository.listadoReservaFecha(info.getId_ocio());
         Integer num_valoraciones = icomentarioRepository.conteoCodigoReservaOcio(info.getId_ocio(), info.getCodigoReserva());
         Reserva infoValoracion = iReservaRepository.buscarValoracion(info.getCodigoReserva());
+        Evento evento = eventoRepository.findTopByIdAndActivoIsTrue(info.getIdEvento());
+        Timestamp fechaEvento = evento.getFecha();
+        Integer idOcioCodigo = evento.getOcioNocturno().getId();
 
         if (info.getCodigoReserva().length() >= 3){
             String primerosDigitos = info.getCodigoReserva().substring(0, 3);
             if (primerosDigitos.equals("EOC")){
                 codigosReserva = entradaOcioClienteRepository.listadoCodigosReservaEntrada(info.getId_ocio());
-                fechaEvento = entradaOcioClienteRepository.fechaEventoEntrada(info.getId_ocio(), info.getCodigoReserva());
-                idOcioCodigo = entradaOcioClienteRepository.idOcioEntrada(info.getCodigoReserva());
             }else if (primerosDigitos.equals("ROC")){
                 codigosReserva = reservadoOcioClienteRepository.listadoCodigosReservaReservado(info.getId_ocio());
-                fechaEvento = reservadoOcioClienteRepository.fechaEventoReservado(info.getId_ocio(), info.getCodigoReserva());
-                idOcioCodigo = reservadoOcioClienteRepository.idOcioReservado(info.getCodigoReserva());
             }else if(primerosDigitos.equals("LOC")){
                 codigosReserva = listaOcioClienteRepository.listadoCodigosReservaListado(info.getId_ocio());
-                fechaEvento = listaOcioClienteRepository.fechaEventoLista(info.getId_ocio(), info.getCodigoReserva());
-                idOcioCodigo = listaOcioClienteRepository.idOcioLista(info.getCodigoReserva());
 
                 //Este código no existe
             } else { return 1; }
@@ -236,7 +229,7 @@ public class ComentarioService {
             nuevaValoracion.setFecha_comentario(new Timestamp(System.currentTimeMillis()));
             nuevaValoracion.setActivo(true);
 
-            Cliente clienteValoracion = clienteRepository.findByIdUser(valoracion.getClienteDTO().getId());
+            Cliente clienteValoracion = clienteRepository.findTopById(valoracion.getClienteDTO().getId());
             nuevaValoracion.setCliente(clienteValoracion);
 
             OcioNocturno ocioNocturno = ocioNocturnoRepository.findTopByIdAndActivoIsTrue(valoracion.getOcioDTO().getId());
@@ -257,7 +250,7 @@ public class ComentarioService {
     }
 
     public List<ComentarioDTO> valoracionesOcio(Integer id){
-        return iComentarioMapper.toDTO(icomentarioRepository.findAllByOcioIdAndActivoIsTrue(id));
+        return iComentarioMapper.toDTO(icomentarioRepository.findAllByOcioIdAndActivoIsTrueOrderByFecha_comentarioDesc(id));
     }
 
 }
