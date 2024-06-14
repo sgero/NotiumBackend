@@ -10,4 +10,5 @@ public class ComprobarCodigoOcioDTO {
     private String codigoReserva;
 
     private Integer id_ocio;
+    private Integer idEvento;
 }
