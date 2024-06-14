@@ -20,13 +20,16 @@ public interface IEntradaOcioClienteMapper {
 
     @Mapping(source = "entradaOcioDTO", target = "entradaOcio")
     @Mapping(source = "entradaOcioDTO.eventoDTO", target = "entradaOcio.evento")
+    @Mapping(source = "entradaOcioDTO.eventoDTO.ocioNocturnoDTO", target = "entradaOcio.evento.ocioNocturno")
     @Mapping(source = "clienteDTO", target = "cliente")
     @Mapping(source = "promocionDTO", target = "promocion", qualifiedByName = "conversorPromocionDTO")
     @Mapping(source = "datosCompradorDTO", target = "datosComprador", qualifiedByName = "conversorDatosCompradorDTO")
     EntradaOcioCliente toEntity(EntradaOcioClienteDTO dto);
+
     @Mapping(source = "cliente", target = "clienteDTO")
     @Mapping(source = "entradaOcio", target = "entradaOcioDTO")
     @Mapping(source = "entradaOcio.evento", target = "entradaOcioDTO.eventoDTO")
+    @Mapping(source = "entradaOcio.evento.ocioNocturno", target = "entradaOcioDTO.eventoDTO.ocioNocturnoDTO")
     @Mapping(source = "promocion", target = "promocionDTO", qualifiedByName = "conversorPromocionEntity")
     @Mapping(source = "datosComprador", target = "datosCompradorDTO", qualifiedByName = "conversorDatosCompradorEntity")
     EntradaOcioClienteDTO toDTO(EntradaOcioCliente entity);
