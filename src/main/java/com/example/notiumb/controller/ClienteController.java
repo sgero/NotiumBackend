@@ -8,12 +8,19 @@ import com.example.notiumb.utilidades.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @GetMapping()
+    public List<ClienteDTO> getClientes(){
+        return clienteService.getClientes();
+    }
 
     @PostMapping("/crear")
     public ClienteDTO crearYModificarCliente(@RequestBody UserClienteDTO userClienteDTO) {

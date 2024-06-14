@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClienteService {
 
@@ -132,6 +134,10 @@ public class ClienteService {
 
     public ClienteDTO getByUserId(Integer id) {
         return converter.toDTO(repository.findByIdUser(id));
+    }
+
+    public List<ClienteDTO> getClientes() {
+        return converter.toDTO(repository.findAll());
     }
 
     public ClienteDTO deleteCliente(Integer id) {

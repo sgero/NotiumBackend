@@ -3,7 +3,12 @@ package com.example.notiumb.security.service;
 import com.example.notiumb.converter.IUserMapper;
 import com.example.notiumb.dto.LoginDTO;
 import com.example.notiumb.dto.UserDTO;
+import com.example.notiumb.model.OcioNocturno;
+import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
+import com.example.notiumb.model.enums.Rol;
+import com.example.notiumb.repository.IOcioNocturnoRepository;
+import com.example.notiumb.repository.IRestauranteRepository;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthenticationResponseDTO;
 import com.example.notiumb.service.UserService;
@@ -34,6 +39,12 @@ public class AuthenticationService {
 
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private IOcioNocturnoRepository ocioNocturnoRepository;
+
+    @Autowired
+    private IRestauranteRepository restauranteRepository;
 
 
     public AuthenticationResponseDTO register(UserDTO userDTO){
@@ -66,6 +77,36 @@ public class AuthenticationService {
                     .token("")
                     .message("Tienes que verificar tu cuenta, mira el correo.")
                     .build();
+
+        }
+
+        if (user.getRol() == Rol.OCIONOCTURNO){
+
+            OcioNocturno ocio = ocioNocturnoRepository.findByIdUser(user.getId());
+            if (!ocio.getVerificado()){
+
+                return AuthenticationResponseDTO
+                        .builder()
+                        .token("")
+                        .message("Todavía no te han verificado la cuenta los administradores de NOTIUM.")
+                        .build();
+
+            }
+
+        }
+
+        if (user.getRol() == Rol.RESTAURANTE){
+
+            Restaurante restaurante = restauranteRepository.findByIdUser(user.getId());
+            if (!restaurante.getVerificado()){
+
+                return AuthenticationResponseDTO
+                        .builder()
+                        .token("")
+                        .message("Todavía no te han verificado la cuenta los administradores de NOTIUM.")
+                        .build();
+
+            }
 
         }
 

@@ -94,8 +94,10 @@ public class RestauranteService {
             restaurante.setImagen_marca(userRestauranteDTO.getImagen_marca());
             restaurante.setDireccion(direccion);
 
-            //envio de email de verificacion
+            //envio de emails de verificacion
             emailService.enviarEmailVerificacionRestaurante(restauranteMapper.toDTO(restaurante));
+            emailService.enviarEmailVerificacion(userRestauranteDTO.getEmail(), "CLIENTE");
+
 
             RestauranteDTO restauranteDTO = restauranteMapper.toDTO(restauranteRepository.save(restaurante));
 
