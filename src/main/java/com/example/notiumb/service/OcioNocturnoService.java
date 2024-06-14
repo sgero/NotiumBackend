@@ -88,6 +88,8 @@ public class OcioNocturnoService {
             ocioNuevo.setAforo(userOcioNocturnoDTO.getAforo());
             ocioNuevo.setTelefono(userOcioNocturnoDTO.getTelefono());
             ocioNuevo.setUser(usuario);
+            ocioNuevo.setActivo(true);
+            ocioNuevo.setVerificado(false);
             ocioNuevo.setImagenMarca(userOcioNocturnoDTO.getImagenMarca());
             ocioNuevo.setDireccion(direccion);
 

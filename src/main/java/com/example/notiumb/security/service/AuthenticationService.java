@@ -97,7 +97,7 @@ public class AuthenticationService {
 
         if (user.getRol() == Rol.RESTAURANTE){
 
-            Restaurante restaurante = restauranteRepository.findByIdUser(user.getId());
+            Restaurante restaurante = restauranteRepository.findByUserId(user.getId());
             if (!restaurante.getVerificado()){
 
                 return AuthenticationResponseDTO

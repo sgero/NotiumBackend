@@ -88,7 +88,10 @@ public class RestauranteService {
             restaurante.setTelefono(userRestauranteDTO.getTelefono());
             restaurante.setHora_apertura(userRestauranteDTO.getHora_apertura());
             restaurante.setHora_cierre(userRestauranteDTO.getHora_cierre());
-            restaurante.setDisponible(userRestauranteDTO.getDisponible());
+            restaurante.setDisponible(true);
+            restaurante.setValoracion(true);
+            restaurante.setActivo(true);
+            restaurante.setVerificado(false);
             restaurante.setAforo(userRestauranteDTO.getAforo());
             restaurante.setUser(usuario);
             restaurante.setImagen_marca(userRestauranteDTO.getImagen_marca());
