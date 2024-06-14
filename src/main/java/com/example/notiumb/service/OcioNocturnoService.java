@@ -86,6 +86,7 @@ public class OcioNocturnoService {
             ocioNuevo.setHoraApertura(userOcioNocturnoDTO.getHoraApertura());
             ocioNuevo.setHoraCierre(userOcioNocturnoDTO.getHoraCierre());
             ocioNuevo.setAforo(userOcioNocturnoDTO.getAforo());
+            ocioNuevo.setTelefono(userOcioNocturnoDTO.getTelefono());
             ocioNuevo.setUser(usuario);
             ocioNuevo.setImagenMarca(userOcioNocturnoDTO.getImagenMarca());
             ocioNuevo.setDireccion(direccion);
@@ -129,6 +130,7 @@ public class OcioNocturnoService {
                 ocioModificar.setHoraApertura(userOcioNocturnoDTO.getHoraApertura());
                 ocioModificar.setHoraCierre(userOcioNocturnoDTO.getHoraCierre());
                 ocioModificar.setAforo(userOcioNocturnoDTO.getAforo());
+                ocioModificar.setTelefono(userOcioNocturnoDTO.getTelefono());
                 ocioModificar.setImagenMarca(userOcioNocturnoDTO.getImagenMarca());
                 ocioModificar.setDireccion(direccionModificada);
 
