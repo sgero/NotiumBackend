@@ -20,6 +20,12 @@ public interface IRppRepository extends JpaRepository <Rpp, Integer> {
             "WHERE r.id_usuario = :id and activo = true;")
     Rpp findByIdUser(Integer id);
 
+    @Query(nativeQuery = true, value = "SELECT r.* FROM notium.rpp r\n" +
+            "WHERE r.id_usuario = :id")
+    Rpp findByIdUserSinActivo(Integer id);
+
+    Rpp findTopById(Integer id);
+
     List<Rpp> findAllByOcioNocturnoIdAndActivoIsTrue (Integer idOcio);
 
 }

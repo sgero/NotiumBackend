@@ -40,6 +40,11 @@ public class RestauranteController {
         return restauranteService.crearYModificarRestaurante(userRestauranteDTO);
     }
 
+    @PostMapping(value="/verificar")
+    public String verificarRestaurante(@RequestBody RestauranteDTO restauranteDTO) throws MessagingException {
+        return restauranteService.verificarRestaurante(restauranteDTO);
+    }
+
     @GetMapping(value="/notaMedia")
     public Double notaMedia(@RequestParam Integer id) {
         return comentarioService.valoracionMedia(id);

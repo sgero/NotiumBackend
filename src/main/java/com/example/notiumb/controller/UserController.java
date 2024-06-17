@@ -24,6 +24,12 @@ public class UserController {
     public String deleteUser(@RequestBody User user) {
         return userService.deleteUser(user);
     }
+
+    @PostMapping("/activar")
+    public String activarUser(@RequestBody User user) {
+        return userService.activarUser(user);
+    }
+
     @PostMapping("/validar")
     public Boolean validaUsernameEmailExistentes(@RequestBody User user) {
         return userService.validaUsernameEmailExistentes(user);

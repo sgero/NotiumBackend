@@ -1,8 +1,10 @@
 package com.example.notiumb.controller;
 
+import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.RppDTO;
 import com.example.notiumb.dto.UserRppDTO;
 import com.example.notiumb.service.RppService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,12 @@ public class RppController {
 
     @PostMapping("/guardar/{id}")
     public RppDTO guardarRpp(@PathVariable Integer id, @RequestBody UserRppDTO dto){ return service.saveRpp(id,dto); }
+
+    @PostMapping(value="/verificar")
+    public String verificarRpp(@RequestBody RppDTO rppDTO){
+        return service.verificarRpp(rppDTO);
+    }
+
 
     @DeleteMapping("/{id}")
     public void eliminarRpp(@PathVariable Integer id){ service.delete(id); }

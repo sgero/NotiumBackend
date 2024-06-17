@@ -3,7 +3,7 @@ package com.example.notiumb.service;
 
 import com.example.notiumb.converter.*;
 import com.example.notiumb.dto.UserDTO;
-import com.example.notiumb.model.User;
+import com.example.notiumb.model.*;
 import com.example.notiumb.model.enums.Rol;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.security.service.JWTService;
@@ -102,19 +102,88 @@ public class UserService implements UserDetailsService {
     public String deleteUser(User user) {
 
         User usuario = userRepository.findTopByUsername(user.getUsername());
+        if (user.getRol() == Rol.CLIENTE){
+
+            Cliente cliente = clienteRepository.findByUserId(user.getId());
+            cliente.setActivo(false);
+            clienteRepository.save(cliente);
+
+        } else if (user.getRol() == Rol.RESTAURANTE) {
+
+            Restaurante restaurante = restauranteRepository.findByUserId(user.getId());
+            restaurante.setActivo(false);
+            restauranteRepository.save(restaurante);
+
+        }else if (user.getRol() == Rol.OCIONOCTURNO) {
+
+            OcioNocturno ocio = ocioNocturnoRepository.findByIdUser(user.getId());
+            ocio.setActivo(false);
+            ocioNocturnoRepository.save(ocio);
+
+        }else if (user.getRol() == Rol.RPP) {
+
+            Rpp rpp = rppRepository.findByIdUser(user.getId());
+            rpp.setActivo(false);
+            rppRepository.save(rpp);
+
+        }
 
         usuario.setActivo(false);
         userRepository.save(usuario);
 
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Usuario eliminado");
+        response.put("message", "Usuario dado de baja.");
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return "{\"message\":\"Error al procesar la solicitud\"}";
+            return "{\"message\":\"Error al procesar la solicitud.\"}";
+        }
+    }
+
+    public String activarUser(User user) {
+
+        User usuario = userRepository.findTopByUsername(user.getUsername());
+        if (user.getRol() == Rol.CLIENTE){
+
+            Cliente cliente = clienteRepository.findByUserId(user.getId());
+            cliente.setActivo(true);
+            clienteRepository.save(cliente);
+
+        } else if (user.getRol() == Rol.RESTAURANTE) {
+
+            Restaurante restaurante = restauranteRepository.findByUserId(user.getId());
+            restaurante.setActivo(true);
+            restauranteRepository.save(restaurante);
+
+        }else if (user.getRol() == Rol.OCIONOCTURNO) {
+
+            OcioNocturno ocio = ocioNocturnoRepository.findByIdUser(user.getId());
+            ocio.setActivo(true);
+            ocioNocturnoRepository.save(ocio);
+
+        }else if (user.getRol() == Rol.RPP) {
+
+            Rpp rpp = rppRepository.findByIdUserSinActivo(user.getId());
+            rpp.setActivo(true);
+            rppRepository.save(rpp);
+
+        }
+
+        usuario.setActivo(true);
+        userRepository.save(usuario);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario activado.");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"message\":\"Error al procesar la solicitud.\"}";
         }
     }
 

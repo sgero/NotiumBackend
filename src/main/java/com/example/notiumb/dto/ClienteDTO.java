@@ -23,6 +23,8 @@ public class ClienteDTO {
 
     private String token_verificacion;
 
+    private Boolean activo;
+
     @Valid
     private UserDTO userDTO;
     @Valid

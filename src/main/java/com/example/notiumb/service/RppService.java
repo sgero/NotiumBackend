@@ -4,17 +4,21 @@ import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.converter.IRppMapper;
 import com.example.notiumb.converter.IUserMapper;
+import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.RppDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserRppDTO;
 import com.example.notiumb.model.*;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.security.auth.AuthController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RppService {
@@ -41,7 +45,7 @@ public class RppService {
     @Autowired
     private IUserRepository userRepository;
 
-    public List<RppDTO> getAll(){return converter.toDTO(repository.findAllByActivoIsTrue());}
+    public List<RppDTO> getAll(){return converter.toDTO(repository.findAll());}
 
     public List<RppDTO> getAllByOcio(@Param("id") Integer idOcio){return converter.toDTO(repository.findAllByOcioNocturnoIdAndActivoIsTrue(idOcio));}
 
@@ -108,5 +112,24 @@ public class RppService {
 //                listaOcioRepository.saveAll(listasRpp);
 //            }
         }
+    }
+
+    public String verificarRpp(RppDTO rppDTO){
+
+        Rpp rpp = repository.findTopById(rppDTO.getId());
+        rpp.setVerificado(true);
+        repository.save(rpp);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Rpp verificado.");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"message\":\"Error al procesar la solicitud.\"}";
+        }
+
     }
 }

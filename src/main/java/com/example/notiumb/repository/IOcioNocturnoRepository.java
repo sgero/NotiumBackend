@@ -29,6 +29,8 @@ public interface IOcioNocturnoRepository extends JpaRepository<OcioNocturno, Int
 
     OcioNocturno findTopByIdAndActivoIsTrue(Integer id);
 
+    OcioNocturno findTopById(Integer id);
+
     @Query(nativeQuery = true, value = "select o.* from notium.ocio_nocturno o " +
             "join notium.evento e on o.id = e.id_ocio_nocturno " +
             "where e.id = :id and e.activo = true and o.activo = true;")

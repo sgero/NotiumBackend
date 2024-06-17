@@ -3,23 +3,28 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.IDireccionMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.OcioNocturnoDTO;
+import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.Direccion;
 import com.example.notiumb.model.OcioNocturno;
+import com.example.notiumb.model.Restaurante;
 import com.example.notiumb.model.User;
 import com.example.notiumb.repository.IDireccionRepository;
 import com.example.notiumb.repository.IOcioNocturnoRepository;
 import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.auth.AuthController;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OcioNocturnoService {
@@ -45,7 +50,7 @@ public class OcioNocturnoService {
     private IDireccionRepository direccionRepository;
 
     public List<OcioNocturnoDTO> getAll() {
-        return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findAllByActivoIsTrue());
+        return ocioNocturnoMapper.toDTO(ocioNocturnoRepository.findAll());
     }
 
     public OcioNocturnoDTO getById(@Param("id") Integer id) {
@@ -154,6 +159,25 @@ public class OcioNocturnoService {
             ocioAEliminar.setActivo(false);
             ocioNocturnoRepository.save(ocioAEliminar);
         }
+    }
+
+    public String verificarOcioNocturno(OcioNocturnoDTO ocioNocturnoDTO){
+
+        OcioNocturno ocioNocturno = ocioNocturnoRepository.findTopById(ocioNocturnoDTO.getId());
+        ocioNocturno.setVerificado(true);
+        ocioNocturnoRepository.save(ocioNocturno);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Ocio Nocturno verificado.");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"message\":\"Error al procesar la solicitud.\"}";
+        }
+
     }
 
     public OcioNocturno getOcioNocturnoByCif(String cif){

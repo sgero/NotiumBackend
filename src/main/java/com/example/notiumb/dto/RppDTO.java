@@ -24,6 +24,10 @@ public class RppDTO {
     private String dni;
     @NotBlank
     private String telefono;
+
+    private Boolean activo;
+
+    private Boolean verificado;
     @NotBlank
     private Timestamp fechaNacimiento;
     @Valid

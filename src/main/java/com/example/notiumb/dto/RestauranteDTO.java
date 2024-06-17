@@ -31,6 +31,8 @@ public class RestauranteDTO {
 
     private Boolean activo;
 
+    private Boolean verificado;
+
     private Integer aforo;
 
     @Valid

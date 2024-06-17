@@ -29,6 +29,10 @@ public class OcioNocturnoDTO {
     @NotBlank
     private Integer aforo;
 
+    private Boolean activo;
+
+    private Boolean verificado;
+
     @NotBlank
     private String imagenMarca;
     @Valid

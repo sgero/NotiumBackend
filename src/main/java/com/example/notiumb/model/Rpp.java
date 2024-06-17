@@ -32,6 +32,10 @@ public class Rpp {
     @Column(name = "activo")
     private Boolean activo = true;
 
+    @Column(name = "verificado")
+    private Boolean verificado = true;
+
+
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private User user;

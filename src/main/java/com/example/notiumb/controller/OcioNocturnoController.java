@@ -2,6 +2,7 @@ package com.example.notiumb.controller;
 
 import com.example.notiumb.dto.ClienteDTO;
 import com.example.notiumb.dto.OcioNocturnoDTO;
+import com.example.notiumb.dto.RestauranteDTO;
 import com.example.notiumb.dto.UserOcioNocturnoDTO;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.service.OcioNocturnoService;
@@ -33,6 +34,12 @@ public class OcioNocturnoController {
     public OcioNocturnoDTO crearYModificarOcioNocturno(@RequestBody UserOcioNocturnoDTO userOcioNocturnoDTO) throws MessagingException {
         return ocioNocturnoService.crearYModificarOcioNocturno(userOcioNocturnoDTO);
     }
+
+    @PostMapping(value="/verificar")
+    public String verificarOcioNocturno(@RequestBody OcioNocturnoDTO ocioNocturnoDTO) {
+        return ocioNocturnoService.verificarOcioNocturno(ocioNocturnoDTO);
+    }
+
 
     @DeleteMapping("/{id}")
     public void eliminarOcio(@PathVariable Integer id){ ocioNocturnoService.delete(id); }

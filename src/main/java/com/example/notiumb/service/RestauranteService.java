@@ -9,12 +9,15 @@ import com.example.notiumb.model.*;
 import com.example.notiumb.repository.*;
 import com.example.notiumb.security.auth.AuthController;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -163,6 +166,26 @@ public class RestauranteService {
 
     public Restaurante getRestauranteByCif(String cif){
         return restauranteRepository.findByCif(cif);
+    }
+
+
+    public String verificarRestaurante(RestauranteDTO restauranteDTO){
+
+        Restaurante restaurante = restauranteRepository.findTopById(restauranteDTO.getId());
+        restaurante.setVerificado(true);
+        restauranteRepository.save(restaurante);
+        Map<String, String> response = new HashMap<>();
+
+        response.put("message", "Restaurante verificado.");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"message\":\"Error al procesar la solicitud.\"}";
+        }
+
     }
 
 
