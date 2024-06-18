@@ -32,6 +32,11 @@ public class MesaService {
         return mesaMapper.toDTO(mesas);
     }
 
+    public List<MesaDTO> listadoMesasByID(int id){
+        List<Mesa> mesas = imesaRepository.findAllByRestaurante_Id(id);
+        return mesaMapper.toDTO(mesas);
+    }
+
     public MesaDTO mesaID(Integer id){
         Mesa mesas = imesaRepository.findById(id).orElse(null);
         return mesaMapper.toDTO(mesas);

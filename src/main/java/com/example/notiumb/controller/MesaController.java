@@ -32,5 +32,10 @@ public class MesaController {
     public List<MesaDTO> listarMesas(){
         return mesaService.listadoMesas();
     }
+    @GetMapping(value= "/listar/{id}")
+    public List<MesaDTO> listadoMesasByID(@PathVariable Integer id){
+        return mesaService.listadoMesasByID(id);
+    }
+
 
 }
