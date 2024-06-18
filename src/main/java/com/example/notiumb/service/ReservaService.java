@@ -284,6 +284,7 @@ public class ReservaService {
         }
 
         if(infoReserva.getTipoReserva().equals("futuras")){
+            Collections.reverse(reservasFuturas);
             reservasAEnviar = reservaMapper.toDTO(reservasFuturas);
         } else if (infoReserva.getTipoReserva().equals("pasadas")) {
             reservasAEnviar = reservaMapper.toDTO(reservasPasadas);

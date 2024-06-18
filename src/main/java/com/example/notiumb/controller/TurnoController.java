@@ -63,5 +63,10 @@ public class TurnoController {
         return turnoService.turnosPorReservaFecha(info);
     }
 
+    @PostMapping(value="/turnosPorFecha")
+    public List<TurnoDTO> turnosPorFecha(@RequestBody ReservaTurnosDTO info) {
+        return turnoService.turnosPorFecha(info);
+    }
+
 
 }

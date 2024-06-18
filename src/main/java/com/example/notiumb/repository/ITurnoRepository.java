@@ -34,4 +34,7 @@ public interface ITurnoRepository extends JpaRepository<Turno, Integer> {
     @Query(value="select tr.* from notium.reserva_restaurante rr join notium.turno_restaurante tr on tr.id = rr.id_turno_restaurante where rr.id_restaurante = :id_restaurante  and rr.fecha = %:fecha%", nativeQuery = true)
     List<Turno> turnosReservasFecha(Integer id_restaurante, LocalDate fecha);
 
+    @Query(value="select tr.* from notium.turno_restaurante tr join notium.turno_dias_semana td on tr.id = td.id_turno_restaurante where tr.id_restaurante = :id_restaurante and td.dia_semana = :numDiaSemana", nativeQuery = true)
+    List<Turno> turnosFecha(Integer id_restaurante, Integer numDiaSemana);
+
 }

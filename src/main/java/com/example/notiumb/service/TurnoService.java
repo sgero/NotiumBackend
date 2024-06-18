@@ -17,6 +17,10 @@ import com.example.notiumb.utilidades.UtilidadesAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -129,5 +133,62 @@ public class TurnoService {
         List<Turno> listadoTurnosReserva = iTurnoRepository.turnosReservasFecha(info.getId_restaurante(),info.getFecha());
         return turnoMapper.toDTO(listadoTurnosReserva);
     }
+
+
+    public List<TurnoDTO> turnosPorFecha(ReservaTurnosDTO info){
+
+        DayOfWeek diaDeLaSemana = info.getFecha().getDayOfWeek();
+        Integer numDia = 0;
+
+        switch (diaDeLaSemana) {
+            case MONDAY:
+                numDia = 1;
+            case TUESDAY:
+                numDia = 2;
+            case WEDNESDAY:
+                numDia = 3;
+            case THURSDAY:
+                numDia = 4;
+            case FRIDAY:
+                numDia = 5;
+            case SATURDAY:
+                numDia = 6;
+            case SUNDAY:
+                numDia = 7;
+        }
+        List<Turno> turnoRestaurante = iTurnoRepository.turnosFecha(info.getId_restaurante(), numDia);
+
+        return turnoMapper.toDTO(turnoRestaurante);
+    }
+
+    public static Integer obtenerDiaDeLaSemana(LocalDate fecha) {
+
+        DayOfWeek diaDeLaSemana = fecha.getDayOfWeek();
+
+        switch (diaDeLaSemana) {
+            case MONDAY:
+                return 1;
+            case TUESDAY:
+                return 2;
+            case WEDNESDAY:
+                return 3;
+            case THURSDAY:
+                return 4;
+            case FRIDAY:
+                return 5;
+            case SATURDAY:
+                return 6;
+            case SUNDAY:
+                return 7;
+        }
+        return 0;
+
+    }
+
+
+
+
+
+
 
 }
