@@ -301,6 +301,11 @@ public class ReservaService {
     }
 
 
+    public List<ReservaDTO> get(ReservaFechaDTO info) {
+        return reservaMapper.toDTO(reservaRepository.reservas(info.getRestauranteDTO().getId(), info.getFecha()));
+    }
+
+
 }
 
 

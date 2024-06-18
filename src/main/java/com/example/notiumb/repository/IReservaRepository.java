@@ -46,5 +46,8 @@ public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query(value="select rr.* from notium.reserva_restaurante rr where rr.id_restaurante = :id_restaurante and rr.id_turno_restaurante = :id_turno and rr.fecha = %:fecha%", nativeQuery = true)
     List<Reserva> reservaFechaTurno(Integer id_restaurante, Integer id_turno, LocalDate fecha);
 
+    @Query(value="select rr.* from notium.reserva_restaurante rr where rr.id_restaurante = :id_restaurante and rr.fecha = :fecha", nativeQuery = true)
+    List<Reserva> reservas(Integer id_restaurante, LocalDate fecha);
+
 
 }
