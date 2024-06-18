@@ -127,7 +127,7 @@ public class ReservaService {
         Cliente clienteact = clienteRepository.findByIdUser(reservaDTO.getUsuarioDTO().getId());
 
         ReservaDTO reservaDTO1 = new ReservaDTO();
-        reservaDTO1.setFecha(reservaDTO.getFecha());
+        reservaDTO1.setFecha(reservaDTO.getFecha().plusDays(1));
         reservaDTO1.setNumPersonas(reservaDTO.getNumPersonas());
         reservaDTO1.setRestauranteDTO(reservaDTO.getRestauranteDTO());
         reservaDTO1.setTurnoDTO(reservaDTO.getTurnoDTO());
@@ -149,7 +149,7 @@ public class ReservaService {
         for (MesaDTO mesaDTO : mesasDisponibles) {
             Reserva nuevaReserva = new Reserva();
             nuevaReserva.setCodigoReserva(codigoReserva);
-            nuevaReserva.setFecha(reservaDTO.getFecha());
+            nuevaReserva.setFecha(reservaDTO.getFecha().plusDays(1));
             nuevaReserva.setCliente(clienteact);
             nuevaReserva.setRestaurante(restauranteMapper.toEntity(reservaDTO.getRestauranteDTO()));
             nuevaReserva.setMesa(mesaMapper.toEntity(mesaDTO));
@@ -299,6 +299,11 @@ public class ReservaService {
         List<Reserva> reservaList = reservaRepository.reservaFechaTurno(info.getRestauranteDTO().getId(), info.getTurnoDTO().getId(), info.getFecha());
 
         return reservaMapper.toDTO(reservaList);
+    }
+
+
+    public List<ReservaDTO> get(ReservaFechaDTO info) {
+        return reservaMapper.toDTO(reservaRepository.reservas(info.getRestauranteDTO().getId(), info.getFecha()));
     }
 
 
