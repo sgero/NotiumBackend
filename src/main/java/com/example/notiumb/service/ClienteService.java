@@ -77,7 +77,7 @@ public class ClienteService {
             cliente.setNombre(userClienteDTO.getNombre());
             cliente.setApellidos(userClienteDTO.getApellidos());
             cliente.setDni(userClienteDTO.getDni());
-            cliente.setFechaNacimiento(userClienteDTO.getFecha_nacimiento());
+            cliente.setFechaNacimiento(userClienteDTO.getFechaNacimiento());
             cliente.setTelefono(userClienteDTO.getTelefono());
             cliente.setUser(usuario);
             cliente.setDireccion(direccion);
@@ -119,7 +119,7 @@ public class ClienteService {
                 clienteModificar.setNombre(userClienteDTO.getNombre());
                 clienteModificar.setApellidos(userClienteDTO.getApellidos());
                 clienteModificar.setDni(userClienteDTO.getDni());
-                clienteModificar.setFechaNacimiento(userClienteDTO.getFecha_nacimiento());
+                clienteModificar.setFechaNacimiento(userClienteDTO.getFechaNacimiento());
                 clienteModificar.setTelefono(userClienteDTO.getTelefono());
                 clienteModificar.setDireccion(direccionModificada);
 

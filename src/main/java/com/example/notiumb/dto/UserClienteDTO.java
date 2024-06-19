@@ -42,7 +42,7 @@ public class UserClienteDTO {
     private String telefono;
 
     @Past
-    private Date fecha_nacimiento;
+    private Date fechaNacimiento;
 
     private String token_verificacion;
 
