@@ -21,6 +21,8 @@ public class ClienteDTO {
     @Past
     private Date fechaNacimiento;
 
+    private String telefono;
+
     private String token_verificacion;
 
     private Boolean activo;
