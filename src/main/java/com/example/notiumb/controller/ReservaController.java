@@ -56,4 +56,9 @@ public class ReservaController {
         return reservaService.reservasFechaTurno(info);
     }
 
+    @PostMapping(value="/fecha")
+    public List<ReservaDTO> turnosReservaFecha(@RequestBody ReservaFechaDTO info) {
+        return reservaService.get(info);
+    }
+
 }
