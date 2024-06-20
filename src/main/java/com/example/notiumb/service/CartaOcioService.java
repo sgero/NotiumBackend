@@ -3,6 +3,7 @@ package com.example.notiumb.service;
 import com.example.notiumb.converter.ICartaOcioMapper;
 import com.example.notiumb.converter.IOcioNocturnoMapper;
 import com.example.notiumb.dto.CartaOcioDTO;
+import com.example.notiumb.dto.OcioNocturnoDTO;
 import com.example.notiumb.model.CartaOcio;
 import com.example.notiumb.model.OcioNocturno;
 import com.example.notiumb.repository.ICartaOcioRepository;
@@ -36,12 +37,12 @@ public class CartaOcioService {
         return converter.toDTO(repository.findByOcioNocturnoId(idOcio));
     }
 
-    public CartaOcioDTO save(@Param("id") Integer idOcio, CartaOcioDTO cartaOcioDTO){
+    public CartaOcioDTO save(OcioNocturnoDTO cartaOcioDTO){
         
-        OcioNocturno ocioNocturno = ocioNocturnoRepository.findByIdAndActivoIsTrue(idOcio).orElse(null);
-        CartaOcio cartaExistente = repository.findByOcioNocturnoId(idOcio);
+        OcioNocturno ocioNocturno = ocioNocturnoRepository.findByIdAndActivoIsTrue(cartaOcioDTO.getId()).orElse(null);
+        CartaOcio cartaExistente = repository.findByOcioNocturnoId(cartaOcioDTO.getId());
         if (cartaExistente ==null) {
-            CartaOcio cartaNueva = converter.toEntity(cartaOcioDTO);
+            CartaOcio cartaNueva = new CartaOcio();
             cartaNueva.setOcioNocturno(ocioNocturno);
             repository.save(cartaNueva);
             return converter.toDTO(cartaNueva);
