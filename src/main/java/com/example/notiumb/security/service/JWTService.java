@@ -1,11 +1,12 @@
 package com.example.notiumb.security.service;
 
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IUserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,10 @@ public class JWTService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
+    @Autowired
+    private IUserRepository userRepository;
 
-    public String extractUsername(String token) {
+    public String extractId(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -41,7 +44,9 @@ public class JWTService {
     }
 
     public boolean isTokenValid(String token, User usuario) {
-        final String username = extractUsername(token);
+        Integer id = Integer.valueOf(extractId(token));
+        User user = userRepository.findTopById(id);
+        String username = user.getUsername();
         return (username.equals(usuario.getUsername())) && !isTokenExpired(token);
 
     }

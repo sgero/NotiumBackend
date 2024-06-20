@@ -35,7 +35,7 @@ public class AuthController {
         String key = "authorization";
         String localToken = headers.get(key);
         String token = localToken.substring(7);
-        Integer id = Integer.valueOf(jwtService.extractUsername(token));
+        Integer id = Integer.valueOf(jwtService.extractId(token));
         return userMapper.toDTO(userRepository.findTopById(id));
     }
 

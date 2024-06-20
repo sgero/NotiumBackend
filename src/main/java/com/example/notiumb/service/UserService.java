@@ -9,7 +9,6 @@ import com.example.notiumb.repository.*;
 import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.service.implementation.EmailServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.event.IIOReadProgressListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,7 +220,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUsuarioFromToken(String token) {
-        Integer id = Integer.valueOf(jwtService.extractUsername(token));
+        Integer id = Integer.valueOf(jwtService.extractId(token));
         return userRepository.findTopById(id);
     }
 

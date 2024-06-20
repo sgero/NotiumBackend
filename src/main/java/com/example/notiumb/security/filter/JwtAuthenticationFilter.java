@@ -1,6 +1,7 @@
 package com.example.notiumb.security.filter;
 
 import com.example.notiumb.model.User;
+import com.example.notiumb.repository.IUserRepository;
 import com.example.notiumb.security.service.JWTService;
 import com.example.notiumb.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -29,6 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private IUserRepository userRepository;
 
 //    @Override
 //    protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -91,7 +95,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         System.out.println("Received JWT: " + jwt);
-        username = jwtService.extractUsername(jwt);
+        Integer id = Integer.valueOf(jwtService.extractId(jwt));
+        User usuario = userRepository.findTopById(id);
+        username = usuario.getUsername();
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userService.loadUserByUsername(username);
