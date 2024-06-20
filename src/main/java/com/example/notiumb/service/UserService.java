@@ -222,8 +222,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUsuarioFromToken(String token) {
-        String username = jwtService.extractUsername(token); // Extrae el nombre de usuario del token
-        return userRepository.findTopByUsernameAndActivoTrue(username);
+        Integer id = Integer.valueOf(jwtService.extractUsername(token));
+        return userRepository.findTopById(id);
     }
 
     public Boolean validaUsernameEmailExistentes(User user) {
