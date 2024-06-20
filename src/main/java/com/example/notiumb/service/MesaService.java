@@ -45,19 +45,18 @@ public class MesaService {
 
     public RespuestaDTO mesaRestaurante(MesaDTO mesaDTO) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
-        Integer numeroPlazasCubierta = imesaRepository.numeroDePlazaPorMesasRestaurante(mesaDTO.getRestauranteDTO().getId());
-        Restaurante restauranteMesa = iRestauranteRepository.findTopById(mesaDTO.getRestauranteDTO().getId());
 
         try {
             Mesa nuevaMesa = new Mesa();
-                if(mesaDTO.getNumPlazas()!=0 && (numeroPlazasCubierta + mesaDTO.getNumPlazas()) < restauranteMesa.getAforo()/*Aqui iría variable aforo*/) {
+                if(mesaDTO.getNumPlazas()!=0 ) {
                     nuevaMesa.setNumPlazas(mesaDTO.getNumPlazas());
-                    nuevaMesa.setReservada(mesaDTO.getReservada());
+                    nuevaMesa.setReservada(false);
                     nuevaMesa.setActivo(true);
                     Restaurante restaurantesMesa = iRestauranteRepository.findTopById(mesaDTO.getRestauranteDTO().getId());
                     nuevaMesa.setRestaurante(restaurantesMesa);
 
                     imesaRepository.save(nuevaMesa);
+                    Mesa mesa = nuevaMesa;
                     UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_200_MESA_CREADA);
                 }else{
                     UtilidadesAPI.setearMensaje(respuestaDTO, MapaCodigoRespuestaAPI.CODIGO_400_MESA_NO_CREADA);
