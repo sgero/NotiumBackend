@@ -79,17 +79,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findTopByUsername(username);
     }
 
-    public UserDTO getByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findTopByUsername(username);
-
-        if (user != null) {
-            return iUserMapper.toDTO(user);
-        } else {
-            throw new UsernameNotFoundException("Usuario no encontrado");
-        }
-
-    }
-
     public UserDTO save(UserDTO userDTO) {
         return iUserMapper.toDTO(userRepository.save(iUserMapper.toEntity(userDTO)));
     }
@@ -191,7 +180,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findTopByTokenVerificacion(tokenVerificacion);
     }
 
+    public UserDTO editarUsuario(User user) {
 
+        User usuario = userRepository.findTopById(user.getId());
+        usuario.setUsername(user.getUsername());
+        usuario.setEmail(user.getEmail());
+        userRepository.save(usuario);
+        return iUserMapper.toDTO(usuario);
+
+    }
 
     public void actualizarUsuario(User usuario) {
         userRepository.save(usuario);
@@ -223,45 +220,6 @@ public class UserService implements UserDetailsService {
         return user;
 
     }
-
-
-    public void registrarUsuario(User usuario) throws MessagingException {
-        // Determinar el rol del usuario
-        Rol rol = usuario.getRol();
-
-        // Lógica específica basada en el rol del usuario
-        switch (rol) {
-            case ADMIN:
-                // Para el rol de Administrador, no enviar email de verificación
-                usuario.setVerificado(true);
-                break;
-            case CLIENTE:
-                // Para el rol de Cliente, enviar email de verificación al email del usuario
-                usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                emailService.enviarEmailVerificacion(usuario.getEmail(), "CLIENTE");
-                break;
-            case RESTAURANTE:
-
-                usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                emailService.enviarEmailContinuidadRegistro(usuario.getEmail(), "RESTAURANTE");
-                break;
-            case OCIONOCTURNO:
-                //VAMOS A HACER QUE EL USUARIO SE VERIFIQUE, PERO QUE ADEMÁS LA LÓGICA DE ACTIVACIÓN DE LA CUENTA SEA DIFERENTE Y NECESITE AL ADMIN
-                usuario.setVerificado(false); // Establecer el campo verificado como false por defecto
-                emailService.enviarEmailContinuidadRegistro(usuario.getEmail(), "OCIONOCTURNO");
-                break;
-            // Otros casos y roles...
-            case RPP:
-                // Para el rol de RPP, setear el campo verificado como true
-                usuario.setVerificado(true);
-                break;
-        }
-
-        // Guardar el usuario en el repositorio
-        userRepository.save(usuario);
-    }
-
-
 
     public User getUsuarioFromToken(String token) {
         String username = jwtService.extractUsername(token); // Extrae el nombre de usuario del token

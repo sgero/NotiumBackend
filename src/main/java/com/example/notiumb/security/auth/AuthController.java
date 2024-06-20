@@ -35,8 +35,8 @@ public class AuthController {
         String key = "authorization";
         String localToken = headers.get(key);
         String token = localToken.substring(7);
-        String username = jwtService.extractUsername(token);
-        return userMapper.toDTO(userRepository.findTopByUsername(username));
+        Integer id = Integer.valueOf(jwtService.extractUsername(token));
+        return userMapper.toDTO(userRepository.findTopById(id));
     }
 
     @PostMapping("/registro")

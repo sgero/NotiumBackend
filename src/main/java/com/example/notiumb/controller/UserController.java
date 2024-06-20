@@ -30,6 +30,11 @@ public class UserController {
         return userService.activarUser(user);
     }
 
+    @PostMapping("/editar")
+    public UserDTO editarUsuarioUser(@RequestBody User user) {
+        return userService.editarUsuario(user);
+    }
+
     @PostMapping("/validar")
     public Boolean validaUsernameEmailExistentes(@RequestBody User user) {
         return userService.validaUsernameEmailExistentes(user);
